@@ -25,12 +25,14 @@ const Users = {
     });
   },
 
-  evaluate: function(index, value) {
+  appealevaluate: function(index, value) {
     let self = this;
 
     return new Promise((resolve, reject) => {
       self.instance
-        .evaluate(index, value, { from: window.web3.eth.accounts[0] })
+        .appealevaluate(index, value, {
+          from: window.web3.eth.accounts[0]
+        })
         .then(tx => {
           resolve(tx);
         })

@@ -4,11 +4,19 @@ import "./queue.sol";
 import "./login.sol";
 
 contract assign is login,queue{
+    struct arbitration {
+        mapping(address => bool) flag;                //flag为仲裁师对某订单的评估状态，当评估后，该状态flag=1，不允许再次评估
+        uint tick;
+        uint sum;
+    }
+
     mapping(address => uint)   values;                //评估师报价
     mapping(uint => address)   appeals;               //评估单编号对应的评估师地址
     mapping(address => Queue)  loads;                 //评估师负载
     mapping(address => uint[]) record;                //记录每个用户下评估单编号
     mapping(address => uint[]) appeallist;            //记录每个仲裁者名下的仲裁单
+
+    mapping(uint => arbitration) status;              //记录仲裁者对某个评估单的评估结果
     
     
     /**
@@ -72,37 +80,10 @@ contract assign is login,queue{
 
     /**
      * guobin
-     * 将申诉订单编号分配给仲裁者
-    */
-    function _appealdistribution(uint number,address appeal1,address appeal2,address appeal3,address appeal4,address appeal5) internal { 
-        push(loads[appeal1], number);
-        push(loads[appeal2], number);
-        push(loads[appeal3], number);
-        push(loads[appeal4], number);
-        push(loads[appeal5], number);
-        
-        appeallist[appeal1].push(number);                    //将当前评估单编号(由js传递)存入对应仲裁者地址
-        appeallist[appeal2].push(number);                    //将当前评估单编号(由js传递)存入对应仲裁者地址
-        appeallist[appeal3].push(number);                    //将当前评估单编号(由js传递)存入对应仲裁者地址
-        appeallist[appeal4].push(number);                    //将当前评估单编号(由js传递)存入对应仲裁者地址
-        appeallist[appeal5].push(number);                    //将当前评估单编号(由js传递)存入对应仲裁者地址
-        _setstate(number,'2');
-    }
-
-    /**
-     * guobin
      * 返回当前评估师的所有评估单编号
     */
     function _backvalnumber() view internal returns (uint[]) {
         return record[msg.sender];
-    }
-
-    /**
-     * guobin
-     * 返回当前仲裁者的所有评估单编号
-    */
-    function _backappnumber() view internal returns (uint[]) {
-        return appeallist[msg.sender];
     }
 
     /**
@@ -117,10 +98,80 @@ contract assign is login,queue{
 
     /**
      * guobin
+     * 将申诉订单编号分配给仲裁者
+    */
+    function _appealdistribution(uint number,address appeal1,address appeal2,address appeal3,address appeal4,address appeal5) internal { 
+        push(loads[appeal1], number);
+        push(loads[appeal2], number);
+        push(loads[appeal3], number);
+        push(loads[appeal4], number);
+        push(loads[appeal5], number);
+        
+        appeallist[appeal1].push(number);                    //将当前评估单编号(由js传递)存入对应仲裁者地址
+        appeallist[appeal2].push(number);                    //将当前评估单编号(由js传递)存入对应仲裁者地址
+        appeallist[appeal3].push(number);                    //将当前评估单编号(由js传递)存入对应仲裁者地址
+        appeallist[appeal4].push(number);                    //将当前评估单编号(由js传递)存入对应仲裁者地址
+        appeallist[appeal5].push(number);                    //将当前评估单编号(由js传递)存入对应仲裁者地址
+        order.store_sta[number].Evaluation_status = "2";     //将评估单状态改为已申诉
+    }
+
+    /**
+     * guobin
+     * 返回当前仲裁者的所有评估单编号
+    */
+    function _backappnumber() view internal returns (uint[]) {
+        return appeallist[msg.sender];
+    }
+
+    /**
+     * guobin
+     * 仲裁者对订单进行评估
+    */
+    function _appealevaluate(uint index,uint value) internal returns (uint) {
+        uint tmpvalue = 0;
+        uint tmpsum = 0;
+        
+        if(status[index].flag[msg.sender]) {                        //当同一仲裁师再次进入同一评估单，不再允许进行评估
+            return 2;
+        }
+
+        status[index].tick += 1;
+        status[index].sum += value;
+        pop(loads[msg.sender]);
+        status[index].flag[msg.sender] = true;
+
+        if(status[index].tick == 5) {
+            order.store_sta[index].Evaluation_status = "3";         //将评估单状态改为已仲裁
+            tmpvalue = stringToUint(order.store_msg[index].Evaluation) * 5;
+            tmpsum = status[index].sum;
+            if(tmpsum > tmpvalue * 95) {
+                if(tmpsum < tmpvalue * 105) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
+            else {
+                return 0;
+            }
+        }
+    }
+
+    /**
+     * guobin
+     * 仲裁订单进度查询
+    */
+    function _appealeschedule(uint index) internal view returns (uint) {
+        return status[index].tick;
+    }
+
+    /**
+     * guobin
      * 完成当前订单
     */
-    function finishwork(uint index,uint status) internal returns (uint) {
-        if(status == 1) {                                           //当评估单被两次退回后，自动变为已关闭状态
+    function finishwork(uint index,uint parameter) internal returns (uint) {
+        if(parameter == 1) {                                           //当评估单被两次退回后，自动变为已关闭状态
             order.store_sta[index].Evaluation_status = "4";         //将评估单状态改为已关闭
         }
         return pop(loads[msg.sender]);

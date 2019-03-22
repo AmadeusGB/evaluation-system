@@ -57,7 +57,7 @@ contract login is token,create{
      * guobin
      * String转Uint
     */
-    function stringToUint(string s) pure private returns (uint) {
+    function stringToUint(string s) pure internal returns (uint) {
         bytes memory b = bytes(s);
         uint result = 0;
         

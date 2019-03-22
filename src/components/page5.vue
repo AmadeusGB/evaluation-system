@@ -85,11 +85,13 @@ export default {
       this.$prompt("请输入仲裁价格", "操作", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-      }).then(({ value }) => {
-          this.$message({
-            type: "success",
-            message: "仲裁价格:" + value + "元"
-          });
+      }).then(async ({ value }) => {
+        await Eva.appealevaluate(row.address,value);
+
+        // this.$message({
+        //   type: "success",
+        //   message: "仲裁价格:" + value + "元"
+        // });
       });
     },
     back(row) {

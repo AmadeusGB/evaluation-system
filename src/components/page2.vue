@@ -72,7 +72,7 @@ export default {
       console.log(await Create.displayaccountforarbitrage(max[3]) + " : " + max[3]);
       console.log(await Create.displayaccountforarbitrage(max[4]) + " : " + max[4]);
       await Create.appealdistribution(row.address,max[0],max[1],max[2],max[3],max[4]);
-      parent.location.reload();
+      this.$router.push({name: 'page2',params:{ userid:row.address}});
     },
     detail(row) {
       this.$router.push({name: 'detail',params:{ userid:row.address}});
@@ -95,6 +95,7 @@ export default {
     for (var i = 0; i < num; i++) {
       var tmp = await Create.test1(temp[i], 9);
       var money = await Create.test1(temp[i], 7);
+      console.log("tmp:" + tmp);
       if(tmp == "0") {
         status = "待评估";
         money = "暂无";

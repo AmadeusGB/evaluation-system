@@ -18,7 +18,7 @@
         <img width="100%" :src="dialogImageUrl" alt>
       </el-dialog>
     </div>
-    <div v-if="1">
+    <div v-if="testdemo[7]">
       <el-button @click="createvaluation()" type="primary" round>新增评估单</el-button>
       <el-button @click="display()" type="primary" round>查看</el-button>
     </div>

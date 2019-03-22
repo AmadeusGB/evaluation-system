@@ -4,6 +4,7 @@
       <div style="width:280px" v-for="(item,i,index) in carInfo" :key="i">
         <span>{{msg[index]}}{{item}} <br> </span> 
       </div>
+      <span v-if="tickresult > 0">当前仲裁进度：{{tickresult}}/5</span>
       <div style="imgBox" v-for="(item,i,index) in photo" :key="i">
         <span style="text-align:center">{{pmsg[index]}} <br> </span> 
         <img :src="item" width="200" height="200">
@@ -61,8 +62,8 @@ export default {
         photo6:"",
         photo7:"",
         photo8:""
-      }
-      
+      },
+      tickresult:""
     };
   },
   created: async function() {
@@ -97,9 +98,7 @@ export default {
     this.photo.photo7 = await Detail.display(id, 16);
     this.photo.photo8 = await Detail.display(id, 17);
 
-    console.log(await Detail.display(id, 10));
-    console.log(await Detail.display(id, 11));
-    console.log(await Detail.display(id, 12));
+    this.tickresult = await Detail.appealeschedule(id);
   },
   methods: {}
 };
