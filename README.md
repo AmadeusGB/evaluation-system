@@ -2,7 +2,7 @@
 该项目是基于以太坊的汽车估值系统，主要用到以下方面知识：
 * solidity
 * web3.js
-* vue.js+element-ui
+* vue.js & element-ui
 * bancor
 * metamask
 
