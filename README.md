@@ -55,7 +55,7 @@ v8.10.0
 
 `~$ node –p 'require("web3")'`
 
-{[Function: Web3] 
+`{[Function: Web3]`
 
     providers:{…}}
 
@@ -110,7 +110,7 @@ Truffle v4.1.3 (core 4.1.3)
 **更新node_module**
 ***
 
-`~$ npm install`
+`~$ npm install`或`cnpm install`
 
 **编译部署**
 ***
