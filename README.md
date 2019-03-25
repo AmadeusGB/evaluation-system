@@ -36,7 +36,7 @@
 `~$ source .bashrc`
 
 
-最后重新载入.bashrc（戒者重新登陆）来使 node 生效：
+最后重新载入.bashrc（或者重新登陆）来使 node 生效：
 
 `~$ source .bashrc`
 
