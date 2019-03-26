@@ -71,7 +71,9 @@ export default {
     },
 
     async display() {
+      
     },
+
     async upload2ipfs(render) {
       let that = this;
       // connect to ipfs daemon API server

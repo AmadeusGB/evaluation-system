@@ -35,6 +35,8 @@ contract create {
         mapping(uint => Valuationdata)  store_msg;           //存储评估单详情  
         mapping(uint => Picture)        store_pho;           //存储评估单图片  
     }
+
+    
     
     //新增评估单数据结构
     Msg order;                                               //评估单(包含评估单状态、评估单详情和评估单图片结构体)
@@ -113,6 +115,14 @@ contract create {
         order.store_sta[index].Evaluation_status = condition;
     }
     
+    /**
+     * guobin
+     * 获取评估单对应的创建人
+    */
+    function _getcreator(uint index) view internal returns(address) {
+        return order.store_sta[index].Create;
+    }
+
     /**
      * guobin
      * 获取评估单对应的评估师

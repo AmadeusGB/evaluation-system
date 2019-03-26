@@ -25,6 +25,21 @@ const Users = {
     });
   },
 
+  appealeschedule: function(index) {
+    let self = this;
+
+    return new Promise((resolve, reject) => {
+      self.instance
+        .appealeschedule(index, { from: window.web3.eth.accounts[0] })
+        .then(tx => {
+          resolve(tx);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+
   display: function(num, index) {
     let self = this;
 

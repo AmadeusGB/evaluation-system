@@ -106,7 +106,7 @@ const Users = {
           valuation_number, //评估单编号
           {
             from: window.web3.eth.accounts[0],
-            value: "10"
+            value: "100"
           }
         )
         .then(tx => {

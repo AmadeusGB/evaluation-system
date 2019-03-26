@@ -43,6 +43,7 @@ contract demo is assign{
         distribution(evaluation_index,statistic(0));             //对该评估单进行评估师分配
     }
 
+
     /**
      * guobin
      * 评估师对订单进行退回
@@ -55,6 +56,7 @@ contract demo is assign{
             finishwork(evaluation_index,0);
             distribution(evaluation_index,statistic(1));             //对该评估单重新分配评估师
             backrecord[evaluation_index] += 1;
+            _getcreator(evaluation_index).transfer(100);
         }
     }
 
@@ -119,7 +121,7 @@ contract demo is assign{
         return _displayaccount();
     } 
 
-    function displayaccountforarbitrage(address send) view public returns (uint) {
+    function displayaccountforarbitrage(address send) public view returns (uint) {
         return calc(send,1);
     }
 
@@ -180,8 +182,23 @@ contract demo is assign{
      * guobin
      * 将申诉订单编号分配给仲裁者
     */
-    function appealdistribution(uint number,address appeal1,address appeal2,address appeal3,address appeal4,address appeal5)  public {
+    function appealdistribution(uint number,address appeal1,address appeal2,address appeal3,address appeal4,address appeal5) public {
         _appealdistribution(number,appeal1,appeal2,appeal3,appeal4,appeal5);
     }
 
+    /**
+     * guobin
+     * 仲裁者对订单进行评估
+    */
+    function appealevaluate(uint index,uint value) public {
+        _appealevaluate(index,value);
+    }
+
+    /**
+     * guobin
+     * 仲裁订单进度查询
+    */
+    function appealeschedule(uint index) public view returns (uint) {
+        return _appealeschedule(index);
+    }
 }

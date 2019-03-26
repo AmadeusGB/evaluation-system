@@ -94,7 +94,7 @@ contract token {
      * guobin
      * 奖励通证
     */
-    function reward(address rewarder,uint amount) public {
+    function reward(address rewarder,uint amount) internal {
         balanceOf[rewarder] += amount;
         balanceOf[owner] -= amount;
         CirculationToken += amount;
@@ -104,7 +104,7 @@ contract token {
      * guobin
      * 惩罚通证
     */
-    function punish(address punisher,uint amount) public {
+    function punish(address punisher,uint amount) internal {
         balanceOf[punisher] -= amount;
         balanceOf[owner] += amount;
         CirculationToken -= amount;
