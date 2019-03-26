@@ -2,7 +2,7 @@
 本项目是基于以太坊的汽车估值系统，主要用到以下方面知识：
 * solidity
 * web3.js
-* vue.js & element-ui
+* truffle & vue.js & element-ui
 * bancor
 * metamask
 
@@ -96,7 +96,7 @@ Truffle v4.1.3 (core 4.1.3)
 
 `~$ ipfs init`
 
-第二步（由于IPFS节点提供REST API借口，默认在本地5001端口坚挺，配置监听地址和CORS）：
+第二步（由于IPFS节点提供REST API借口，默认在本地5001端口监听，配置监听地址和CORS）：
 
 `~$ ipfs config --json Addresses.Gateway '"/ip4/0.0.0.0/tcp/5000"'`
 
