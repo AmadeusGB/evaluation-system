@@ -107,6 +107,12 @@ Truffle v4.1.3 (core 4.1.3)
 
 # 3.项目运行
 
+**下载源码**
+***
+
+`~$ git clone git@github.com:AmadeusGB/evaluation-system.git`
+
+
 **安装node_module**
 ***
 
