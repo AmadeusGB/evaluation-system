@@ -18,7 +18,7 @@
         <img width="100%" :src="dialogImageUrl" alt>
       </el-dialog>
     </div>
-    <div v-if="testdemo[7]">
+    <div v-if="1">
       <el-button @click="createvaluation()" type="primary" round>新增评估单</el-button>
       <el-button @click="display()" type="primary" round>查看</el-button>
     </div>
@@ -71,7 +71,9 @@ export default {
     },
 
     async display() {
+      
     },
+
     async upload2ipfs(render) {
       let that = this;
       // connect to ipfs daemon API server

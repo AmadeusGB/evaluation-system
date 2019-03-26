@@ -31,48 +31,47 @@ import Create from "@/js/create";
 
 export default {
   methods: {
-    async arbitration(row) {
-      //本函数内的代码，为了实现选出所有评估师的前5名
-      var map = {};
-      var max = ["0","0","0","0","0"];
-      var assessor = await Create.backofwork();
-      console.log(assessor);
-      for(var i = 0;i < assessor.length;i++) {
-        var tmp = await Create.displayaccountforarbitrage(assessor[i]);
-      
-        if(tmp > await Create.displayaccountforarbitrage(max[0])) {
-          max[4] = max[3];
-          max[3] = max[2];
-          max[2] = max[1];
-          max[1] = max[0];
-          max[0] = assessor[i];
-        }
-        else if(tmp > await Create.displayaccountforarbitrage(max[1])) {
-          max[4] = max[3];
-          max[3] = max[2];
-          max[2] = max[1];
-          max[1] = assessor[i];
-        }
-        else if(tmp > await Create.displayaccountforarbitrage(max[2])) {
-          max[4] = max[3];
-          max[3] = max[2];
-          max[2] = assessor[i];
-        }
-        else if(tmp > await Create.displayaccountforarbitrage(max[3])) {
-          max[4] = max[3];
-          max[3] = assessor[i];
-        }
-        else if(tmp > await Create.displayaccountforarbitrage(max[4])) {
-          max[4] = assessor[i];
-        }
-      }
-      console.log(await Create.displayaccountforarbitrage(max[0]) + " : " + max[0]);
-      console.log(await Create.displayaccountforarbitrage(max[1]) + " : " + max[1]);
-      console.log(await Create.displayaccountforarbitrage(max[2]) + " : " + max[2]);
-      console.log(await Create.displayaccountforarbitrage(max[3]) + " : " + max[3]);
-      console.log(await Create.displayaccountforarbitrage(max[4]) + " : " + max[4]);
-      await Create.appealdistribution(row.address,max[0],max[1],max[2],max[3],max[4]);
-      this.$router.push({name: 'page2',params:{ userid:row.address}});
+    arbitration(row) {
+      this.$prompt("请输入申诉原因", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+      }).then(async ({ value }) => {
+        //本函数内的代码，为了实现选出所有评估师的前5名
+        var map = {};
+        var max = ["0","0","0","0","0"];
+        var assessor = await Create.backofwork();
+        
+        for(var i = 0;i < assessor.length;i++) {
+          var tmp = await Create.displayaccountforarbitrage(assessor[i]);
+        
+          if(tmp > await Create.displayaccountforarbitrage(max[0])) {
+            max[4] = max[3];
+            max[3] = max[2];
+            max[2] = max[1];
+            max[1] = max[0];
+            max[0] = assessor[i];
+          }
+          else if(tmp > await Create.displayaccountforarbitrage(max[1])) {
+            max[4] = max[3];
+            max[3] = max[2];
+            max[2] = max[1];
+            max[1] = assessor[i];
+          }
+          else if(tmp > await Create.displayaccountforarbitrage(max[2])) {
+            max[4] = max[3];
+            max[3] = max[2];
+            max[2] = assessor[i];
+          }
+          else if(tmp > await Create.displayaccountforarbitrage(max[3])) {
+            max[4] = max[3];
+            max[3] = assessor[i];
+          }
+          else if(tmp > await Create.displayaccountforarbitrage(max[4])) {
+            max[4] = assessor[i];
+          }
+        }      
+        await Create.appealdistribution(row.address,max[0],max[1],max[2],max[3],max[4]);
+      });
     },
     detail(row) {
       this.$router.push({name: 'detail',params:{ userid:row.address}});

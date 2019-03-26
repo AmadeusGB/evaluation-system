@@ -43,6 +43,7 @@ contract demo is assign{
         distribution(evaluation_index,statistic(0));             //对该评估单进行评估师分配
     }
 
+
     /**
      * guobin
      * 评估师对订单进行退回
@@ -55,6 +56,7 @@ contract demo is assign{
             finishwork(evaluation_index,0);
             distribution(evaluation_index,statistic(1));             //对该评估单重新分配评估师
             backrecord[evaluation_index] += 1;
+            _getcreator(evaluation_index).transfer(100);
         }
     }
 

@@ -52,7 +52,7 @@ export default {
         status = "已评估";
         continue;
       }
-      else if(tmp == "2") status = "已申诉";
+      else if(tmp == "2") status = "申诉中";
       else if(tmp == "3") status = "申诉完成";
       else if(tmp == "4") {
         status = "已关闭";
@@ -87,7 +87,6 @@ export default {
         cancelButtonText: "取消",
       }).then(async ({ value }) => {
         await Eva.appealevaluate(row.address,value);
-
         // this.$message({
         //   type: "success",
         //   message: "仲裁价格:" + value + "元"
