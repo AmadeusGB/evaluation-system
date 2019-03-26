@@ -6,7 +6,7 @@
 * bancor
 * metamask
 
-# 1.运行前准备
+# 1.运行前准备(ubuntu18.04环境）
 **安装Node.js**  
 ***
 首先根据你的 ubuntu 是 32 位还是 64 位，分别下载不同的预编译版本，我们使用官方长期支持的 8.10.0LTS 版本：
@@ -107,7 +107,7 @@ Truffle v4.1.3 (core 4.1.3)
 
 # 3.项目运行
 
-**更新node_module**
+**安装node_module**
 ***
 
 `~$ npm install`或`cnpm install`
