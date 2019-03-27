@@ -1,31 +1,31 @@
 <template>
   <div>
-    <p>第一步:</p>
+    <p>第一步: <br> </p>
     <el-form ref="form" :model="form" label-width="100px" size="medium">
-      <el-form-item label="品牌型号">
+      <el-form-item style="width:400px;" label="品牌型号">
         <el-input v-model="form.Brand"></el-input>
       </el-form-item>
 
-      <el-form-item label="号码车牌">
+      <el-form-item style="width:400px;" label="号码车牌">
         <el-input v-model="form.Number"></el-input>
       </el-form-item>
 
-      <el-form-item label="车架号">
+      <el-form-item style="width:400px;" label="车架号">
         <el-input v-model="form.Frame"></el-input>
       </el-form-item>
 
-      <el-form-item label="发动机号码">
+      <el-form-item style="width:400px;" label="发动机号码">
         <el-input v-model="form.Engine"></el-input>
       </el-form-item>
 
-      <el-form-item label="车辆类型">
+      <el-form-item style="width:400px;" label="车辆类型">
         <el-select v-model="form.Vehicle" placeholder="请选择使用性质">
           <el-option label="营运" value="营运"></el-option>
           <el-option label="非营运" value="非营运"></el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item label="出厂日期">
+      <el-form-item style="width:600px;" label="出厂日期">
         <el-col :span="11">
           <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
         </el-col>

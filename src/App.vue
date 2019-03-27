@@ -1,6 +1,9 @@
 <template>
   <div id="app">
     <!-- <img src="./assets/logo.png"> -->
+    <div class="header">
+      <div>&nbsp;&nbsp;基于区块链的汽车估值系统</div>
+    </div>
     <el-menu
       class="el-menu-demo"
       mode="horizontal"
@@ -27,12 +30,24 @@ export default {
 </script>
 
 <style>
+*{
+  margin: 0;
+  padding: 0;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
   color: #2c3e50;
-  margin-top: 60px;
+}
+.header{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgb(171, 170, 206);
+  color:aliceblue;
+  font-size: 28px;
 }
 </style>

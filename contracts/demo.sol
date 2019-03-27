@@ -101,34 +101,66 @@ contract demo is assign{
     }
 
     /**************通证买卖功能类***************/
+    /**
+     * guobin
+     * 购买通证
+    */
     function buy(uint amount) public payable {
         _buy(amount);
     }
     
+    /**
+     * guobin
+     * 卖出通证
+    */
     function sell(uint256 amount,uint256 eth_amount) public payable {
         _sell(amount,eth_amount);
     }
 
+    /**
+     * guobin
+     * 显示平台资金池中以太币资金量
+    */
     function displaybalance() view public returns (uint256) {
         return _displaybalance();
     } 
 
+    /**
+     * guobin
+     * 显示当前用户持有以太币数量
+    */
     function displayethbalance() view public returns (uint256) {
         return _displayethbalance();
     } 
 
+    /**
+     * guobin
+     * 显示当前用户通证数量
+    */
     function displayaccount() view public returns (uint256) {
         return _displayaccount();
     } 
 
+    /**
+     * guobin
+     * 计算当前用户，订单退回情况下的竞争力
+    */
     function displayaccountforarbitrage(address send) public view returns (uint) {
         return calc(send,1);
     }
 
+    /**
+     * guobin
+     * 显示已发行的通证总数
+    */
     function displaytoken() view public returns (uint256) {
         return _displaytoken();
     } 
 
+    /**
+     * guobin
+     * 显示当前用户的交易次数
+    */
     function distranumber() view public returns (uint256) {
         return _distranumber();
     } 
@@ -136,21 +168,37 @@ contract demo is assign{
 
 
     /**************评估师定义空间***************/
-    function registertest(uint amount,uint scale) public payable {          //注册评估师
+    /**
+     * guobin
+     * 注册评估师
+    */
+    function registertest(uint amount,uint scale) public payable {          
         _registertest();
         _buy(amount);
         _Enter_quote(scale);
     }
 
-    function Enter_quote(uint value) public {                               //设置评估单报价
+    /**
+     * guobin
+     * 设置评估单报价
+    */
+    function Enter_quote(uint value) public {                               
         _Enter_quote(value);
     }
     
-    function checkuser() view public returns (uint) {                       //检查用户状态（是否为评估师，是：1，否：0）
+    /**
+     * guobin
+     * 检查用户状态（是否为评估师，是：1，否：0）
+    */
+    function checkuser() view public returns (uint) {                       
         return _checkuser();
     }
 
-    function unregister() public {                                          //注销评估师
+    /**
+     * guobin
+     * 注销评估师
+    */
+    function unregister() public {                                          
         _unregister();
     }
 
@@ -170,6 +218,8 @@ contract demo is assign{
         return _backvalnumber();
     }
 
+
+    /**************仲裁定义空间***************/
     /**
      * guobin
      * 返回当前仲裁者的所有评估单编号

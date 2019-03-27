@@ -1,7 +1,7 @@
 pragma solidity ^0.4.14;
 
 contract token {
-    uint256 buyPrice;
+    uint8 buyPrice;
     uint256 CirculationToken;         
     
     string standard = 'Token 1.0';
@@ -16,9 +16,7 @@ contract token {
     event Transfer(address indexed from,address indexed to,uint256 value);
     event Reward(address indexed to,uint256 value);
     event Punishment(address indexed to,uint256 value);
-    
-    
-    
+       
     modifier onlyOwner {
         require(msg.sender == owner);
         _;
@@ -33,7 +31,6 @@ contract token {
         CirculationToken = 40;             //初始化流通通证数量
     }
   
-
     /**
      * guobin
      * 购买初始通证，作为押金
@@ -46,6 +43,7 @@ contract token {
         balanceOf[msg.sender] += amount;
         balanceOf[owner] -= amount;
         CirculationToken += amount;
+
         emit Transfer(owner,msg.sender,amount);
     }
     
@@ -61,9 +59,9 @@ contract token {
         balanceOf[msg.sender] -= amount;
         CirculationToken -= amount;
         address(msg.sender).transfer(eth_amount);
+
         emit Transfer(msg.sender,owner,amount);
     }
-    
     
     /**
      * guobin
@@ -75,7 +73,7 @@ contract token {
     }
 
     function _displayethbalance() view internal returns (uint256) {
-        return (msg.sender).balance;
+        return address(msg.sender).balance;
     }
 
     function _displayaccount() view internal returns (uint256) {

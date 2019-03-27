@@ -58,9 +58,9 @@
       "type": "event"
     }
   ],
-  "bytecode": "0x60806040526040805190810160405280600981526020017f546f6b656e20312e3000000000000000000000000000000000000000000000008152506002908051906020019061004f92919061018b565b506006600e556305f5e100600660003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020819055506040805190810160405280600981526020017f746f6b656e4e616d650000000000000000000000000000000000000000000000815250600390805190602001906100e892919061018b565b506040805190810160405280600b81526020017f746f6b656e53796d626f6c0000000000000000000000000000000000000000008152506004908051906020019061013492919061018b565b5033600560006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060016000819055506028600181905550610230565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106101cc57805160ff19168380011785556101fa565b828001600101855582156101fa579182015b828111156101f95782518255916020019190600101906101de565b5b509050610207919061020b565b5090565b61022d91905b80821115610229576000816000905550600101610211565b5090565b90565b60358061023e6000396000f3006080604052600080fd00a165627a7a72305820f331495cff4e56e01a73ea2588f304b37394f8cd738a38b9f8f396000d9816d80029",
-  "deployedBytecode": "0x6080604052600080fd00a165627a7a72305820f331495cff4e56e01a73ea2588f304b37394f8cd738a38b9f8f396000d9816d80029",
-  "sourceMap": "71:9304:0:-;;;113:29:5;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;61:1:4;47:15;;654:9:5;630;:21;640:10;630:21;;;;;;;;;;;;;;;:33;;;;673:18;;;;;;;;;;;;;;;;;;:4;:18;;;;;;;;;;;;:::i;:::-;;701:22;;;;;;;;;;;;;;;;;;:6;:22;;;;;;;;;;;;:::i;:::-;;741:10;733:5;;:18;;;;;;;;;;;;;;;;;;772:1;761:8;:12;;;;802:2;783:16;:21;;;;71:9304:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;",
+  "bytecode": "0x60806040526040805190810160405280600981526020017f546f6b656e20312e3000000000000000000000000000000000000000000000008152506002908051906020019061004f92919061019e565b506006600e556305f5e100600660003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020819055506040805190810160405280600981526020017f746f6b656e4e616d650000000000000000000000000000000000000000000000815250600390805190602001906100e892919061019e565b506040805190810160405280600b81526020017f746f6b656e53796d626f6c0000000000000000000000000000000000000000008152506004908051906020019061013492919061019e565b5033600560006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060016000806101000a81548160ff021916908360ff1602179055506028600181905550610243565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106101df57805160ff191683800117855561020d565b8280016001018555821561020d579182015b8281111561020c5782518255916020019190600101906101f1565b5b50905061021a919061021e565b5090565b61024091905b8082111561023c576000816000905550600101610224565b5090565b90565b6035806102516000396000f3006080604052600080fd00a165627a7a72305820fe0668d86dd4e809a19d5f163bb60e3baadcce7ac203394086a0b24c018c90d00029",
+  "deployedBytecode": "0x6080604052600080fd00a165627a7a72305820fe0668d86dd4e809a19d5f163bb60e3baadcce7ac203394086a0b24c018c90d00029",
+  "sourceMap": "71:9304:0:-;;;111:29:5;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;61:1:4;47:15;;645:9:5;621;:21;631:10;621:21;;;;;;;;;;;;;;;:33;;;;664:18;;;;;;;;;;;;;;;;;;:4;:18;;;;;;;;;;;;:::i;:::-;;692:22;;;;;;;;;;;;;;;;;;:6;:22;;;;;;;;;;;;:::i;:::-;;732:10;724:5;;:18;;;;;;;;;;;;;;;;;;763:1;752:8;;:12;;;;;;;;;;;;;;;;;;793:2;774:16;:21;;;;71:9304:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;",
   "deployedSourceMap": "71:9304:0:-;;;;;",
   "source": "pragma solidity ^0.4.24;\n\nimport \"./queue.sol\";\nimport \"./login.sol\";\n\ncontract assign is login,queue{\n    struct arbitration {\n        mapping(address => bool)    flag;                //flag为仲裁师对某订单的评估状态，当评估后，该状态flag=1，不允许再次评估\n        uint tick;\n        uint sum;\n    }\n\n    mapping(address => uint)        values;              //评估师报价\n    mapping(address => uint)        loads;               //评估师负载\n    mapping(address => uint[])      record;              //记录评估师下评估单编号\n\n    mapping(address => uint[])      appeallist;          //记录每个仲裁者名下的仲裁单\n    mapping(uint => arbitration)    status;              //记录仲裁者对某个评估单的评估结果\n    mapping(uint => address[])      incomelist;          //记录每个申诉单对应的仲裁师评估序列\n  \n\n    /**\n     * guobin\n     * 录入评估师报价\n    */\n    function _Enter_quote(uint value) internal {          \n        values[msg.sender] = value;\n    }\n\n    function _check_quote(address work) internal view returns (uint) {\n        return (values[work]-100);\n    }\n    \n    /**\n     * guobin\n     * 计算评估师竞争力\n    */\n    function calc(address worker,uint state) internal view returns (uint competitve) {            \n        uint Load = loads[worker];\n\n        if(Load >= 5) {\n            return 0;\n        }\n        if(state == 0) {                        //创建评估单分配时计算公式\n            //真实公式:competitve = check_balance(worker) * (2 - values[worker]/10) * (1 - length(loads[worker])/5);\n            competitve = check_balance(worker) * (values[worker]) * (5 - Load);\n        }\n        else {                                  //评估单被退回时计算公式\n            competitve = check_balance(worker) * (5 - Load);\n        }\n    }\n    \n    /**\n     * guobin\n     * 统计并筛选出最优评估师\n    */\n    function statistic(uint state) internal view returns (address choose) {             \n        uint256 max = 0;\n        uint256 current = 0;\n        \n        for(uint i = 0;i < workers.length;i++) {\n            current = calc(workers[i],state);\n            if(current > max) {\n                max = current;\n                choose = workers[i];\n            }\n        }\n    }\n    \n    /**\n     * guobin\n     * 将当前订单编号分配给最优评估师\n    */\n    function distribution(uint number,address choose) internal returns (uint) { \n        loads[choose] += 1;\n        _setassessor(number,choose);                            //存储评估单对应的评估师\n        uint[] memory tmp = record[choose];\n        for(uint i = 0;i < tmp.length;i++) {\n            if(tmp[i] == number) return 0;\n        }\n        record[choose].push(number);                            //将当前评估单编号(由js传递)存入对应评估师地址\n    }\n\n    /**\n     * guobin\n     * 返回当前评估师的所有评估单编号\n    */\n    function _backvalnumber() view internal returns (uint[]) {\n        return record[msg.sender];\n    }\n\n    /**\n     * guobin\n     * 评估师对订单进行评估\n    */\n    function _evaluate(uint index,string value) internal {\n        uint tokentmp = _check_quote(msg.sender);\n        order.store_msg[index].Evaluation = value;\n        order.store_sta[index].Evaluation_status = \"1\";         //将评估单状态改为已评估\n        finishwork(index,0);\n        reward(msg.sender,tokentmp);                            //根据评估师设定的分成比例给予通证奖励\n        msg.sender.transfer(100-tokentmp);                      //根据评估师设定的分成比例给予ether奖励\n    }\n\n    /**\n     * guobin\n     * 将申诉订单编号分配给仲裁者\n    */\n    function _appealdistribution(uint number,address appeal1,address appeal2,address appeal3,address appeal4,address appeal5) internal { \n        loads[appeal1] += 1;\n        loads[appeal2] += 1;\n        loads[appeal3] += 1;\n        loads[appeal4] += 1;\n        loads[appeal5] += 1;        \n        \n        appeallist[appeal1].push(number);                    //将当前评估单编号(由js传递)存入对应仲裁者地址\n        appeallist[appeal2].push(number);                    //将当前评估单编号(由js传递)存入对应仲裁者地址\n        appeallist[appeal3].push(number);                    //将当前评估单编号(由js传递)存入对应仲裁者地址\n        appeallist[appeal4].push(number);                    //将当前评估单编号(由js传递)存入对应仲裁者地址\n        appeallist[appeal5].push(number);                    //将当前评估单编号(由js传递)存入对应仲裁者地址\n        order.store_sta[number].Evaluation_status = \"2\";     //将评估单状态改为已申诉\n    }\n\n    /**\n     * guobin\n     * 返回当前仲裁者的所有评估单编号\n    */\n    function _backappnumber() internal view returns (uint[]) {\n        return appeallist[msg.sender];\n    }\n\n    /**\n     * guobin\n     * 仲裁者对订单进行评估\n    */\n    function _appealevaluate(uint index,uint value) internal returns (uint) {\n        uint tmpvalue = 0;\n        uint tmpsum = 0;\n        \n        if(status[index].flag[msg.sender]) {                                        //当同一仲裁师再次进入同一评估单，不再允许进行评估\n            return 2;\n        }\n\n        loads[msg.sender] -= 1;                                                     //当前仲裁师评估订单，工作负载减1\n        incomelist[index].push(msg.sender);                                         //当前仲裁师评估订单，记录其订单评估顺序（方便做收益分配）\n        status[index].tick += 1;                                                    //当前申诉单tick记录加1，共5人（即最大值为5）\n        status[index].sum += value;                                                 //将当前仲裁师对申诉单的估价累加进sum\n        status[index].flag[msg.sender] = true;                                      //当前仲裁师进入本函数，其flag状态从false变true，下次不可再进入\n        \n\n        if(status[index].tick == 5) {\n            tmpvalue = stringToUint(order.store_msg[index].Evaluation) * 500;       //评估师估价（评估价*5*100）\n            tmpsum = status[index].sum;                                             //5个仲裁者的估价总数\n            order.store_sta[index].Evaluation_status = \"3\";                         //将评估单状态改为已仲裁\n            \n            if(tmpvalue > tmpsum * 95) {\n                if(tmpvalue < tmpsum * 105) {\n                    _resultprocessing(index,100,0);                                 //仲裁结果：合理，平台给予仲裁者通证奖励\n                    return 0;                                                       //返回1，代表评估师对于订单的价格估价是合理的\n                }\n                else {\n                    order.store_msg[index].Evaluation = uintToString(tmpsum/5);     //将仲裁师的平均估价重新赋给Evaluation\n                    _resultprocessing(index,2*_check_quote(_getassessor(index)),1); //仲裁结果：不合理，平台双倍（2倍）扣除该评估师获得该订单的通证奖励给予仲裁师（有可能多于100，有可能少于100，取决于评估师获得的通证数量）\n                    return 1;                                                       //评估师价格高于仲裁师平均估价105%，代表评估师对订单估价不合理\n                }\n            }\n            else {\n                order.store_msg[index].Evaluation = uintToString(tmpsum/5);         //将仲裁师的平均估价重新赋给Evaluation\n                _resultprocessing(index,2*_check_quote(_getassessor(index)),1);\n                return 1;                                                           //评估师价格低于仲裁师平均估价95%，代表评估师对订单估价不合理\n            }\n        }\n    }\n\n    /**\n     * guobin\n     * 仲裁结果：合理/不合理，处理流程\n    */\n    function _resultprocessing(uint index,uint amount,uint state) internal {\n        uint total = 0;\n        uint[5] memory appeal_val;\n        uint[5] memory pay;\n        address[5] memory appeal;\n\n        for(uint i = 0;i < 5;i++) {\n            appeal[i] = incomelist[index][i];\n            appeal_val[i] = (5-i) * check_balance(appeal[i]);\n            total += appeal_val[i];\n        }\n\n        for(i = 0;i < 5;i++) {\n            pay[i] = amount*(appeal_val[i] / total);\n            reward(appeal[i],pay[i]);\n        }\n\n        if(state == 1) {\n            punish(_getassessor(index),amount);\n        }\n    }\n\n    /**\n     * guobin\n     * 仲裁订单进度查询\n    */\n    function _appealeschedule(uint index) internal view returns (uint) {\n        return status[index].tick;\n    }\n\n    /**\n     * guobin\n     * 完成当前订单\n    */\n    function finishwork(uint index,uint parameter) internal{\n        if(parameter == 1) {                                            //当评估单被两次退回后，自动变为已关闭状态\n            order.store_sta[index].Evaluation_status = \"4\";             //将评估单状态改为已关闭\n        }\n        loads[msg.sender] -= 1;        \n    }\n}\n",
   "sourcePath": "/blockpro/dev-complete/contracts/assign.sol",
@@ -150,7 +150,7 @@
           1246,
           1929,
           2051,
-          2360
+          2361
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -161,7 +161,7 @@
           2051,
           1929,
           1246,
-          2360
+          2361
         ],
         "name": "assign",
         "nodeType": "ContractDefinition",
@@ -614,7 +614,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2375,
+                          "referencedDeclaration": 2376,
                           "src": "1030:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -1203,7 +1203,7 @@
                                 "name": "check_balance",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 2359,
+                                "referencedDeclaration": 2360,
                                 "src": "1834:13:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_uint256_$",
@@ -1392,7 +1392,7 @@
                                   "name": "check_balance",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 2359,
+                                  "referencedDeclaration": 2360,
                                   "src": "1660:13:0",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_uint256_$",
@@ -3077,7 +3077,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2375,
+                        "referencedDeclaration": 2376,
                         "src": "3081:3:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -3230,7 +3230,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2375,
+                          "referencedDeclaration": 2376,
                           "src": "3264:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -3590,7 +3590,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2375,
+                          "referencedDeclaration": 2376,
                           "src": "3472:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -3640,7 +3640,7 @@
                       "name": "reward",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2323,
+                      "referencedDeclaration": 2324,
                       "src": "3465:6:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$__$",
@@ -3735,7 +3735,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2375,
+                          "referencedDeclaration": 2376,
                           "src": "3586:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -5078,7 +5078,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2375,
+                        "referencedDeclaration": 2376,
                         "src": "4996:3:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -5363,7 +5363,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2375,
+                        "referencedDeclaration": 2376,
                         "src": "5252:3:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -5463,7 +5463,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2375,
+                          "referencedDeclaration": 2376,
                           "src": "5428:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -5537,7 +5537,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2375,
+                          "referencedDeclaration": 2376,
                           "src": "5578:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -5896,7 +5896,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2375,
+                          "referencedDeclaration": 2376,
                           "src": "6031:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -8246,7 +8246,7 @@
                                 "name": "check_balance",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 2359,
+                                "referencedDeclaration": 2360,
                                 "src": "8487:13:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_uint256_$",
@@ -8787,7 +8787,7 @@
                             "name": "reward",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 2323,
+                            "referencedDeclaration": 2324,
                             "src": "8656:6:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$__$",
@@ -9095,7 +9095,7 @@
                             "name": "punish",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 2347,
+                            "referencedDeclaration": 2348,
                             "src": "8730:6:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$__$",
@@ -9593,7 +9593,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2375,
+                          "referencedDeclaration": 2376,
                           "src": "9342:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -9830,7 +9830,7 @@
           1246,
           1929,
           2051,
-          2360
+          2361
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -9841,7 +9841,7 @@
           2051,
           1929,
           1246,
-          2360
+          2361
         ],
         "name": "assign",
         "nodeType": "ContractDefinition",
@@ -10294,7 +10294,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2375,
+                          "referencedDeclaration": 2376,
                           "src": "1030:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -10883,7 +10883,7 @@
                                 "name": "check_balance",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 2359,
+                                "referencedDeclaration": 2360,
                                 "src": "1834:13:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_uint256_$",
@@ -11072,7 +11072,7 @@
                                   "name": "check_balance",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 2359,
+                                  "referencedDeclaration": 2360,
                                   "src": "1660:13:0",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_uint256_$",
@@ -12757,7 +12757,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2375,
+                        "referencedDeclaration": 2376,
                         "src": "3081:3:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -12910,7 +12910,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2375,
+                          "referencedDeclaration": 2376,
                           "src": "3264:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -13270,7 +13270,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2375,
+                          "referencedDeclaration": 2376,
                           "src": "3472:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -13320,7 +13320,7 @@
                       "name": "reward",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2323,
+                      "referencedDeclaration": 2324,
                       "src": "3465:6:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$__$",
@@ -13415,7 +13415,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2375,
+                          "referencedDeclaration": 2376,
                           "src": "3586:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -14758,7 +14758,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2375,
+                        "referencedDeclaration": 2376,
                         "src": "4996:3:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -15043,7 +15043,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2375,
+                        "referencedDeclaration": 2376,
                         "src": "5252:3:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -15143,7 +15143,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2375,
+                          "referencedDeclaration": 2376,
                           "src": "5428:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -15217,7 +15217,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2375,
+                          "referencedDeclaration": 2376,
                           "src": "5578:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -15576,7 +15576,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2375,
+                          "referencedDeclaration": 2376,
                           "src": "6031:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -17926,7 +17926,7 @@
                                 "name": "check_balance",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 2359,
+                                "referencedDeclaration": 2360,
                                 "src": "8487:13:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_uint256_$",
@@ -18467,7 +18467,7 @@
                             "name": "reward",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 2323,
+                            "referencedDeclaration": 2324,
                             "src": "8656:6:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$__$",
@@ -18775,7 +18775,7 @@
                             "name": "punish",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 2347,
+                            "referencedDeclaration": 2348,
                             "src": "8730:6:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$__$",
@@ -19273,7 +19273,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2375,
+                          "referencedDeclaration": 2376,
                           "src": "9342:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -19430,5 +19430,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2019-03-26T03:39:11.850Z"
+  "updatedAt": "2019-03-27T07:30:25.194Z"
 }

@@ -4,10 +4,14 @@
       <div style="width:400px" v-for="(item,i,index) in carInfo" :key="i">
         <span>{{msg[index]}}{{item}} <br> </span> 
       </div>
-      <div style="imgBox" v-for="(item,i,index) in photo" :key="i">
-        <span style="text-align:center">{{pmsg[index]}} <br> </span> 
-        <img :src="item" width="200" height="200">
+
+      <div class="imgList">
+        <div class="itemImg" v-for="(item,i,index) in photo" :key="i">
+          <div style="text-align:center">{{pmsg[index]}} </div> 
+          <img :src="item" width="240" height="240">
+        </div>
       </div>
+
     </div>
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item>
@@ -145,12 +149,20 @@ export default {
         margin-bottom: 10px;
       }
   }
+}
 
-  .imgBox {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    flex-wrap: wrap;
-  }
+.imgList {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.itemImg {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
 }
 </style>

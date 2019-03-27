@@ -2,13 +2,20 @@
   <div>
     <div class="car_other">
       <div style="width:280px" v-for="(item,i,index) in carInfo" :key="i">
-        <span>{{msg[index]}}{{item}} <br> </span> 
+        <span>
+          {{msg[index]}}{{item}}
+          <br>
+        </span>
       </div>
       <span v-if="tickresult > 0">当前仲裁进度：{{tickresult}}/5</span>
-      <div style="imgBox" v-for="(item,i,index) in photo" :key="i">
-        <span style="text-align:center">{{pmsg[index]}} <br> </span> 
-        <img :src="item" width="200" height="200">
+
+      <div class="imgList">
+        <div class="itemImg" v-for="(item,i,index) in photo" :key="i">
+          <div style="text-align:center">{{pmsg[index]}}</div>
+          <img :src="item" width="240" height="240">
+        </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -30,7 +37,6 @@ export default {
         "评估价值：",
         "时间戳：",
         "评估状态："
-
       ],
       pmsg: [
         "合格证",
@@ -42,28 +48,28 @@ export default {
         "中控台",
         "车内顶"
       ],
-      carInfo : {
-        Frame_number:"",
-        Number_plate:"",
-        Vehicle_type:"",
-        Brand_number:"",
-        Engine_number:"",
-        Manufacture_date:"",
-        Evaluation:"",
-        Timestammp:"",
-        Evaluation_status:""
+      carInfo: {
+        Frame_number: "",
+        Number_plate: "",
+        Vehicle_type: "",
+        Brand_number: "",
+        Engine_number: "",
+        Manufacture_date: "",
+        Evaluation: "",
+        Timestammp: "",
+        Evaluation_status: ""
       },
-      photo : {
-        photo1:"",
-        photo2:"",
-        photo3:"",
-        photo4:"",
-        photo5:"",
-        photo6:"",
-        photo7:"",
-        photo8:""
+      photo: {
+        photo1: "",
+        photo2: "",
+        photo3: "",
+        photo4: "",
+        photo5: "",
+        photo6: "",
+        photo7: "",
+        photo8: ""
       },
-      tickresult:""
+      tickresult: ""
     };
   },
   created: async function() {
@@ -71,13 +77,12 @@ export default {
 
     var id = this.$route.params.userid;
     var state = await Detail.display(id, 9);
-    if(state == "0") state = "待评估";
-    else if(state == "1") state = "已评估";
-    else if(state == "2") state = "已申诉";
-    else if(state == "3") state = "申诉完成";
-    else if(state == "4") state = "已关闭";
+    if (state == "0") state = "待评估";
+    else if (state == "1") state = "已评估";
+    else if (state == "2") state = "已申诉";
+    else if (state == "3") state = "申诉完成";
+    else if (state == "4") state = "已关闭";
 
- 
     this.carInfo.Frame_number = await Detail.display(id, 1);
     this.carInfo.Number_plate = await Detail.display(id, 2);
     this.carInfo.Vehicle_type = await Detail.display(id, 3);
@@ -135,23 +140,30 @@ export default {
   }
 
   .car_other {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #333333;
-      letter-spacing: 0;
-      overflow: hidden;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333333;
+    letter-spacing: 0;
+    overflow: hidden;
 
-      span {
-        display: block;
-        margin-bottom: 10px;
-      }
+    span {
+      display: block;
+      margin-bottom: 10px;
+    }
   }
+}
 
-  .imgBox {
+.imgList {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.itemImg {
+    margin: 10px;
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    flex-wrap: wrap;
-  }
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
 }
 </style>
