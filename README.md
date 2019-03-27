@@ -89,19 +89,10 @@ Truffle v4.1.3 (core 4.1.3)
 `~$ source .bashrc`
 
 # 2.初始化
-
-**IPFS配置及初始化**
-***
-第一步（初始化本地仓库）：
-
-`~$ ipfs init`
-
-第二步（由于IPFS节点提供REST API借口，默认在本地5001端口监听，配置监听地址和CORS）：
-
-`~$ ipfs config --json Addresses.Gateway '"/ip4/0.0.0.0/tcp/5000"'`
-
 **ganache初始化**
 ***
+
+打开第二个terminal
 
 `~$ ganache-cli -d`
 
