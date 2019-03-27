@@ -9,7 +9,7 @@ contract login is token,create{
     
     /**
      * guobin
-     * 地址注册函数
+     * 地址注册函数，暂时不用
     */
     function _register(uint index,uint testvalue) internal returns (uint) {
         require(balanceOf[msg.sender] >= 100);              //评估时注册需缴纳100押金
@@ -27,9 +27,13 @@ contract login is token,create{
         return 0;
     }
 
+    /**
+     * guobin
+     * 地址注册函数，demo暂时用这个，前端做注册校验
+    */
     function _registertest() internal {
-        ID[msg.sender] = 1;
-        workers.push(msg.sender);
+        ID[msg.sender] = 1;             //1代表评估师账户，默认是0，代表普通用户
+        workers.push(msg.sender);       //记录评估师列表
     }
 
     /**
@@ -40,6 +44,10 @@ contract login is token,create{
         return workers;
     }
 
+    /**
+     * guobin
+     * 返回当前访问用户身份
+    */
     function _checkuser() view internal returns (uint) {
         return ID[msg.sender];
     }

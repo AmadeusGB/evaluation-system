@@ -14,18 +14,18 @@ contract create {
 
     struct Picture {
         string photo1;                  //图片一(合格证)
-        string photo2;                  //图片一(左前45度)
-        string photo3;                  //图片一(左前门)
-        string photo4;                  //图片一(左后门)
-        string photo5;                  //图片一(右前门)
-        string photo6;                  //图片一(右后45度)
-        string photo7;                  //图片一(中控台)
-        string photo8;                  //图片一(车内顶)
+        string photo2;                  //图片二(左前45度)
+        string photo3;                  //图片三(左前门)
+        string photo4;                  //图片四(左后门)
+        string photo5;                  //图片五(右前门)
+        string photo6;                  //图片六(右后45度)
+        string photo7;                  //图片七(中控台)
+        string photo8;                  //图片八(车内顶)
     }
     
     struct Status {
-        uint Evaluation_value;          //评估支付金额
-        string Evaluation_status;       //每个评估单对应的评估状态(0:未评估,1:已评估,2:已申诉,3:申诉完成，4:已关闭)
+        uint    Evaluation_value;       //评估支付金额
+        string  Evaluation_status;      //每个评估单对应的评估状态(0:未评估,1:已评估,2:已申诉,3:申诉完成，4:已关闭)
         address Assessor;               //评估人
         address Create;                 //创建人
     }
@@ -36,9 +36,6 @@ contract create {
         mapping(uint => Picture)        store_pho;           //存储评估单图片  
     }
 
-    
-    
-    //新增评估单数据结构
     Msg order;                                               //评估单(包含评估单状态、评估单详情和评估单图片结构体)
     mapping(address => uint[])          record;              //记录每个用户下评估单编号
     
@@ -153,55 +150,55 @@ contract create {
     */
     function _display(uint index,uint num) view internal returns (string) {
         if(num == 1) {
-            return order.store_msg[index].Frame_number;
+            return order.store_msg[index].Frame_number;             //车架号
         } 
         else if(num == 2) {
-            return order.store_msg[index].Number_plate;
+            return order.store_msg[index].Number_plate;             //号码车牌
         }
         else if(num == 3) {
-            return order.store_msg[index].Vehicle_type;
+            return order.store_msg[index].Vehicle_type;             //车辆类型
         }
         else if(num == 4) {
-            return order.store_msg[index].Brand_number;
+            return order.store_msg[index].Brand_number;             //品牌型号
         }
         else if(num == 5) {
-            return order.store_msg[index].Engine_number;
+            return order.store_msg[index].Engine_number;            //发动机号码
         }
         else if(num == 6) {
-            return order.store_msg[index].Manufacture_date;
+            return order.store_msg[index].Manufacture_date;         //出厂日期
         }
         else if(num == 7) {
-            return order.store_msg[index].Evaluation;
+            return order.store_msg[index].Evaluation;               //评估价值
         }
         else if(num == 8) {
-            return order.store_msg[index].Timestammp;
+            return order.store_msg[index].Timestammp;               //时间戳
         }
         else if(num == 9) {
-            return order.store_sta[index].Evaluation_status;           //评估状态
+            return order.store_sta[index].Evaluation_status;        //评估状态
         }
         else if(num == 10) {
-            return order.store_pho[index].photo1;
+            return order.store_pho[index].photo1;                   //图片一(合格证)
         }
         else if(num == 11) {
-            return order.store_pho[index].photo2;
+            return order.store_pho[index].photo2;                   //图片二(左前45度)
         }
         else if(num == 12) {
-            return order.store_pho[index].photo3;
+            return order.store_pho[index].photo3;                   //图片三(左前门)
         }
         else if(num == 13) {
-            return order.store_pho[index].photo4;
+            return order.store_pho[index].photo4;                   //图片四(左后门)
         }
         else if(num == 14) {
-            return order.store_pho[index].photo5;
+            return order.store_pho[index].photo5;                   //图片五(右前门)
         }
         else if(num == 15) {
-            return order.store_pho[index].photo6;
+            return order.store_pho[index].photo6;                   //图片六(右后45度)
         }
         else if(num == 16) {
-            return order.store_pho[index].photo7;
+            return order.store_pho[index].photo7;                   //图片七(中控台)
         }
         else if(num == 17) {
-            return order.store_pho[index].photo8;
+            return order.store_pho[index].photo8;                   //图片八(车内顶)
         }
     }
 }

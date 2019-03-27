@@ -11,8 +11,8 @@
         <el-form-item>
           <el-button type="primary" @click="onSubmit">注册评估师<br></el-button>
           <el-button type="primary" @click="logout">注销</el-button>
-          <el-button type="primary" @click="check">查看</el-button>
         </el-form-item>
+
         <el-form-item>
           <el-slider v-model="value" :format-tooltip="formatTooltip" :step="5"  show-stops></el-slider>
           <el-button type="primary" @click="setparameter">修改订单提成</el-button>
@@ -46,9 +46,6 @@ export default {
     },
     async logout() {
       await login.unregister();
-    },
-    async check() {
-      console.log(await login.checkuser());
     },
     async setparameter() {
       // this.$prompt("请输入报价", "提示", {

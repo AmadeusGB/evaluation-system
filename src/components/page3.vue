@@ -6,7 +6,7 @@
       <el-table-column prop="token" label="持有通证" width="125"></el-table-column>
       <el-table-column prop="tokenprice" label="通证价格" width="125"></el-table-column>
       <el-table-column prop="transaction" label="操作次数" width="100"></el-table-column>
-      <el-table-column prop="worth" label="总价值" width="100"></el-table-column>
+      <el-table-column prop="worth" label="总价值" width="140"></el-table-column>
 
       <el-table-column fixed="right" label="操作" width="250">
         <template slot-scope="scope">
