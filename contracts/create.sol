@@ -37,6 +37,7 @@ contract create {
     }
 
     Msg order;                                               //评估单(包含评估单状态、评估单详情和评估单图片结构体)
+    uint ordernumber = 1;                                    //评估单唯一全局编号（与js共同拼接成最终评估号）
     mapping(address => uint[])          record;              //记录每个用户下评估单编号
     
     /**
@@ -59,6 +60,7 @@ contract create {
         order.store_sta[valuationindex].Evaluation_status = "0";        //将评估状态初始化为0,即未评估
         order.store_sta[valuationindex].Create = msg.sender;            //存储评估单的创建人(默认当前用户创建)
         record[msg.sender].push(valuationindex);                        //将当前评估单编号(由js传递)存入对应用户地址
+        ordernumber ++;                                                 //原始评估单编号自增
     }
     
     /**
@@ -78,6 +80,14 @@ contract create {
     ) internal {
         Picture memory picture = Picture(photo1,photo2,photo3,photo4,photo5,photo6,photo7,photo8);
         order.store_pho[valuationindex] = picture;
+    }
+
+    /**
+     * guobin
+     * 返回原始评估单编号
+    */
+    function _backordernumber() view internal returns (uint) {
+        return ordernumber;
     }
 
     /**

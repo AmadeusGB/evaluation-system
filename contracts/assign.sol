@@ -5,7 +5,7 @@ import "./login.sol";
 
 contract assign is login,queue{
     struct arbitration {
-        mapping(address => bool)    flag;                //flag为仲裁师对某订单的评估状态，当评估后，该状态flag=1，不允许再次评估
+        mapping(address => uint)    flag;                //flag为仲裁师对某订单的评估状态，当评估后，该状态flag=1，不允许再次评估
         uint tick;
         uint sum;
     }
@@ -131,21 +131,34 @@ contract assign is login,queue{
 
     /**
      * guobin
+     * 当前仲裁者对本订单是否具备仲裁条件
+    */
+    function _appealesituation(uint index) internal view returns (uint) {
+        if(status[index].flag[msg.sender] == 1) {
+            return 0;                           //返回0，则不具备仲裁条件
+        }
+        else {
+            return 1;                           //返回1，具备仲裁条件
+        }
+    }
+
+    /**
+     * guobin
      * 仲裁者对订单进行评估
     */
     function _appealevaluate(uint index,uint value) internal returns (uint) {
         uint tmpvalue = 0;
         uint tmpsum = 0;
         
-        if(status[index].flag[msg.sender]) {                                        //当同一仲裁师再次进入同一评估单，不再允许进行评估
-            return 2;
+        if(status[index].flag[msg.sender] == 1) {                                        //当同一仲裁师再次进入同一评估单，不再允许进行评估
+            revert();
         }
 
         loads[msg.sender] -= 1;                                                     //当前仲裁师评估订单，工作负载减1
         incomelist[index].push(msg.sender);                                         //当前仲裁师评估订单，记录其订单评估顺序（方便做收益分配）
         status[index].tick += 1;                                                    //当前申诉单tick记录加1，共5人（即最大值为5）
         status[index].sum += value;                                                 //将当前仲裁师对申诉单的估价累加进sum
-        status[index].flag[msg.sender] = true;                                      //当前仲裁师进入本函数，其flag状态从false变true，下次不可再进入
+        status[index].flag[msg.sender] = 1;                                      //当前仲裁师进入本函数，其flag状态从false变true，下次不可再进入
         
 
         if(status[index].tick == 5) {

@@ -43,6 +43,14 @@ contract demo is assign{
         distribution(evaluation_index,statistic(0));             //对该评估单进行评估师分配
     }
 
+    /**
+     * guobin
+     * 返回原始评估单编号
+    */
+    function backordernumber() view public returns (uint) {
+        return _backordernumber();
+    }
+
 
     /**
      * guobin
@@ -234,6 +242,14 @@ contract demo is assign{
     */
     function appealdistribution(uint number,address appeal1,address appeal2,address appeal3,address appeal4,address appeal5) public {
         _appealdistribution(number,appeal1,appeal2,appeal3,appeal4,appeal5);
+    }
+
+    /**
+     * guobin
+     * 当前仲裁者对本订单是否具备仲裁条件
+    */
+    function appealesituation(uint index) public view  returns (uint) {
+        _appealesituation(index);
     }
 
     /**

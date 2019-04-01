@@ -93,8 +93,8 @@ export default {
 
     for (var i = 0; i < num; i++) {
       var tmp = await Create.test1(temp[i], 9);
-      var money = await Create.test1(temp[i], 7);
-      console.log("tmp:" + tmp);
+      var money = await Create.test1(temp[i], 7) + "万元";
+      
       if(tmp == "0") {
         status = "待评估";
         money = "暂无";

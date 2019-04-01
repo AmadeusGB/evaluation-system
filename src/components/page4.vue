@@ -60,7 +60,10 @@ export default {
         status = "已申诉";
         continue;
       }
-      else if(tmp == "3") status = "申诉完成";
+      else if(tmp == "3") {
+        status = "申诉完成";
+        continue;
+      }
       else if(tmp == "4") {
         status = "已关闭";
         money = "暂无";

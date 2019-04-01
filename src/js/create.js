@@ -35,7 +35,8 @@ const Users = {
     Brand_number,
     Engine_number,
     Manufacture_date,
-    submit_date
+    submit_date,
+    number
   ) {
     let self = this;
 
@@ -52,7 +53,7 @@ const Users = {
       date.getFullYear() +
       month +
       strDate +
-      (Array(5).join(0) + number++).slice(-5);
+      (Array(5).join(0) + number).slice(-5);
     console.log(valuation_number);
 
     return new Promise((resolve, reject) => {
@@ -109,6 +110,36 @@ const Users = {
             value: "100"
           }
         )
+        .then(tx => {
+          resolve(tx);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+
+  appealesituation: function(msg) {
+    let self = this;
+
+    return new Promise((resolve, reject) => {
+      self.instance
+        .appealesituation(msg,{ from: window.web3.eth.accounts[0] })
+        .then(tx => {
+          resolve(tx);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+
+  backordernumber: function() {
+    let self = this;
+
+    return new Promise((resolve, reject) => {
+      self.instance
+        .backordernumber({ from: window.web3.eth.accounts[0] })
         .then(tx => {
           resolve(tx);
         })

@@ -73,7 +73,8 @@ export default {
           this.form.Brand.toString(),
           this.form.Engine.toString(),
           this.form.date1.toLocaleDateString(),
-          new Date().toLocaleString()
+          new Date().toLocaleString(),
+          await Demo.backordernumber()
         );
 
         this.$router.push({ name: "create2", params: { id: "3" } });
