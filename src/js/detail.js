@@ -40,12 +40,27 @@ const Users = {
     });
   },
 
-  display: function(num, index) {
+  displayvalue: function (num) {
     let self = this;
 
     return new Promise((resolve, reject) => {
       self.instance
-        .display(num, index, { from: window.web3.eth.accounts[0] })
+        .displayvalue(num, { from: window.web3.eth.accounts[0] })
+        .then(tx => {
+          resolve(tx);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+
+  displayinfo: function (num, index) {
+    let self = this;
+
+    return new Promise((resolve, reject) => {
+      self.instance
+        .displayinfo(num, index, { from: window.web3.eth.accounts[0] })
         .then(tx => {
           resolve(tx);
         })

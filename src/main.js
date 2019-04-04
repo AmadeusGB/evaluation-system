@@ -4,11 +4,17 @@ import Vue from 'vue'
 import App from './App'
 import Web3 from 'web3'
 import router from './router'
+import Viewer from "v-viewer";
 import ElementUI from 'element-ui'
+import "viewerjs/dist/viewer.css";
 import 'element-ui/lib/theme-chalk/index.css'
 
-Vue.use(ElementUI)
+Vue.use(ElementUI);
+Vue.use(Viewer);
 Vue.config.productionTip = false
+Viewer.setDefaults({
+    Options: { "inline": true, "button": true, "navbar": true, "title": true, "toolbar": true, "tooltip": true, "movable": true, "zoomable": true, "rotatable": true, "scalable": true, "transition": true, "fullscreen": true, "keyboard": true, "url": "data-source" }
+});
 
 window.addEventListener('load', async () => {
   // Modern dapp browsers...

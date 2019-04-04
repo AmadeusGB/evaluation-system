@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
+import bak from "@/components/bak";
 import create1 from "@/components/create1";
 import create2 from "@/components/create2";
 import page1 from "@/components/page1";
@@ -8,6 +9,9 @@ import page3 from "@/components/page3";
 import page4 from "@/components/page4";
 import page5 from "@/components/page5";
 import page6 from "@/components/page6";
+import page7 from "@/components/page7";
+import page8 from "@/components/page8";
+import page9 from "@/components/page9";
 import detail from "@/components/detail";
 import register from "@/components/register";
 
@@ -56,6 +60,21 @@ export default new Router({
       component: page6
     },
     {
+      path: "/page7",
+      name: "page7",
+      component: page7
+    },
+    {
+      path: "/page8",
+      name: "page8",
+      component: page8
+    },
+    {
+      path: "/page9",
+      name: "page9",
+      component: page9
+    },
+    {
       path: "/detail",
       name: "detail",
       component: detail
@@ -64,6 +83,11 @@ export default new Router({
       path: "/register",
       name: "register",
       component: register
+    },
+    {
+      path: "/bak",
+      name: "bak",
+      component: bak
     }
   ]
 });

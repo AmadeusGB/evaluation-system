@@ -6,9 +6,11 @@ contract create {
         string Number_plate;            //号码车牌
         string Vehicle_type;            //车辆类型
         string Brand_number;            //品牌型号
-        string Engine_number;           //发动机号码
+        string car_displacement;        //汽车排量（L）
+        string approval_passengers;     //核定载客量
+        string Engine_number;           //发动机编号
         string Manufacture_date;        //出厂日期
-        string Evaluation;              //评估价值
+        uint   Evaluation;              //评估价值
         string Timestammp;              //时间戳
     }
 
@@ -49,13 +51,15 @@ contract create {
         string memory Number_plate,
         string memory Vehicle_type,
         string memory Brand_number,
+        string memory car_displacement,
+        string memory approval_passengers,
         string memory Engine_number,
         string memory Manufacture_date,
-        string memory Evaluation,
+        uint          Evaluation,
         string memory Timestammp,
         uint valuationindex                                             //评估单编号(唯一)
         ) internal {
-        Valuationdata memory valuationdata = Valuationdata(Frame_number,Number_plate,Vehicle_type,Brand_number,Engine_number,Manufacture_date,Evaluation,Timestammp);
+        Valuationdata memory valuationdata = Valuationdata(Frame_number,Number_plate,Vehicle_type,Brand_number,car_displacement,approval_passengers,Engine_number,Manufacture_date,Evaluation,Timestammp);
         order.store_msg[valuationindex] = valuationdata;                //将评估信息存入对应评估单
         order.store_sta[valuationindex].Evaluation_status = "0";        //将评估状态初始化为0,即未评估
         order.store_sta[valuationindex].Create = msg.sender;            //存储评估单的创建人(默认当前用户创建)
@@ -153,12 +157,20 @@ contract create {
     function _getstate(uint index) view internal returns(string) {
         return order.store_sta[index].Evaluation_status;
     }
+
+    /**
+     * guobin
+     * 获取指定评估单价格
+    */
+    function _displayvalue(uint index) view internal returns (uint) {
+        return order.store_msg[index].Evaluation;                   //评估价值
+    }
     
     /**
      * guobin
      * 获取指定评估单评估信息
     */
-    function _display(uint index,uint num) view internal returns (string) {
+    function _displayinfo(uint index,uint num) view internal returns (string) {
         if(num == 1) {
             return order.store_msg[index].Frame_number;             //车架号
         } 
@@ -172,42 +184,46 @@ contract create {
             return order.store_msg[index].Brand_number;             //品牌型号
         }
         else if(num == 5) {
-            return order.store_msg[index].Engine_number;            //发动机号码
+            return order.store_msg[index].car_displacement;         //汽车排量（L）
         }
         else if(num == 6) {
-            return order.store_msg[index].Manufacture_date;         //出厂日期
+            return order.store_msg[index].approval_passengers;      //核定载客量
         }
         else if(num == 7) {
-            return order.store_msg[index].Evaluation;               //评估价值
+            return order.store_msg[index].Engine_number;            //发动机号码
         }
         else if(num == 8) {
+            return order.store_msg[index].Manufacture_date;         //出厂日期
+        }
+
+        else if(num == 10) {
             return order.store_msg[index].Timestammp;               //时间戳
         }
-        else if(num == 9) {
+        else if(num == 11) {
             return order.store_sta[index].Evaluation_status;        //评估状态
         }
-        else if(num == 10) {
+        else if(num == 12) {
             return order.store_pho[index].photo1;                   //图片一(合格证)
         }
-        else if(num == 11) {
+        else if(num == 13) {
             return order.store_pho[index].photo2;                   //图片二(左前45度)
         }
-        else if(num == 12) {
+        else if(num == 14) {
             return order.store_pho[index].photo3;                   //图片三(左前门)
         }
-        else if(num == 13) {
+        else if(num == 15) {
             return order.store_pho[index].photo4;                   //图片四(左后门)
         }
-        else if(num == 14) {
+        else if(num == 16) {
             return order.store_pho[index].photo5;                   //图片五(右前门)
         }
-        else if(num == 15) {
+        else if(num == 17) {
             return order.store_pho[index].photo6;                   //图片六(右后45度)
         }
-        else if(num == 16) {
+        else if(num == 18) {
             return order.store_pho[index].photo7;                   //图片七(中控台)
         }
-        else if(num == 17) {
+        else if(num == 19) {
             return order.store_pho[index].photo8;                   //图片八(车内顶)
         }
     }

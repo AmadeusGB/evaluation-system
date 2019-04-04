@@ -17,9 +17,10 @@
   },
   "dependencies": {
     "element-ui": "^2.5.4",
-    "truffle-contract": "^3.0.0",
-    "vue": "^2.4.2",
     "ipfs-api": "^18.2.1",
+    "truffle-contract": "^3.0.0",
+    "v-viewer": "^1.4.0",
+    "vue": "^2.4.2",
     "vue-router": "^2.7.0"
   },
   "devDependencies": {

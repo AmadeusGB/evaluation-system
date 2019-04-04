@@ -2,6 +2,10 @@
   <div>
     <p>第一步: <br> </p>
     <el-form ref="form" :model="form" label-width="100px" size="medium">
+      <el-form-item style="width:400px;" label="车架号">
+        <el-input v-model="form.Frame"></el-input>
+      </el-form-item>
+
       <el-form-item style="width:400px;" label="品牌型号">
         <el-input v-model="form.Brand"></el-input>
       </el-form-item>
@@ -10,11 +14,15 @@
         <el-input v-model="form.Number"></el-input>
       </el-form-item>
 
-      <el-form-item style="width:400px;" label="车架号">
-        <el-input v-model="form.Frame"></el-input>
+      <el-form-item style="width:400px;" label="汽车排量(L)">
+        <el-input v-model="form.displacement"></el-input>
       </el-form-item>
 
-      <el-form-item style="width:400px;" label="发动机号码">
+      <el-form-item style="width:400px;" label="核定载客量">
+        <el-input v-model="form.passengers"></el-input>
+      </el-form-item>
+
+      <el-form-item style="width:400px;" label="发动机编号">
         <el-input v-model="form.Engine"></el-input>
       </el-form-item>
 
@@ -25,7 +33,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item style="width:600px;" label="出厂日期">
+      <el-form-item style="width:535px;" label="出厂日期">
         <el-col :span="11">
           <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
         </el-col>
@@ -53,7 +61,8 @@ export default {
         Engine: "",
         Vehicle: "",
         date1: "",
-        date2: ""
+        displacement:"",
+        passengers:""
       }
     };
   },
@@ -70,7 +79,9 @@ export default {
           this.form.Frame.toString(),
           this.form.Number.toString(),
           this.form.Vehicle.toString(),
-          this.form.Brand.toString(),
+          this.form.Brand.toString(),          
+          this.form.displacement.toString(),
+          this.form.passengers.toString(),
           this.form.Engine.toString(),
           this.form.date1.toLocaleDateString(),
           new Date().toLocaleString(),

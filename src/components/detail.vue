@@ -10,10 +10,10 @@
       <span v-if="tickresult > 0">当前仲裁进度：{{tickresult}}/5</span>
 
       <div class="imgList">
-        <div class="itemImg" v-for="(item,i,index) in photo" :key="i">
+        <viewer class="itemImg" v-for="(item,i,index) in photo" :key="i">
           <div style="text-align:center">{{pmsg[index]}}</div>
           <img :src="item" width="240" height="240">
-        </div>
+        </viewer>
       </div>
 
     </div>
@@ -32,7 +32,9 @@ export default {
         "号码车牌：",
         "车辆类型：",
         "品牌型号：",
-        "发动机号码：",
+        "汽车排量(L):",
+        "核定载客量:",
+        "发动机编号：",
         "出厂日期：",
         "评估价值：",
         "时间戳：",
@@ -53,6 +55,8 @@ export default {
         Number_plate: "",
         Vehicle_type: "",
         Brand_number: "",
+        car_displacement:"",
+        approval_passengers:"",
         Engine_number: "",
         Manufacture_date: "",
         Evaluation: "",
@@ -76,32 +80,34 @@ export default {
     await Detail.init_user();
 
     var id = this.$route.params.userid;
-    var state = await Detail.display(id, 9);
+    var state = await Detail.displayinfo(id, 11);
     if (state == "0") state = "待评估";
     else if (state == "1") state = "已评估";
     else if (state == "2") state = "已申诉";
     else if (state == "3") state = "申诉完成";
     else if (state == "4") state = "已关闭";
 
-    this.carInfo.Frame_number = await Detail.display(id, 1);
-    this.carInfo.Number_plate = await Detail.display(id, 2);
-    this.carInfo.Vehicle_type = await Detail.display(id, 3);
-    this.carInfo.Brand_number = await Detail.display(id, 4);
-    this.carInfo.Engine_number = await Detail.display(id, 5);
-    this.carInfo.Manufacture_date = await Detail.display(id, 6);
-    this.carInfo.Evaluation = (await Detail.display(id, 7)) + "元";
-    this.carInfo.Timestammp = await Detail.display(id, 8);
+    this.carInfo.Frame_number = await Detail.displayinfo(id, 1);
+    this.carInfo.Number_plate = await Detail.displayinfo(id, 2);
+    this.carInfo.Vehicle_type = await Detail.displayinfo(id, 3);
+    this.carInfo.Brand_number = await Detail.displayinfo(id, 4);
+    this.carInfo.car_displacement = await Detail.displayinfo(id, 5);
+    this.carInfo.approval_passengers = await Detail.displayinfo(id, 6);
+    this.carInfo.Engine_number = await Detail.displayinfo(id, 7);
+    this.carInfo.Manufacture_date = await Detail.displayinfo(id, 8);
+    this.carInfo.Evaluation = (await Detail.displayvalue(id)) + "万元";
+    this.carInfo.Timestammp = await Detail.displayinfo(id, 10);
 
     this.carInfo.Evaluation_status = state;
 
-    this.photo.photo1 = await Detail.display(id, 10);
-    this.photo.photo2 = await Detail.display(id, 11);
-    this.photo.photo3 = await Detail.display(id, 12);
-    this.photo.photo4 = await Detail.display(id, 13);
-    this.photo.photo5 = await Detail.display(id, 14);
-    this.photo.photo6 = await Detail.display(id, 15);
-    this.photo.photo7 = await Detail.display(id, 16);
-    this.photo.photo8 = await Detail.display(id, 17);
+    this.photo.photo1 = await Detail.displayinfo(id, 12);
+    this.photo.photo2 = await Detail.displayinfo(id, 13);
+    this.photo.photo3 = await Detail.displayinfo(id, 14);
+    this.photo.photo4 = await Detail.displayinfo(id, 15);
+    this.photo.photo5 = await Detail.displayinfo(id, 16);
+    this.photo.photo6 = await Detail.displayinfo(id, 17);
+    this.photo.photo7 = await Detail.displayinfo(id, 18);
+    this.photo.photo8 = await Detail.displayinfo(id, 19);
 
     this.tickresult = await Detail.appealeschedule(id);
   },

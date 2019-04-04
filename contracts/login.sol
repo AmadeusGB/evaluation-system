@@ -16,7 +16,7 @@ contract login is token,create{
         
         testvalue = testvalue * 100;                        //放大100倍避免除法造成造成的误差
         
-        uint value = stringToUint(order.store_msg[index].Evaluation);
+        uint value = order.store_msg[index].Evaluation;
         if(testvalue < value * 105) {
             if(testvalue > value * 95) {
                 ID[msg.sender] = 1;

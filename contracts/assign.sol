@@ -93,7 +93,7 @@ contract assign is login,queue{
      * guobin
      * 评估师对订单进行评估
     */
-    function _evaluate(uint index,string value) internal {
+    function _evaluate(uint index,uint value) internal {
         uint tokentmp = _check_quote(msg.sender);
         order.store_msg[index].Evaluation = value;
         order.store_sta[index].Evaluation_status = "1";         //将评估单状态改为已评估
@@ -158,11 +158,11 @@ contract assign is login,queue{
         incomelist[index].push(msg.sender);                                         //当前仲裁师评估订单，记录其订单评估顺序（方便做收益分配）
         status[index].tick += 1;                                                    //当前申诉单tick记录加1，共5人（即最大值为5）
         status[index].sum += value;                                                 //将当前仲裁师对申诉单的估价累加进sum
-        status[index].flag[msg.sender] = 1;                                      //当前仲裁师进入本函数，其flag状态从false变true，下次不可再进入
+        status[index].flag[msg.sender] = 1;                                         //当前仲裁师进入本函数，其flag状态从false变true，下次不可再进入
         
 
         if(status[index].tick == 5) {
-            tmpvalue = stringToUint(order.store_msg[index].Evaluation) * 500;       //评估师估价（评估价*5*100）
+            tmpvalue = order.store_msg[index].Evaluation * 500;                     //评估师估价（评估价*5*100）
             tmpsum = status[index].sum;                                             //5个仲裁者的估价总数
             order.store_sta[index].Evaluation_status = "3";                         //将评估单状态改为已仲裁
             
@@ -172,13 +172,13 @@ contract assign is login,queue{
                     return 0;                                                       //返回1，代表评估师对于订单的价格估价是合理的
                 }
                 else {
-                    order.store_msg[index].Evaluation = uintToString(tmpsum/5);     //将仲裁师的平均估价重新赋给Evaluation
+                    order.store_msg[index].Evaluation = tmpsum/5;                   //将仲裁师的平均估价重新赋给Evaluation
                     _resultprocessing(index,2*_check_quote(_getassessor(index)),1); //仲裁结果：不合理，平台双倍（2倍）扣除该评估师获得该订单的通证奖励给予仲裁师（有可能多于100，有可能少于100，取决于评估师获得的通证数量）
                     return 1;                                                       //评估师价格高于仲裁师平均估价105%，代表评估师对订单估价不合理
                 }
             }
             else {
-                order.store_msg[index].Evaluation = uintToString(tmpsum/5);         //将仲裁师的平均估价重新赋给Evaluation
+                order.store_msg[index].Evaluation = tmpsum/5;                       //将仲裁师的平均估价重新赋给Evaluation
                 _resultprocessing(index,2*_check_quote(_getassessor(index)),1);
                 return 1;                                                           //评估师价格低于仲裁师平均估价95%，代表评估师对订单估价不合理
             }

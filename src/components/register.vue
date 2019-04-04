@@ -6,10 +6,10 @@
       </div>
 
       <div class="imgList">
-        <div class="itemImg" v-for="(item,i,index) in photo" :key="i">
+        <viewer class="itemImg" v-for="(item,i,index) in photo" :key="i">
           <div style="text-align:center">{{pmsg[index]}} </div> 
           <img :src="item" width="240" height="240">
-        </div>
+        </viewer>
       </div>
 
     </div>
@@ -88,7 +88,7 @@ export default {
         if (balance == 0) balance = 1;
         var Eth_amount = (Math.pow(200 / supply + 1, 2) - 1) * balance;
         Eth_amount = Math.round(Eth_amount);
-        await alert("答题正确，评估师注册需购买200通证押金,共需支付: " + Eth_amount + " wei");
+        //await alert("答题正确，评估师注册需购买200通证押金,共需支付: " + Eth_amount + " wei");
 
         var commission = 200 - this.scale;
         console.log(commission);

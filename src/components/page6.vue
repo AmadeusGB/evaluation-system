@@ -45,7 +45,20 @@ export default {
       this.$router.push({name: 'register',params:{ id:'1'}});
     },
     async logout() {
-      await login.unregister();
+      login.unregister(function(error,result){
+        if(!error)
+          console.log(result);
+        else
+          console.log(error);
+      })
+      
+
+      web3.eth.getBlockNumber(function(error,result){
+        if(!error)
+          console.log(JSON.stringify(result));
+        else
+          console.log(error);
+      })
     },
     async setparameter() {
       // this.$prompt("请输入报价", "提示", {

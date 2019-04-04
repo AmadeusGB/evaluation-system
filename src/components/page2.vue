@@ -92,8 +92,8 @@ export default {
     var stick = new Array();
 
     for (var i = 0; i < num; i++) {
-      var tmp = await Create.test1(temp[i], 9);
-      var money = await Create.test1(temp[i], 7) + "万元";
+      var tmp = await Create.displayinfo(temp[i], 11);
+      var money = await Create.displayvalue(temp[i]) + "万元";
       
       if(tmp == "0") {
         status = "待评估";
@@ -111,13 +111,13 @@ export default {
       str =
         '{"address":"' + temp[i]         +
         '","name":"'   +
-        (await Create.test1(temp[i], 4)) +
+        (await Create.displayinfo(temp[i], 4)) +
         '","vin":"'    +
-        (await Create.test1(temp[i], 1)) +
+        (await Create.displayinfo(temp[i], 1)) +
         '","money":"'  + money           +
         '","state":"'  + status          +
         '","date":"'   +
-        (await Create.test1(temp[i], 8)) +
+        (await Create.displayinfo(temp[i], 10)) +
         '"}';
 
       stick.push(str);

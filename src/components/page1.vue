@@ -52,7 +52,7 @@ export default {
     var stick = new Array();
 
     for (var i = 0; i < num; i++) {
-      var tmp = await Demo.test1(temp[i], 9);
+      var tmp = await Demo.displayinfo(temp[i], 11);
       if(tmp == "0") status = "待评估";
       else continue;
       // else if(tmp == "2") status = "已申诉";
@@ -61,14 +61,14 @@ export default {
       str =
         '{"address":"' + temp[i]         +
         '","name":"'   +
-        (await Demo.test1(temp[i], 4)) +
+        (await Demo.displayinfo(temp[i], 4)) +
         '","vin":"'    +
-        (await Demo.test1(temp[i], 1)) +
+        (await Demo.displayinfo(temp[i], 1)) +
         '","type":"'    +
-        (await Demo.test1(temp[i], 3)) +
+        (await Demo.displayinfo(temp[i], 3)) +
         '","state":"'  + status          +
         '","date":"'   +
-        (await Demo.test1(temp[i], 8)) +
+        (await Demo.displayinfo(temp[i], 10)) +
         '"}';
       stick.push(str);
     }

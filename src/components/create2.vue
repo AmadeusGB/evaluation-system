@@ -76,7 +76,6 @@ export default {
       let buffer = Buffer.from(render.result);
       var response = await ipfs.add(buffer);
       this.testdemo.push("http://localhost:5000/ipfs/" + response[0].hash);
-      console.log(this.testdemo);
     },
     handleUpload(file) {
       let that = this;
@@ -89,7 +88,6 @@ export default {
       };
     },
     handlePictureCardPreview(file) {
-      console.log(file);
     }
   }
 };
