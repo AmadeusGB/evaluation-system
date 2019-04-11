@@ -1,7 +1,6 @@
 import contract from "truffle-contract";
 import DemoContract from "@contracts/demo.json";
 
-var number = 1;
 var valuation_number;
 
 const Users = {

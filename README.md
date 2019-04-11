@@ -1,12 +1,12 @@
 # evaluation-system
-该项目是基于以太坊的汽车估值系统，主要用到以下方面知识：
+本项目是基于以太坊的汽车估值系统，主要用到以下方面知识：
 * solidity
 * web3.js
-* vue.js & element-ui
+* truffle & vue.js & element-ui
 * bancor
 * metamask
 
-# 1.运行前准备
+# 1.运行前准备(ubuntu18.04环境）
 **安装Node.js**  
 ***
 首先根据你的 ubuntu 是 32 位还是 64 位，分别下载不同的预编译版本，我们使用官方长期支持的 8.10.0LTS 版本：
@@ -89,25 +89,37 @@ Truffle v4.1.3 (core 4.1.3)
 `~$ source .bashrc`
 
 # 2.初始化
-
-**IPFS配置及初始化**
+**ipfs初始化**
 ***
+
 第一步（初始化本地仓库）：
 
 `~$ ipfs init`
 
-第二步（由于IPFS节点提供REST API借口，默认在本地5001端口坚挺，配置监听地址和CORS）：
+第二步（由于IPFS节点提供REST API借口，默认在本地5001端口监听，配置监听地址和CORS）：
 
 `~$ ipfs config --json Addresses.Gateway '"/ip4/0.0.0.0/tcp/5000"'`
 
+第三步（ipfs初始化，打开第一个terminal）：
+
+`~$ ipfs daemon`
+
 **ganache初始化**
 ***
+
+打开第二个terminal
 
 `~$ ganache-cli -d`
 
 # 3.项目运行
 
-**更新node_module**
+**下载源码**
+***
+
+`~$ git clone git@github.com:AmadeusGB/evaluation-system.git`
+
+
+**安装node_module**
 ***
 
 `~$ npm install`或`cnpm install`

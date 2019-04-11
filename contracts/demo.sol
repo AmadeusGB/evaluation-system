@@ -277,4 +277,12 @@ contract demo is assign{
     function appealeschedule(uint index) public view returns (uint) {
         return _appealeschedule(index);
     }
+
+    /**
+     * guobin
+     * 返回排行榜中所有评估单编号
+    */
+    function backLeaderboard() public view returns (uint[]) {
+        return _backLeaderboard();
+    }
 }

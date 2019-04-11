@@ -195,7 +195,6 @@ contract create {
         else if(num == 8) {
             return order.store_msg[index].Manufacture_date;         //出厂日期
         }
-
         else if(num == 10) {
             return order.store_msg[index].Timestammp;               //时间戳
         }

@@ -2,7 +2,7 @@ pragma solidity ^0.4.24;
 
 contract queue
 {
-    uint extent = 6;  //控制队列长度,目前队列仅存5人
+    uint extent = 101;  //控制队列长度,目前队列仅存100人
     
     struct Queue {
         uint[] data;

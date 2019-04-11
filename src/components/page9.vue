@@ -6,28 +6,28 @@
         <span class="spanhistory">&nbsp;&nbsp;区块数</span>
         <hr size=2 style="color: #A9A9A9;border-style:dashed;margin:0 auto;width:92%">
         <span><br>&nbsp;</span>
-        <el-button type="primary" round style="width:100px;height:40px;">查看</el-button>
+        <el-button @click="checkblock()" type="primary" round style="width:100px;height:40px;">查看</el-button>
       </div>
       <div>
         <span class="spanhistory">&nbsp;&nbsp;10,104<br></span>
         <span class="spanhistory">&nbsp;&nbsp;交易数</span>
         <hr size=2 style="color: #A9A9A9;border-style:dashed;margin:0 auto;width:92%">
         <span><br>&nbsp;</span>
-        <el-button type="primary" round style="width:100px;height:40px;">查看</el-button>
+        <el-button @click="checktransaction()" type="primary" round style="width:100px;height:40px;">查看</el-button>
       </div>
       <div>
         <span class="spanhistory">&nbsp;&nbsp;96<br></span>
         <span class="spanhistory">&nbsp;&nbsp;账户数</span>
         <hr size=2 style="color: #A9A9A9;border-style:dashed;margin:0 auto;width:92%">
         <span><br>&nbsp;</span>
-        <el-button type="primary" round style="width:100px;height:40px;">查看</el-button>
+        <el-button @click="checkaccount()" type="primary" round style="width:100px;height:40px;">查看</el-button>
       </div>
       <div>
-        <span class="spanhistory">&nbsp;&nbsp;26.352<br></span>
+        <span class="spanhistory">&nbsp;&nbsp;26,352<br></span>
         <span class="spanhistory">&nbsp;&nbsp;IPFS哈希数</span>
         <hr size=2 style="color: #A9A9A9;border-style:dashed;margin:0 auto;width:92%">
         <span><br>&nbsp;</span>
-        <el-button type="primary" round style="width:100px;height:40px;">查看</el-button>
+        <el-button @click="checkipfs()" type="primary" round style="width:100px;height:40px;">查看</el-button>
       </div>
     </div>
     <div class="bottomList">
@@ -68,7 +68,20 @@ import Eva from "@/js/evaluate";
 var tmp;
 
 export default {
-
+  methods: {
+    async checkblock() {
+      this.$router.push({name: 'blocklist',params:{ id:'1'}});
+    },
+    async checktransaction() {
+      this.$router.push({name: 'transactionlist',params:{ id:'1'}});
+    },
+    async checkaccount() {
+      this.$router.push({name: 'accountlist',params:{ id:'1'}});
+    },
+    async checkipfs() {
+      this.$router.push({name: 'ipfslist',params:{ id:'1'}});
+    },
+  }
 };
 </script>
 

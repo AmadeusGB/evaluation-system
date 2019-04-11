@@ -14,6 +14,10 @@ import page8 from "@/components/page8";
 import page9 from "@/components/page9";
 import detail from "@/components/detail";
 import register from "@/components/register";
+import blocklist from "@/components/blocklist";
+import transactionlist from "@/components/transactionlist";
+import accountlist from "@/components/accountlist";
+import ipfslist from "@/components/ipfslist";
 
 Vue.use(Router);
 
@@ -88,6 +92,26 @@ export default new Router({
       path: "/bak",
       name: "bak",
       component: bak
+    },
+    {
+      path: "/blocklist",
+      name: "blocklist",
+      component: blocklist
+    },
+    {
+      path: "/transactionlist",
+      name: "transactionlist",
+      component: transactionlist
+    },
+    {
+      path: "/accountlist",
+      name: "accountlist",
+      component: accountlist
+    },
+    {
+      path: "/ipfslist",
+      name: "ipfslist",
+      component: ipfslist
     }
   ]
 });

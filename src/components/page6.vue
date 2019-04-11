@@ -9,12 +9,15 @@
           </el-select>
         </el-form-item>-->
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">注册评估师<br></el-button>
+          <el-button type="primary" @click="onSubmit">
+            注册评估师
+            <br>
+          </el-button>
           <el-button type="primary" @click="logout">注销</el-button>
         </el-form-item>
 
         <el-form-item>
-          <el-slider v-model="value" :format-tooltip="formatTooltip" :step="5"  show-stops></el-slider>
+          <el-slider v-model="value" :format-tooltip="formatTooltip" :step="5" show-stops></el-slider>
           <el-button type="primary" @click="setparameter">修改订单提成</el-button>
         </el-form-item>
       </el-form>
@@ -42,23 +45,34 @@ export default {
   },
   methods: {
     async onSubmit() {
-      this.$router.push({name: 'register',params:{ id:'1'}});
+      this.$router.push({ name: "register", params: { id: "1" } });
     },
     async logout() {
-      login.unregister(function(error,result){
-        if(!error)
-          console.log(result);
-        else
-          console.log(error);
-      })
-      
+      // var mysql = require("mysql");
 
-      web3.eth.getBlockNumber(function(error,result){
-        if(!error)
-          console.log(JSON.stringify(result));
-        else
-          console.log(error);
-      })
+      // var connection = mysql.createConnection({
+      //         host:'localhost',
+      //         user:'guobin',
+      //         password:'wdsr9198988',
+      //         database:'test1',
+      // });
+
+      // var tmp = await connection.query('SELECT * FROM user');
+      // console.log(tmp);
+
+      // login.unregister(function(error,result){
+      //   if(!error)
+      //     console.log(result);
+      //   else
+      //     console.log(error);
+      // })
+
+      // web3.eth.getBlockNumber(function(error,result){
+      //   if(!error)
+      //     console.log(JSON.stringify(result));
+      //   else
+      //     console.log(error);
+      // })
     },
     async setparameter() {
       // this.$prompt("请输入报价", "提示", {
@@ -72,8 +86,8 @@ export default {
       await login.Enter_quote(commission);
     },
     formatTooltip(val) {
-        return (val + "%");
-    },
+      return val + "%";
+    }
   }
 };
 </script>

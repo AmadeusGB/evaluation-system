@@ -17,7 +17,12 @@ contract assign is login,queue{
     mapping(address => uint[])      appeallist;          //记录每个仲裁者名下的仲裁单
     mapping(uint => arbitration)    status;              //记录仲裁者对某个评估单的评估结果
     mapping(uint => address[])      incomelist;          //记录每个申诉单对应的仲裁师评估序列
+
+    Queue Leaderboard;                                   //排行榜字段（最大接受100个订单，超过后先进先出）
   
+    constructor() public {
+        Leaderboard.data.length = 200;
+    }
 
     /**
      * guobin
@@ -100,6 +105,7 @@ contract assign is login,queue{
         finishwork(index,0);
         reward(msg.sender,tokentmp);                            //根据评估师设定的分成比例给予通证奖励
         msg.sender.transfer(100-tokentmp);                      //根据评估师设定的分成比例给予ether奖励
+        push(Leaderboard,index);                                //将评估后的工单推入排行榜公示，只有评估后的订单才可进入排行榜
     }
 
     /**
@@ -119,6 +125,14 @@ contract assign is login,queue{
         appeallist[appeal4].push(number);                    //将当前评估单编号(由js传递)存入对应仲裁者地址
         appeallist[appeal5].push(number);                    //将当前评估单编号(由js传递)存入对应仲裁者地址
         order.store_sta[number].Evaluation_status = "2";     //将评估单状态改为已申诉
+    }
+
+    /**
+     * guobin
+     * 返回排行榜中所有评估单编号
+    */
+    function _backLeaderboard() internal view returns (uint[]) {
+        return Leaderboard.data;
     }
 
     /**
