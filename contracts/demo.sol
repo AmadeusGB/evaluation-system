@@ -15,13 +15,15 @@ contract demo is assign{
         string memory Number_plate,             //号码车牌
         string memory Vehicle_type,             //车辆类型
         string memory Brand_number,             //品牌型号
+        string memory car_displacement,         //汽车排量（L）
+        string memory approval_passengers,      //核定载客量
         string memory Engine_number,            //发动机号码
         string memory Manufacture_date,         //出厂日期
-        string memory Evaluation,               //评估价值
+        uint          Evaluation,               //评估价值
         string memory Timestammp,               //时间戳
         uint evaluation_index                   //评估单编号(由js保证唯一性,前端代码放入ipfs,保证不可篡改性)
         ) public {
-        _addvaluation(Frame_number,Number_plate,Vehicle_type,Brand_number,Engine_number,Manufacture_date,Evaluation,Timestammp,evaluation_index); //添加评估单信息
+        _addvaluation(Frame_number,Number_plate,Vehicle_type,Brand_number,car_displacement,approval_passengers,Engine_number,Manufacture_date,Evaluation,Timestammp,evaluation_index); //添加评估单信息
     }
 
     /**
@@ -41,6 +43,14 @@ contract demo is assign{
     ) public payable {
         _addphoto(photo1,photo2,photo3,photo4,photo5,photo6,photo7,photo8,evaluation_index);
         distribution(evaluation_index,statistic(0));             //对该评估单进行评估师分配
+    }
+
+    /**
+     * guobin
+     * 返回原始评估单编号
+    */
+    function backordernumber() view public returns (uint) {
+        return _backordernumber();
     }
 
 
@@ -72,7 +82,7 @@ contract demo is assign{
      * guobin
      * 评估师对订单进行评估
     */
-    function evaluate(uint index,string value) public {
+    function evaluate(uint index,uint value) public {
         _evaluate(index,value);
     }
 
@@ -94,10 +104,18 @@ contract demo is assign{
 
     /**
      * guobin
+     * 获取指定评估单价格
+    */
+    function displayvalue(uint index) view public returns (uint) {
+        return _displayvalue(index);
+    }
+
+    /**
+     * guobin
      * 获取指定评估单评估信息
     */
-    function display(uint index,uint num) view public returns (string) {
-        return _display(index,num);
+    function displayinfo(uint index,uint num) view public returns (string) {
+        return _displayinfo(index,num);
     }
 
     /**************通证买卖功能类***************/
@@ -238,6 +256,14 @@ contract demo is assign{
 
     /**
      * guobin
+     * 当前仲裁者对本订单是否具备仲裁条件
+    */
+    function appealesituation(uint index) public view  returns (uint) {
+        _appealesituation(index);
+    }
+
+    /**
+     * guobin
      * 仲裁者对订单进行评估
     */
     function appealevaluate(uint index,uint value) public {
@@ -250,5 +276,13 @@ contract demo is assign{
     */
     function appealeschedule(uint index) public view returns (uint) {
         return _appealeschedule(index);
+    }
+
+    /**
+     * guobin
+     * 返回排行榜中所有评估单编号
+    */
+    function backLeaderboard() public view returns (uint[]) {
+        return _backLeaderboard();
     }
 }

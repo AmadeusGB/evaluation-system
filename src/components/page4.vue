@@ -46,8 +46,8 @@ export default {
     var stick = new Array();
 
     for (var i = 0; i < num; i++) {
-      tmp = await Create.test1(temp[i], 9);
-      var money = await Create.test1(temp[i], 7);
+      tmp = await Create.displayinfo(temp[i], 11);
+      var money = await Create.displayvalue(temp[i], 9);
       if(tmp == "0") {
         status = "待评估";
         money = "暂无";
@@ -60,7 +60,10 @@ export default {
         status = "已申诉";
         continue;
       }
-      else if(tmp == "3") status = "申诉完成";
+      else if(tmp == "3") {
+        status = "申诉完成";
+        continue;
+      }
       else if(tmp == "4") {
         status = "已关闭";
         money = "暂无";
@@ -69,13 +72,13 @@ export default {
       str =
         '{"address":"' + temp[i]         +
         '","name":"'   +
-        (await Create.test1(temp[i], 4)) +
+        (await Create.displayinfo(temp[i], 4)) +
         '","vin":"'    +
-        (await Create.test1(temp[i], 1)) +
+        (await Create.displayinfo(temp[i], 1)) +
         '","money":"'  + money           +
         '","state":"'  + status          +
         '","date":"'   +
-        (await Create.test1(temp[i], 8)) +
+        (await Create.displayinfo(temp[i], 10)) +
         '"}';
 
       stick.push(str);

@@ -1,7 +1,6 @@
 import contract from "truffle-contract";
 import DemoContract from "@contracts/demo.json";
 
-var number = 1;
 var valuation_number;
 
 const Users = {
@@ -33,9 +32,12 @@ const Users = {
     Number_plate,
     Vehicle_type,
     Brand_number,
+    car_displacement,
+    approval_passengers,
     Engine_number,
     Manufacture_date,
-    submit_date
+    submit_date,
+    number
   ) {
     let self = this;
 
@@ -52,7 +54,7 @@ const Users = {
       date.getFullYear() +
       month +
       strDate +
-      (Array(5).join(0) + number++).slice(-5);
+      (Array(5).join(0) + number).slice(-5);
     console.log(valuation_number);
 
     return new Promise((resolve, reject) => {
@@ -62,9 +64,11 @@ const Users = {
           Number_plate, //号码车牌
           Vehicle_type, //车辆类型
           Brand_number, //品牌型号
+          car_displacement, //汽车排量（L）
+          approval_passengers, //核定载客量
           Engine_number, //发动机号码
           Manufacture_date, //出厂日期
-          "0", //评估价值(初始化为0)
+          0, //评估价值(初始化为0)
           submit_date, //时间戳(提交日期)
           valuation_number, //评估单编号
           {
@@ -109,6 +113,36 @@ const Users = {
             value: "100"
           }
         )
+        .then(tx => {
+          resolve(tx);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+
+  appealesituation: function(msg) {
+    let self = this;
+
+    return new Promise((resolve, reject) => {
+      self.instance
+        .appealesituation(msg, { from: window.web3.eth.accounts[0] })
+        .then(tx => {
+          resolve(tx);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+
+  backordernumber: function() {
+    let self = this;
+
+    return new Promise((resolve, reject) => {
+      self.instance
+        .backordernumber({ from: window.web3.eth.accounts[0] })
         .then(tx => {
           resolve(tx);
         })
@@ -208,12 +242,27 @@ const Users = {
     });
   },
 
-  test1: function(num, index) {
+  displayvalue: function (num) {
     let self = this;
 
     return new Promise((resolve, reject) => {
       self.instance
-        .display(num, index, { from: window.web3.eth.accounts[0] })
+        .displayvalue(num, { from: window.web3.eth.accounts[0] })
+        .then(tx => {
+          resolve(tx);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+
+  displayinfo: function(num, index) {
+    let self = this;
+
+    return new Promise((resolve, reject) => {
+      self.instance
+        .displayinfo(num, index, { from: window.web3.eth.accounts[0] })
         .then(tx => {
           resolve(tx);
         })

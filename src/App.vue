@@ -1,8 +1,14 @@
 <template>
   <div id="app">
     <!-- <img src="./assets/logo.png"> -->
-    <div class="header">
-      <div>&nbsp;&nbsp;基于区块链的汽车估值系统</div>
+    <div class="header1">
+      <div>&nbsp;&nbsp;基于区块链的汽车评估服务平台</div>
+      <div classs="header2">
+        <el-button type="text">你好，管理员</el-button>
+        <el-button type="primary" @click="debug">调试<br></el-button>
+        <el-button type="primary" @click="personalmsg">个人信息<br></el-button>
+      </div>
+      
     </div>
     <el-menu
       class="el-menu-demo"
@@ -17,7 +23,9 @@
       <el-menu-item index="/page3">支付清算</el-menu-item>
       <el-menu-item index="/page4">信息评估</el-menu-item>
       <el-menu-item index="/page5">评估仲裁</el-menu-item>
-      <el-menu-item index="/page6">评估师管理</el-menu-item>
+      <el-menu-item index="/page7">订单检索</el-menu-item>
+      <el-menu-item index="/page8">评估排行</el-menu-item>
+      <el-menu-item index="/page9">区块历史</el-menu-item>
     </el-menu>
     <router-view></router-view>
   </div>
@@ -25,7 +33,14 @@
 
 <script>
 export default {
-  name: 'app'
+  methods: {
+    async debug() {
+      this.$router.push({name: 'page6',params:{ id:'1'}});
+    },
+    async personalmsg() {
+      this.$router.push({name: 'register',params:{ id:'1'}});
+    }
+  }
 }
 </script>
 
@@ -41,7 +56,7 @@ export default {
   text-align: left;
   color: #2c3e50;
 }
-.header{
+.header1{
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -49,5 +64,8 @@ export default {
   background-color: rgb(171, 170, 206);
   color:aliceblue;
   font-size: 28px;
+}
+.header2{
+  justify-content: flex-end;
 }
 </style>

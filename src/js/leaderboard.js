@@ -25,42 +25,12 @@ const Users = {
     });
   },
 
-  appealeschedule: function(index) {
+  backLeaderboard: function() {
     let self = this;
 
     return new Promise((resolve, reject) => {
       self.instance
-        .appealeschedule(index, { from: window.web3.eth.accounts[0] })
-        .then(tx => {
-          resolve(tx);
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
-  },
-
-  displayvalue: function (num) {
-    let self = this;
-
-    return new Promise((resolve, reject) => {
-      self.instance
-        .displayvalue(num, { from: window.web3.eth.accounts[0] })
-        .then(tx => {
-          resolve(tx);
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
-  },
-
-  displayinfo: function (num, index) {
-    let self = this;
-
-    return new Promise((resolve, reject) => {
-      self.instance
-        .displayinfo(num, index, { from: window.web3.eth.accounts[0] })
+        .backLeaderboard({ from: window.web3.eth.accounts[0] })
         .then(tx => {
           resolve(tx);
         })

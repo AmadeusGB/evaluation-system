@@ -5,7 +5,7 @@ import "./login.sol";
 
 contract assign is login,queue{
     struct arbitration {
-        mapping(address => bool)    flag;                //flag为仲裁师对某订单的评估状态，当评估后，该状态flag=1，不允许再次评估
+        mapping(address => uint)    flag;                //flag为仲裁师对某订单的评估状态，当评估后，该状态flag=1，不允许再次评估
         uint tick;
         uint sum;
     }
@@ -17,7 +17,12 @@ contract assign is login,queue{
     mapping(address => uint[])      appeallist;          //记录每个仲裁者名下的仲裁单
     mapping(uint => arbitration)    status;              //记录仲裁者对某个评估单的评估结果
     mapping(uint => address[])      incomelist;          //记录每个申诉单对应的仲裁师评估序列
+
+    Queue Leaderboard;                                   //排行榜字段（最大接受100个订单，超过后先进先出）
   
+    constructor() public {
+        Leaderboard.data.length = 200;
+    }
 
     /**
      * guobin
@@ -93,13 +98,14 @@ contract assign is login,queue{
      * guobin
      * 评估师对订单进行评估
     */
-    function _evaluate(uint index,string value) internal {
+    function _evaluate(uint index,uint value) internal {
         uint tokentmp = _check_quote(msg.sender);
         order.store_msg[index].Evaluation = value;
         order.store_sta[index].Evaluation_status = "1";         //将评估单状态改为已评估
         finishwork(index,0);
         reward(msg.sender,tokentmp);                            //根据评估师设定的分成比例给予通证奖励
         msg.sender.transfer(100-tokentmp);                      //根据评估师设定的分成比例给予ether奖励
+        push(Leaderboard,index);                                //将评估后的工单推入排行榜公示，只有评估后的订单才可进入排行榜
     }
 
     /**
@@ -123,10 +129,31 @@ contract assign is login,queue{
 
     /**
      * guobin
+     * 返回排行榜中所有评估单编号
+    */
+    function _backLeaderboard() internal view returns (uint[]) {
+        return Leaderboard.data;
+    }
+
+    /**
+     * guobin
      * 返回当前仲裁者的所有评估单编号
     */
     function _backappnumber() internal view returns (uint[]) {
         return appeallist[msg.sender];
+    }
+
+    /**
+     * guobin
+     * 当前仲裁者对本订单是否具备仲裁条件
+    */
+    function _appealesituation(uint index) internal view returns (uint) {
+        if(status[index].flag[msg.sender] == 1) {
+            return 0;                           //返回0，则不具备仲裁条件
+        }
+        else {
+            return 1;                           //返回1，具备仲裁条件
+        }
     }
 
     /**
@@ -137,19 +164,19 @@ contract assign is login,queue{
         uint tmpvalue = 0;
         uint tmpsum = 0;
         
-        if(status[index].flag[msg.sender]) {                                        //当同一仲裁师再次进入同一评估单，不再允许进行评估
-            return 2;
+        if(status[index].flag[msg.sender] == 1) {                                        //当同一仲裁师再次进入同一评估单，不再允许进行评估
+            revert();
         }
 
         loads[msg.sender] -= 1;                                                     //当前仲裁师评估订单，工作负载减1
         incomelist[index].push(msg.sender);                                         //当前仲裁师评估订单，记录其订单评估顺序（方便做收益分配）
         status[index].tick += 1;                                                    //当前申诉单tick记录加1，共5人（即最大值为5）
         status[index].sum += value;                                                 //将当前仲裁师对申诉单的估价累加进sum
-        status[index].flag[msg.sender] = true;                                      //当前仲裁师进入本函数，其flag状态从false变true，下次不可再进入
+        status[index].flag[msg.sender] = 1;                                         //当前仲裁师进入本函数，其flag状态从false变true，下次不可再进入
         
 
         if(status[index].tick == 5) {
-            tmpvalue = stringToUint(order.store_msg[index].Evaluation) * 500;       //评估师估价（评估价*5*100）
+            tmpvalue = order.store_msg[index].Evaluation * 500;                     //评估师估价（评估价*5*100）
             tmpsum = status[index].sum;                                             //5个仲裁者的估价总数
             order.store_sta[index].Evaluation_status = "3";                         //将评估单状态改为已仲裁
             
@@ -159,13 +186,13 @@ contract assign is login,queue{
                     return 0;                                                       //返回1，代表评估师对于订单的价格估价是合理的
                 }
                 else {
-                    order.store_msg[index].Evaluation = uintToString(tmpsum/5);     //将仲裁师的平均估价重新赋给Evaluation
+                    order.store_msg[index].Evaluation = tmpsum/5;                   //将仲裁师的平均估价重新赋给Evaluation
                     _resultprocessing(index,2*_check_quote(_getassessor(index)),1); //仲裁结果：不合理，平台双倍（2倍）扣除该评估师获得该订单的通证奖励给予仲裁师（有可能多于100，有可能少于100，取决于评估师获得的通证数量）
                     return 1;                                                       //评估师价格高于仲裁师平均估价105%，代表评估师对订单估价不合理
                 }
             }
             else {
-                order.store_msg[index].Evaluation = uintToString(tmpsum/5);         //将仲裁师的平均估价重新赋给Evaluation
+                order.store_msg[index].Evaluation = tmpsum/5;                       //将仲裁师的平均估价重新赋给Evaluation
                 _resultprocessing(index,2*_check_quote(_getassessor(index)),1);
                 return 1;                                                           //评估师价格低于仲裁师平均估价95%，代表评估师对订单估价不合理
             }
