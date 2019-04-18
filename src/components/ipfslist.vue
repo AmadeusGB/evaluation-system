@@ -4,10 +4,10 @@
         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;共10006个哈希被发现</span>
         <el-table ref="multipleTable" :data="tableData" border style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="60"></el-table-column>
-            <el-table-column prop="eNumber" label="区块号" width="180" sortable></el-table-column>
+            <el-table-column prop="eNumber" label="区块号" width="120" sortable></el-table-column>
+            <el-table-column prop="eIndustry" label="哈希值" width="430"></el-table-column>
             <el-table-column prop="eName" label="区块ID" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="eIndustry" label="哈希值" width="280"></el-table-column>
-            <el-table-column prop="eRange" label="所属侧链" width="220"></el-table-column>
+            <el-table-column prop="eRange" label="所属侧链" width="180"></el-table-column>
         </el-table>
         <el-pagination background
             @size-change="handleSizeChange"
@@ -32,19 +32,19 @@
                 tableData: [{
                     eNumber: '10008',
                     eName: 'd5b6bbd40f76e50df264e0c22a85b8b057924366fac137169a700b6a0754cf45',
-                    eIndustry: '2019-03-27 09:04:19',
+                    eIndustry: 'QmdPLwgsAtmm8sqcYKHdpKMMRN3pToMs2Ga28GdKTTYx8t',
                     eRange: 'localhost:8080'
                 },
                 {
                     eNumber: '10007',
                     eName: '18ed846d453bdaa5562816e7f44fe91eadbc3010eefa6e1b69fa8fa4a452a067',
-                    eIndustry: '2019-03-27 09:04:13',
+                    eIndustry: 'QmdPLwgsAtmm8sqcYKHdpKMMRN3pToMs2Ga28GdKTTYx8q',
                     eRange: 'localhost:8080'
                 },
                 {
                     eNumber: '10006',
                     eName: '9b87b2564a8706c34105a6f84d97a77cd1a2c5336bbf51e1a3c1eda934e293e8',
-                    eIndustry: '2019-03-27 00:31:28',
+                    eIndustry: 'QmdPLwgsAtmm8sqcYKHdpKMMRN3pToMs2Ga28GdKTTYx8a',
                     eRange: 'localhost:8080'
                 }],
                 multipleSelection: []

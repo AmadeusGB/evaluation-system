@@ -12,7 +12,7 @@ const Users = {
     return new Promise(function(resolve, reject) {
       self.contract = contract(DemoContract);
       self.contract.setProvider(window.web3.currentProvider);
-
+      
       self.contract
         .deployed()
         .then(instance => {
@@ -87,7 +87,9 @@ const Users = {
           reject(err);
         });
     });
-  }
-};
+  },
 
+  //该函数用来链接服务器，insert数据
+  
+}
 export default Users;

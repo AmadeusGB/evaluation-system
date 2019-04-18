@@ -30,7 +30,7 @@
 import Create from "@/js/create";
 import Eva from "@/js/evaluate";
 
-var tmp;
+var evaluate_state;
 
 export default {
   created: async function() {
@@ -46,25 +46,25 @@ export default {
     var stick = new Array();
 
     for (var i = 0; i < num; i++) {
-      tmp = await Create.displayinfo(temp[i], 11);
+      evaluate_state = await Create.displayinfo(temp[i], 11);
       var money = await Create.displayvalue(temp[i], 9);
-      if(tmp == "0") {
+      if(evaluate_state == "0") {
         status = "待评估";
         money = "暂无";
       }
-      else if(tmp == "1") {
+      else if(evaluate_state == "1") {
         status = "已评估";
         continue;
       }
-      else if(tmp == "2") {
+      else if(evaluate_state == "2") {
         status = "已申诉";
         continue;
       }
-      else if(tmp == "3") {
+      else if(evaluate_state == "3") {
         status = "申诉完成";
         continue;
       }
-      else if(tmp == "4") {
+      else if(evaluate_state == "4") {
         status = "已关闭";
         money = "暂无";
       }
@@ -97,8 +97,41 @@ export default {
       this.$prompt("请输入评估价格(评估后价格不可修改)", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-      }).then(({ value }) => {
-        Eva.evaluate(row.address,value);
+      }).then(async ({ value }) => {
+        var address = row.address;
+        var Frame_number = await Create.displayinfo(address, 1);
+        var Number_plate = await Create.displayinfo(address, 2);
+        var Vehicle_type = await Create.displayinfo(address, 3);
+        var Brand_number = await Create.displayinfo(address, 4);
+        var Car_displacement = await Create.displayinfo(address, 5);
+        var approval_passengers = await Create.displayinfo(address, 6);
+        var Engine_number = await Create.displayinfo(address, 7);
+        var Manufacture_date = await Create.displayinfo(address, 8);
+        var Evaluation = value;
+        var Timestammp = await Create.displayinfo(address, 10);
+        var Evaluation_status = await Create.displayinfo(address, 11);
+
+        var url = "http://localhost:6001/insert/carinfo";
+        var httpRequest = new XMLHttpRequest();
+        var objtext = {
+          'address':address,
+          'Frame_number':Frame_number,
+          'Number_plate':Number_plate,
+          'Vehicle_type':Vehicle_type,
+          'Brand_number':Brand_number,
+          'Car_displacement':Car_displacement,
+          'approval_passengers':approval_passengers,
+          'Engine_number':Engine_number,
+          'Manufacture_date':Manufacture_date,
+          'Evaluation':Evaluation,
+          'Timestammp':Timestammp,
+          'Evaluation_status':Evaluation_status
+          };
+        httpRequest.open("POST", url, true);
+        httpRequest.setRequestHeader("Content-type", "application/json");
+        httpRequest.send(JSON.stringify(objtext));
+
+        //Eva.evaluate(row.address,value);
         // this.$message({
         //   type: "success",
         //   message: "评估价格:" + value

@@ -45,20 +45,57 @@ export default {
   },
   methods: {
     async onSubmit() {
+      // var tmp = await login.registertest(1, 1, 1);
+      // var mytime=new Date().toLocaleString();
+      
+      // console.log(tmp);
+      // console.log(mytime);
+      // console.log(tmp.receipt.blockNumber);
+      // console.log(tmp.receipt.gasUsed);
+      // console.log(tmp.tx);
+
+      // var url = "http://localhost:6001/insert/blockinfo";
+      // var httpRequest = new XMLHttpRequest();
+      // var text = 'aabbcc';
+      // var objtext = { 'address':text,'timestamp':'224','blocknumber':'333','transactionid':'444','detail':'555' };
+
+      // httpRequest.open("POST", url, true);
+      // httpRequest.setRequestHeader("Content-type", "application/json");
+      // httpRequest.send(JSON.stringify(objtext));
+
       this.$router.push({ name: "register", params: { id: "1" } });
     },
     async logout() {
-      // var mysql = require("mysql");
+      var url = "http://localhost:6001/search/carinfo";
+      $.get(url,function(data){  
+        console.log(data);
+       });
+      // var httpRequest = new XMLHttpRequest();
 
-      // var connection = mysql.createConnection({
-      //         host:'localhost',
-      //         user:'guobin',
-      //         password:'wdsr9198988',
-      //         database:'test1',
-      // });
+      // httpRequest.open("GET", url, true);
+      // httpRequest.setRequestHeader("Content-type", "application/json");
+      // httpRequest.send();
 
-      // var tmp = await connection.query('SELECT * FROM user');
-      // console.log(tmp);
+      // httpRequest.onreadystatechange = function() {
+      //   if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+      //     var content = JSON.parse(httpRequest.responseText);
+      //     console.log(content);
+      //     for(var i = 0;i < content.length;i++) {
+      //       console.log(content[i].address);
+      //       console.log(content[i].Frame_number);
+      //       console.log(content[i].Number_plate);
+      //       console.log(content[i].Vehicle_type);
+      //       console.log(content[i].Brand_number);
+      //       console.log(content[i].Car_displacement);
+      //       console.log(content[i].approval_passengers);
+      //       console.log(content[i].Engine_number);
+      //       console.log(content[i].Manufacture_date);
+      //       console.log(content[i].Evaluation);
+      //       console.log(content[i].Timestammp);
+      //       console.log(content[i].Evaluation_status);
+      //     }
+      //   }
+      // };
 
       // login.unregister(function(error,result){
       //   if(!error)

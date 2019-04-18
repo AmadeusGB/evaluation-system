@@ -10,7 +10,7 @@
     </el-input>
 
     <div class="box1">
-      <div class="topCar" :data="tableData">
+      <div class="topCar">
         <div>
           <span class="span-header">&nbsp;&nbsp;车辆信息</span>
           <hr size=2 style="color: #A9A9A9;border-style:dashed;margin:0 auto;width:98%">
@@ -35,7 +35,7 @@
         <div>
           <span class="span-header">&nbsp;&nbsp;区块信息</span>
           <span class="span-content" style="top:315px;left:120px;font-weight: 550;">区块数：10</span>
-          <span class="span-content" style="top:315px;left:200px;font-weight: 550;">交易数：8</span>
+          <span class="span-content" style="top:315px;left:200px;font-weight: 550;">交易数：18</span>
           <span class="span-content" style="top:315px;left:280px;font-weight: 550;">IPFS哈希数：8</span>
           <span class="span-content" style="top:315px;left:400px;font-weight: 550;">用户地址：0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0</span>
           <span class="span-content" style="top:315px;left:830px;font-weight: 550;">评估师地址：0x22d491Bde2303f2f43325b2108D26f1eAbA1e32b</span>
@@ -46,7 +46,8 @@
                     <tr>
                         <th>序号</th>
                         <th>时间戳</th>
-                        <th>交易区块号</th>
+                        <th>区块号</th>
+                        <th>gas消耗</th>
                         <th>交易ID</th>
                         <th>修改内容</th>
                     </tr>
@@ -54,16 +55,11 @@
                 <tbody>
                     <tr v-for ="(user,index) in users ">
                       <td style="width:40px">{{index+1}}</td>
-                      <td style="width:120px">{{user.name}}</td>
-                      <td style="width:100px">{{user.age}}</td>
-                      <td style="width:590px">{{user.school}}</td>
+                      <td style="width:160px">{{user.timestamp}}</td>
+                      <td style="width:60px">{{user.blockid}}</td>
+                      <td style="width:80px">{{user.gasuse}}</td>
+                      <td style="width:200px">{{user.transactionid}}</td>
                       <td>{{user.edit}}</td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td><span type="text"  id="name" /></td>
-                      <td><span type="text" id="age" /></td>
-                      <td><span type="text" id="school"/></td>
                     </tr>
                 </tbody>
             </table>
@@ -91,18 +87,18 @@
 export default {
   data() {
     return {
-      address:'2019041000001',
-      Frame_number:'12345678901234567',
-      Number_plate:'京A 00001',
-      Vehicle_type:'非营运',
-      Brand_number:'宝马X5',
-      car_displacement:'1.6L',
-      approval_passengers:'6人',
-      Engine_number:'20180410',
-      Manufacture_date:'2011-04-08',
-      Evaluation:'100万元',
-      Timestammp:'2019-04-08 19:33:47',
-      Evaluation_status:'已评估',
+      address:'',
+      Frame_number:'',
+      Number_plate:'',
+      Vehicle_type:'',
+      Brand_number:'',
+      car_displacement:'',
+      approval_passengers:'',
+      Engine_number:'',
+      Manufacture_date:'',
+      Evaluation:'',
+      Timestammp:'',
+      Evaluation_status:'',
 
       pmsg: [
         "合格证",
@@ -124,13 +120,42 @@ export default {
         photo7 : "http://localhost:5000/ipfs/Qmbhw8aGxK3wERWWUccTc5CYRkV4KbVq2fiqexYUTnTS9J",
         photo8 : "http://localhost:5000/ipfs/QmdPLwgsAtmm8sqcYKHdpKMMRN3pToMs2Ga28GdKTTYx8t"
       },
-      user: {'name': '', 'age': '', 'school': '','edit':''},
+      user: {'timestamp': '', 'blockid': '', 'gasuse': '','transactionid': '','edit':''},
       users: [
-        {'name': '1554717684', 'age': '1', 'school': '0xa2b72d7790e066054ad0cead86e598036f54e71161bae5b68db6d5a10dfb9a0e','edit':'添加照片'},
-        {'name': '1554717784', 'age': '5', 'school': '0xa2b72d7790e066054ad0cead86e598036f54e71161bae5b68db6d5a10dfb6a0e','edit':'将评估价值由0改为100万元'},
-        {'name': '1554717620', 'age': '6', 'school': '0xa2b72d7790e066054ad0cead86e598036f54e71161bae5b68db6d5a10dfb9a10','edit':'评估单状态：已评估改为已申诉'}
+        {'timestamp': '2019-04-06 19:33:47', 'blockid': '1', 'gasuse': '142533','transactionid': '0xa2b72d7790e066054ad0cead86e598036f54e71161bae5b68db6d5a10dfb9a0e','edit':'添加照片'},
+        {'timestamp': '2019-04-07 19:33:47', 'blockid': '5', 'gasuse': '142533','transactionid': '0xa2b72d7790e066054ad0cead86e598036f54e71161bae5b68db6d5a10dfb6a0e','edit':'将评估价值由0改为100万元'},
+        {'timestamp': '2019-04-08 19:33:47', 'blockid': '6', 'gasuse': '142533','transactionid': '0xa2b72d7790e066054ad0cead86e598036f54e71161bae5b68db6d5a10dfb9a10','edit':'评估单状态：已评估改为已申诉'}
       ]
     }
+  },
+  created: async function() {
+    var url = "http://localhost:6001/search/carinfo";
+    var httpRequest = new XMLHttpRequest();
+
+    httpRequest.open("GET", url, true);
+    httpRequest.setRequestHeader("Content-type", "application/json");
+    httpRequest.send();
+
+    httpRequest.onreadystatechange = function() {
+      if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+        var content = JSON.parse(httpRequest.responseText);
+        console.log(content);
+        for(var i = 0;i < content.length;i++) {
+          console.log(content[i].address);
+          console.log(content[i].Frame_number);
+          console.log(content[i].Number_plate);
+          console.log(content[i].Vehicle_type);
+          console.log(content[i].Brand_number);
+          console.log(content[i].Car_displacement);
+          console.log(content[i].approval_passengers);
+          console.log(content[i].Engine_number);
+          console.log(content[i].Manufacture_date);
+          console.log(content[i].Evaluation);
+          console.log(content[i].Timestammp);
+          console.log(content[i].Evaluation_status);
+        }
+      }
+    };
   },
   methods: {
     check(value) {  
