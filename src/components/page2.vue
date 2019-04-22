@@ -93,7 +93,7 @@ export default {
         );
 
         var blockurl = "http://localhost:6001/insert/blocklist";
-        var mytime = new Date().toLocaleString();
+        var mytime = new Date().toLocaleString('chinese', { hour12: false });
         var httpRequestblocklist = new XMLHttpRequest();
         var context = "更新评估单状态为：" + Evaluation_status;
         var blocktext = {
@@ -174,7 +174,6 @@ export default {
     }
     result = result + "]";
 
-    console.log(result);
     this.tableData = JSON.parse(result);
   },
   data() {

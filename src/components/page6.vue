@@ -75,10 +75,11 @@ export default {
       this.$router.push({ name: "register", params: { id: "1" } });
     },
     async logout() {
-      var urldemo = "http://localhost:6001/search/blocklist";
-      const response = await fetch(urldemo);
-      const content = await response.json();
-      console.log(content);
+      // var urldemo = "http://localhost:6001/search/blocklist";
+      // const response = await fetch(urldemo);
+      // const content = await response.json();
+      var mydate = new Date().toLocaleString('chinese', { hour12: false });
+      console.log(mydate);
 
       // login.unregister(function(error,result){
       //   if(!error)

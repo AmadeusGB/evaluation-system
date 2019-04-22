@@ -242,6 +242,36 @@ const Users = {
     });
   },
 
+  getcreator: function(index) {
+    let self = this;
+
+    return new Promise((resolve, reject) => {
+      self.instance
+        .getcreator(index, { from: window.web3.eth.accounts[0] })
+        .then(tx => {
+          resolve(tx);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+
+  getassessor: function(index) {
+    let self = this;
+
+    return new Promise((resolve, reject) => {
+      self.instance
+        .getassessor(index, { from: window.web3.eth.accounts[0] })
+        .then(tx => {
+          resolve(tx);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+
   displayinfo: function(num, index) {
     let self = this;
 

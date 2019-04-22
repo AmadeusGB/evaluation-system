@@ -25,7 +25,7 @@
           <span class="span-content" style="top:230px;left:780px;">发动机编号：{{Engine_number}}</span>
 
           <span class="span-content" style="top:265px;left:20px;">出厂日期：{{Manufacture_date}}</span>
-          <span class="span-content" style="top:265px;left:260px;">评估价值：{{Evaluation}}</span>
+          <span class="span-content" style="top:265px;left:260px;">评估价值：{{Evaluation}}万元</span>
           <span class="span-content" style="top:265px;left:500px;">时间戳：{{Timestammp}}</span>
           <span class="span-content" style="top:265px;left:780px;">评估状态：{{Evaluation_status}}</span>
         </div>
@@ -37,8 +37,8 @@
           <span class="span-content" style="top:315px;left:120px;font-weight: 550;">区块数：{{blocktransaction}}</span>
           <span class="span-content" style="top:315px;left:200px;font-weight: 550;">交易数：{{blocktransaction}}</span>
           <span class="span-content" style="top:315px;left:280px;font-weight: 550;">IPFS哈希数：8</span>
-          <span class="span-content" style="top:315px;left:400px;font-weight: 550;">用户地址：0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0</span>
-          <span class="span-content" style="top:315px;left:830px;font-weight: 550;">评估师地址：0x22d491Bde2303f2f43325b2108D26f1eAbA1e32b</span>
+          <span class="span-content" style="top:315px;left:400px;font-weight: 550;">用户地址：{{useraddress}}</span>
+          <span class="span-content" style="top:315px;left:830px;font-weight: 550;">评估师地址：{{workaddress}}</span>
           <hr size=2 style="color: #A9A9A9;border-style:dashed;margin:0 auto;width:98%">
          
           <table class="table table-bordered table-striped text-center">
@@ -55,9 +55,9 @@
                 <tbody>
                     <tr v-for ="(user,index) in users ">
                       <td style="width:40px">{{index+1}}</td>
-                      <td style="width:170px">{{user.timestamp}}</td>
+                      <td style="width:150px">{{user.timestamp}}</td>
                       <td style="width:60px">{{user.blockid}}</td>
-                      <td style="width:80px">{{user.gasuse}}</td>
+                      <td style="width:70px">{{user.gasuse}}</td>
                       <td style="width:200px">{{user.transactionid}}</td>
                       <td >{{user.edit}}</td>
                     </tr>
@@ -84,6 +84,8 @@
 </template>
 
 <script>
+import Demo from "@/js/create";
+
 export default {
   data() {
     return {
@@ -100,6 +102,8 @@ export default {
       Timestammp:'',
       Evaluation_status:'',
       blocktransaction:'',
+      useraddress:'',
+      workaddress:'',
 
       pmsg: [
         "合格证",
@@ -126,6 +130,8 @@ export default {
     }
   },
   created: async function() {
+    await Demo.init_user();
+
     var responsecarinfo = await fetch('http://localhost:6001/search/carinfo');
     var carinfo = await responsecarinfo.json();
     this.address = carinfo[0].address;
@@ -165,6 +171,9 @@ export default {
     result = result + "]";
 
     this.users = JSON.parse(result);
+
+    this.useraddress = await Demo.getcreator(2019042200001);
+    this.workaddress = await Demo.getassessor(2019042200001);
   },
   methods: {
     check(value) {  

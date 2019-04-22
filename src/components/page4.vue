@@ -133,7 +133,7 @@ export default {
         var blockmsg = await Eva.evaluate(row.address,value);
         
         var blockurl = "http://localhost:6001/insert/blocklist";
-        var mytime=new Date().toLocaleString();
+        var mytime= new Date().toLocaleString('chinese', { hour12: false });
         var httpRequestblocklist = new XMLHttpRequest();
         var context = '将评估价值由0改为：'+Evaluation+'万元';
         var blocktext = {

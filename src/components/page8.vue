@@ -157,7 +157,7 @@ export default {
         var blockmsg = await Create.appealdistribution(row.address,max[0],max[1],max[2],max[3],max[4]);
 
         var blockurl = "http://localhost:6001/insert/blocklist";
-        var mytime = new Date().toLocaleString();
+        var mytime = new Date().toLocaleString('chinese', { hour12: false });
         var httpRequestblocklist = new XMLHttpRequest();
         var context = "更新评估单状态：" + Evaluation_status;
         var blocktext = {

@@ -104,7 +104,7 @@ export default {
       );
 
       var blockurl = "http://localhost:6001/insert/blocklist";
-      var mytime=new Date().toLocaleString();
+      var mytime= new Date().toLocaleString('chinese', { hour12: false });
       var httpRequest = new XMLHttpRequest();
       var context = '创建评估单编号：'+valuation_number;
       var blocktext = {

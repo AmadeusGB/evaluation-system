@@ -90,7 +90,7 @@ export default {
       );
 
       var blocklisturl = "http://localhost:6001/insert/blocklist";
-      var mytime=new Date().toLocaleString();
+      var mytime= new Date().toLocaleString('chinese', { hour12: false });
       var httpRequestblocklist = new XMLHttpRequest();
       var context = '添加评估单图片';
       var blocklisttext = {

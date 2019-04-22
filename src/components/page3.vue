@@ -83,11 +83,11 @@ export default {
         var blockmsg = await token.buy(value, Eth_amount);    //调用智能合约，并返回交易收据
 
         var blockurl = "http://localhost:6001/insert/blocklist";
-        var mytime = new Date().toLocaleString();
+        var mytime = new Date().toLocaleString('chinese', { hour12: false });
         var httpRequestblocklist = new XMLHttpRequest();
         var context = "购买通证：" + value;
         var blocktext = {
-          address: 0,
+          address: window.web3.eth.accounts[0],
           gasused: blockmsg.receipt.gasUsed,
           timestamp: mytime,
           blockhash: blockmsg.receipt.blockHash,
@@ -136,11 +136,11 @@ export default {
         var blockmsg = await token.sell(value, Eth_amount);   //调用智能合约，并返回交易收据
 
         var blockurl = "http://localhost:6001/insert/blocklist";
-        var mytime = new Date().toLocaleString();
+        var mytime = new Date().toLocaleString('chinese', { hour12: false });
         var httpRequestblocklist = new XMLHttpRequest();
         var context = "卖出通证：" + value;
         var blocktext = {
-          address: 0,
+          address: window.web3.eth.accounts[0],
           gasused: blockmsg.receipt.gasUsed,
           timestamp: mytime,
           blockhash: blockmsg.receipt.blockHash,

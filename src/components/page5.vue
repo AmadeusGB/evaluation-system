@@ -93,7 +93,14 @@ export default {
         cancelButtonText: "取消",
       }).then(async ({ value }) => {
         var address = row.address;
+        var blockmsg = await Eva.appealevaluate(address,value);
+
+        var flag = await Create.displayinfo(address, 11);
         var Evaluation_status = '仲裁中';
+        if(flag == '3') {
+          Evaluation_status = '仲裁完成';
+        }
+
         var update_status_url = "http://localhost:6001/update/carinfo/Evaluation_status";
         var httpRequeststatusinfo = new XMLHttpRequest();
         var update_status_text = {
@@ -104,10 +111,10 @@ export default {
         httpRequeststatusinfo.setRequestHeader("Content-type", "application/json");
         httpRequeststatusinfo.send(JSON.stringify(update_status_text));
 
-        var blockmsg = await Eva.appealevaluate(address,value);
+        
 
         var blockurl = "http://localhost:6001/insert/blocklist";
-        var mytime=new Date().toLocaleString();
+        var mytime = new Date().toLocaleString('chinese', { hour12: false });
         var httpRequestblocklist = new XMLHttpRequest();
         var context = '更新评估单状态为：'+Evaluation_status;
         var blocktext = {

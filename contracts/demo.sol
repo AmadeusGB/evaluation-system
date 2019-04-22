@@ -118,6 +118,22 @@ contract demo is assign{
         return _displayinfo(index,num);
     }
 
+    /**
+     * guobin
+     * 获取指定评估单的创建用户
+    */
+    function getcreator(uint index) view public returns(address) {
+        return _getcreator(index);
+    }
+
+    /**
+     * guobin
+     * 获取指定评估单的评估师
+    */
+    function getassessor(uint index) view public returns(address) {
+        return _getassessor(index);
+    }
+
     /**************通证买卖功能类***************/
     /**
      * guobin
