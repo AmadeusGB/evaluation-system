@@ -95,7 +95,7 @@ export default {
       if(i < num-1) result = result + ",";
     }
     result = result + "]";
-    //this.tableData = JSON.parse(result);
+    this.tableData = JSON.parse(result);
   },
   methods: {
     arbitration(row) {
@@ -137,23 +137,50 @@ export default {
             max[4] = assessor[i];
           }
         }      
-        await Create.appealdistribution(row.address,max[0],max[1],max[2],max[3],max[4]);
+
+        var address = row.address;
+        var Evaluation_status = "已公诉";
+        var update_status_url =
+          "http://localhost:6001/update/carinfo/Evaluation_status";
+        var httpRequeststatusinfo = new XMLHttpRequest();
+        var update_status_text = {
+          address: address,
+          Evaluation_status: Evaluation_status
+        };
+        httpRequeststatusinfo.open("POST", update_status_url, true);
+        httpRequeststatusinfo.setRequestHeader(
+          "Content-type",
+          "application/json"
+        );
+        httpRequeststatusinfo.send(JSON.stringify(update_status_text));
+
+        var blockmsg = await Create.appealdistribution(row.address,max[0],max[1],max[2],max[3],max[4]);
+
+        var blockurl = "http://localhost:6001/insert/blocklist";
+        var mytime = new Date().toLocaleString();
+        var httpRequestblocklist = new XMLHttpRequest();
+        var context = "更新评估单状态：" + Evaluation_status;
+        var blocktext = {
+          address: address,
+          gasused: blockmsg.receipt.gasUsed,
+          timestamp: mytime,
+          blockhash: blockmsg.receipt.blockHash,
+          blocknumber: blockmsg.receipt.blockNumber,
+          transactionid: blockmsg.receipt.transactionHash,
+          token: 0,
+          location: "localhost:8080",
+          detail: context
+        };
+        httpRequestblocklist.open("POST", blockurl, true);
+        httpRequestblocklist.setRequestHeader(
+          "Content-type",
+          "application/json"
+        );
+        httpRequestblocklist.send(JSON.stringify(blocktext));
       });
     },
     detail(row) {
       this.$router.push({name: 'detail',params:{ userid:row.address}});
-    },
-    toggleSelection(rows) {
-        if (rows) {
-            rows.forEach(function(row)  {
-                this.$refs.multipleTable.toggleRowSelection(row);
-            });
-        } else {
-            this.$refs.multipleTable.clearSelection();
-        }
-    },
-    handleSelectionChange(val) {
-        this.multipleSelection = val;
     },
     callbackFunction(result) {
         alert(result + "aaa");
@@ -194,46 +221,46 @@ export default {
       currentPage: 1,
 　　　 pageSize: 10,
       tableData: [
-        {
-          address: "2019040200005",
-          name: "宝马5系 2019款 540Li行政版",
-          vin: "W2BCRAFZ3S9M687JE",
-          money: "60万元",
-          state: "已评估",
-          date: "2018-12-20 11:56:48"
-        },
-        {
-          address: "2019040200004",
-          name: "丰田皇冠2005款 2.5L Royal",
-          vin: "LFMBE85B680115110",
-          money: "40万元",
-          state: "已评估",
-          date: "2018-12-20 11:57:52"
-        },
-        {
-          address: "2019040200003",
-          name: "奥迪A4L2015款 35 TFSI 自动标准型",
-          vin: "LFV3A28K3E3400360",
-          money: "50万元",
-          state: "已评估",
-          date: "2018-12-20 11:10:10"
-        },
-        {
-          address: "2019040200002",
-          name: "宝马7系2013款 730Li 领先型",
-          vin: "WBAYE2106DDZ46100",
-          money: "100万元",
-          state: "已评估",
-          date: "2018-12-20 10:50:32"
-        },
-        {
-          address: "2019040200001",
-          name: "宝马3系2014款 320Li 时尚型",
-          vin: "LBV3M2100FMC96100",
-          money: "30万元",
-          state: "已评估",
-          date: "2018-12-20 10:10:35"
-        },
+        // {
+        //   address: "2019040200005",
+        //   name: "宝马5系 2019款 540Li行政版",
+        //   vin: "W2BCRAFZ3S9M687JE",
+        //   money: "60万元",
+        //   state: "已评估",
+        //   date: "2018-12-20 11:56:48"
+        // },
+        // {
+        //   address: "2019040200004",
+        //   name: "丰田皇冠2005款 2.5L Royal",
+        //   vin: "LFMBE85B680115110",
+        //   money: "40万元",
+        //   state: "已评估",
+        //   date: "2018-12-20 11:57:52"
+        // },
+        // {
+        //   address: "2019040200003",
+        //   name: "奥迪A4L2015款 35 TFSI 自动标准型",
+        //   vin: "LFV3A28K3E3400360",
+        //   money: "50万元",
+        //   state: "已评估",
+        //   date: "2018-12-20 11:10:10"
+        // },
+        // {
+        //   address: "2019040200002",
+        //   name: "宝马7系2013款 730Li 领先型",
+        //   vin: "WBAYE2106DDZ46100",
+        //   money: "100万元",
+        //   state: "已评估",
+        //   date: "2018-12-20 10:50:32"
+        // },
+        // {
+        //   address: "2019040200001",
+        //   name: "宝马3系2014款 320Li 时尚型",
+        //   vin: "LBV3M2100FMC96100",
+        //   money: "30万元",
+        //   state: "已评估",
+        //   date: "2018-12-20 10:10:35"
+        // },
       ]
     };
   }

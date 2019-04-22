@@ -65,10 +65,46 @@ export default {
         var Eth_amount = (Math.pow(value / supply + 1, 2) - 1) * balance;
         Eth_amount = Math.round(Eth_amount);
 
-        console.log(Eth_amount);
+        var address = row.address;
+        var update_token_url =
+          "http://localhost:6001/update/blocklist";
+        var httpRequesttokeninfo = new XMLHttpRequest();
+        var update_token_text = {
+          address: address,
+          token: value
+        };
+        httpRequesttokeninfo.open("POST", update_token_url, true);
+        httpRequesttokeninfo.setRequestHeader(
+          "Content-type",
+          "application/json"
+        );
+        httpRequesttokeninfo.send(JSON.stringify(update_token_text));
 
-        await token.buy(value, Eth_amount);
-        parent.location.reload();
+        var blockmsg = await token.buy(value, Eth_amount);    //调用智能合约，并返回交易收据
+
+        var blockurl = "http://localhost:6001/insert/blocklist";
+        var mytime = new Date().toLocaleString();
+        var httpRequestblocklist = new XMLHttpRequest();
+        var context = "购买通证：" + value;
+        var blocktext = {
+          address: 0,
+          gasused: blockmsg.receipt.gasUsed,
+          timestamp: mytime,
+          blockhash: blockmsg.receipt.blockHash,
+          blocknumber: blockmsg.receipt.blockNumber,
+          transactionid: blockmsg.receipt.transactionHash,
+          token: 0,
+          location: "localhost:8080",
+          detail: context
+        };
+        httpRequestblocklist.open("POST", blockurl, true);
+        httpRequestblocklist.setRequestHeader(
+          "Content-type",
+          "application/json"
+        );
+        httpRequestblocklist.send(JSON.stringify(blocktext));
+
+        //parent.location.reload();
       });
     },
     selltoken(row) {
@@ -82,10 +118,46 @@ export default {
         var Eth_amount = (1 - Math.pow(1 - value / supply, 2)) * balance;
         Eth_amount = Math.round(Eth_amount);
 
-        console.log(Eth_amount);
+        var address = row.address;
+        var update_token_url =
+          "http://localhost:6001/update/blocklist";
+        var httpRequesttokeninfo = new XMLHttpRequest();
+        var update_token_text = {
+          address: address,
+          token: value
+        };
+        httpRequesttokeninfo.open("POST", update_token_url, true);
+        httpRequesttokeninfo.setRequestHeader(
+          "Content-type",
+          "application/json"
+        );
+        httpRequesttokeninfo.send(JSON.stringify(update_token_text));
         
-        await token.sell(value, Eth_amount);
-        parent.location.reload();
+        var blockmsg = await token.sell(value, Eth_amount);   //调用智能合约，并返回交易收据
+
+        var blockurl = "http://localhost:6001/insert/blocklist";
+        var mytime = new Date().toLocaleString();
+        var httpRequestblocklist = new XMLHttpRequest();
+        var context = "卖出通证：" + value;
+        var blocktext = {
+          address: 0,
+          gasused: blockmsg.receipt.gasUsed,
+          timestamp: mytime,
+          blockhash: blockmsg.receipt.blockHash,
+          blocknumber: blockmsg.receipt.blockNumber,
+          transactionid: blockmsg.receipt.transactionHash,
+          token: 0,
+          location: "localhost:8080",
+          detail: context
+        };
+        httpRequestblocklist.open("POST", blockurl, true);
+        httpRequestblocklist.setRequestHeader(
+          "Content-type",
+          "application/json"
+        );
+        httpRequestblocklist.send(JSON.stringify(blocktext));
+        
+        //parent.location.reload();
       });
     }
   }

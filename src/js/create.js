@@ -37,25 +37,9 @@ const Users = {
     Engine_number,
     Manufacture_date,
     submit_date,
-    number
+    valuation_number
   ) {
     let self = this;
-
-    var date = new Date();
-    var month = date.getMonth() + 1;
-    var strDate = date.getDate();
-    if (month >= 1 && month <= 9) {
-      month = "0" + month;
-    }
-    if (strDate >= 0 && strDate <= 9) {
-      strDate = "0" + strDate;
-    }
-    valuation_number =
-      date.getFullYear() +
-      month +
-      strDate +
-      (Array(5).join(0) + number).slice(-5);
-    console.log(valuation_number);
 
     return new Promise((resolve, reject) => {
       self.instance
@@ -92,7 +76,8 @@ const Users = {
     photo5,
     photo6,
     photo7,
-    photo8
+    photo8,
+    valuation_number
   ) {
     let self = this;
 
@@ -242,7 +227,7 @@ const Users = {
     });
   },
 
-  displayvalue: function (num) {
+  displayvalue: function(num) {
     let self = this;
 
     return new Promise((resolve, reject) => {

@@ -92,11 +92,39 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
       }).then(async ({ value }) => {
-        await Eva.appealevaluate(row.address,value);
-        // this.$message({
-        //   type: "success",
-        //   message: "仲裁价格:" + value + "元"
-        // });
+        var address = row.address;
+        var Evaluation_status = '仲裁中';
+        var update_status_url = "http://localhost:6001/update/carinfo/Evaluation_status";
+        var httpRequeststatusinfo = new XMLHttpRequest();
+        var update_status_text = {
+          'address':address,
+          'Evaluation_status':Evaluation_status
+        };
+        httpRequeststatusinfo.open("POST", update_status_url, true);
+        httpRequeststatusinfo.setRequestHeader("Content-type", "application/json");
+        httpRequeststatusinfo.send(JSON.stringify(update_status_text));
+
+        var blockmsg = await Eva.appealevaluate(address,value);
+
+        var blockurl = "http://localhost:6001/insert/blocklist";
+        var mytime=new Date().toLocaleString();
+        var httpRequestblocklist = new XMLHttpRequest();
+        var context = '更新评估单状态为：'+Evaluation_status;
+        var blocktext = {
+          'address':address,
+          'gasused':blockmsg.receipt.gasUsed,
+          'timestamp':mytime,
+          'blockhash':blockmsg.receipt.blockHash,
+          'blocknumber':blockmsg.receipt.blockNumber,
+          'transactionid':blockmsg.receipt.transactionHash,
+          'token':0,
+          'location':'localhost:8080',
+          'detail':context
+          };
+        httpRequestblocklist.open("POST", blockurl, true);
+        httpRequestblocklist.setRequestHeader("Content-type", "application/json");
+        httpRequestblocklist.send(JSON.stringify(blocktext));
+
       });
     },
     back(row) {

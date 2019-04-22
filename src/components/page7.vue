@@ -20,7 +20,7 @@
           <span class="span-content" style="top:195px;left:780px;">车辆类型：{{Vehicle_type}}</span>
 
           <span class="span-content" style="top:230px;left:20px;">品牌型号：{{Brand_number}}</span>
-          <span class="span-content" style="top:230px;left:260px;">汽车排量：{{car_displacement}}</span>
+          <span class="span-content" style="top:230px;left:260px;">汽车排量：{{Car_displacement}}</span>
           <span class="span-content" style="top:230px;left:500px;">核定载客量：{{approval_passengers}}</span>
           <span class="span-content" style="top:230px;left:780px;">发动机编号：{{Engine_number}}</span>
 
@@ -34,8 +34,8 @@
       <div class="topBlock">
         <div>
           <span class="span-header">&nbsp;&nbsp;区块信息</span>
-          <span class="span-content" style="top:315px;left:120px;font-weight: 550;">区块数：10</span>
-          <span class="span-content" style="top:315px;left:200px;font-weight: 550;">交易数：18</span>
+          <span class="span-content" style="top:315px;left:120px;font-weight: 550;">区块数：{{blocktransaction}}</span>
+          <span class="span-content" style="top:315px;left:200px;font-weight: 550;">交易数：{{blocktransaction}}</span>
           <span class="span-content" style="top:315px;left:280px;font-weight: 550;">IPFS哈希数：8</span>
           <span class="span-content" style="top:315px;left:400px;font-weight: 550;">用户地址：0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0</span>
           <span class="span-content" style="top:315px;left:830px;font-weight: 550;">评估师地址：0x22d491Bde2303f2f43325b2108D26f1eAbA1e32b</span>
@@ -55,18 +55,18 @@
                 <tbody>
                     <tr v-for ="(user,index) in users ">
                       <td style="width:40px">{{index+1}}</td>
-                      <td style="width:160px">{{user.timestamp}}</td>
+                      <td style="width:170px">{{user.timestamp}}</td>
                       <td style="width:60px">{{user.blockid}}</td>
                       <td style="width:80px">{{user.gasuse}}</td>
                       <td style="width:200px">{{user.transactionid}}</td>
-                      <td>{{user.edit}}</td>
+                      <td >{{user.edit}}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
       </div>
 
-      <div class="topPhoto">
+      <!-- <div class="topPhoto">
         <div>
           <span class="span-header">&nbsp;&nbsp;图片信息</span>
           <hr size=2 style="color: #A9A9A9;border-style:dashed;margin:0 auto;width:98%">
@@ -77,7 +77,7 @@
           </span>
 
         </div>
-      </div>
+      </div> -->
     </div>
 
   </div>
@@ -92,13 +92,14 @@ export default {
       Number_plate:'',
       Vehicle_type:'',
       Brand_number:'',
-      car_displacement:'',
+      Car_displacement:'',
       approval_passengers:'',
       Engine_number:'',
       Manufacture_date:'',
       Evaluation:'',
       Timestammp:'',
       Evaluation_status:'',
+      blocktransaction:'',
 
       pmsg: [
         "合格证",
@@ -121,41 +122,49 @@ export default {
         photo8 : "http://localhost:5000/ipfs/QmdPLwgsAtmm8sqcYKHdpKMMRN3pToMs2Ga28GdKTTYx8t"
       },
       user: {'timestamp': '', 'blockid': '', 'gasuse': '','transactionid': '','edit':''},
-      users: [
-        {'timestamp': '2019-04-06 19:33:47', 'blockid': '1', 'gasuse': '142533','transactionid': '0xa2b72d7790e066054ad0cead86e598036f54e71161bae5b68db6d5a10dfb9a0e','edit':'添加照片'},
-        {'timestamp': '2019-04-07 19:33:47', 'blockid': '5', 'gasuse': '142533','transactionid': '0xa2b72d7790e066054ad0cead86e598036f54e71161bae5b68db6d5a10dfb6a0e','edit':'将评估价值由0改为100万元'},
-        {'timestamp': '2019-04-08 19:33:47', 'blockid': '6', 'gasuse': '142533','transactionid': '0xa2b72d7790e066054ad0cead86e598036f54e71161bae5b68db6d5a10dfb9a10','edit':'评估单状态：已评估改为已申诉'}
-      ]
+      users: []
     }
   },
   created: async function() {
-    var url = "http://localhost:6001/search/carinfo";
-    var httpRequest = new XMLHttpRequest();
+    var responsecarinfo = await fetch('http://localhost:6001/search/carinfo');
+    var carinfo = await responsecarinfo.json();
+    this.address = carinfo[0].address;
+    this.Frame_number = carinfo[0].Frame_number;
+    this.Number_plate = carinfo[0].Number_plate;
+    this.Vehicle_type = carinfo[0].Vehicle_type;
+    this.Brand_number = carinfo[0].Brand_number;
+    this.Car_displacement = carinfo[0].Car_displacement;
+    this.approval_passengers = carinfo[0].approval_passengers;
+    this.Engine_number = carinfo[0].Engine_number;
+    this.Manufacture_date = carinfo[0].Manufacture_date;
+    this.Evaluation = carinfo[0].Evaluation;
+    this.Timestammp = carinfo[0].Timestammp;
+    this.Evaluation_status = carinfo[0].Evaluation_status;
 
-    httpRequest.open("GET", url, true);
-    httpRequest.setRequestHeader("Content-type", "application/json");
-    httpRequest.send();
+    var responseblockinfo = await fetch('http://localhost:6001/search/blocklist');
+    var blockinfo = await responseblockinfo.json();
 
-    httpRequest.onreadystatechange = function() {
-      if (httpRequest.readyState == 4 && httpRequest.status == 200) {
-        var content = JSON.parse(httpRequest.responseText);
-        console.log(content);
-        for(var i = 0;i < content.length;i++) {
-          console.log(content[i].address);
-          console.log(content[i].Frame_number);
-          console.log(content[i].Number_plate);
-          console.log(content[i].Vehicle_type);
-          console.log(content[i].Brand_number);
-          console.log(content[i].Car_displacement);
-          console.log(content[i].approval_passengers);
-          console.log(content[i].Engine_number);
-          console.log(content[i].Manufacture_date);
-          console.log(content[i].Evaluation);
-          console.log(content[i].Timestammp);
-          console.log(content[i].Evaluation_status);
-        }
-      }
-    };
+    this.blocktransaction = blockinfo.length;
+
+    var str;
+    var num = blockinfo.length;
+    var result = "[";
+
+    for(var i = 0;i<num;i++) {
+      str =
+        '{"timestamp":"' + blockinfo[i].timestamp             +
+        '","blockid":"'  + blockinfo[i].blocknumber           +
+        '","gasuse":"'  + blockinfo[i].gasused                +
+        '","transactionid":"'  + blockinfo[i].transactionid   +
+        '","edit":"'  + blockinfo[i].detail                   +        
+        '"}';
+
+      result = result + str;
+      if (i < num - 1) result = result + ",";
+    }
+    result = result + "]";
+
+    this.users = JSON.parse(result);
   },
   methods: {
     check(value) {  
@@ -210,14 +219,15 @@ export default {
   }
   .topBlock div{
     width: 100%;
-    height: 150px;
+    height: 350px;
     margin: 5px 0;
     border: 1px solid #C0C0C0;
   }
   .topPhoto{
     display: flex;
     flex-direction: row;
-    justify-content:space-between;
+    align-items: center;
+    flex-wrap: wrap;
   }
   .topPhoto div{
     width: 100%;
@@ -228,18 +238,11 @@ export default {
   .tr,th,td{
     text-align:left;
   }
-
-  .imgList {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: wrap;
-  }
   .itemImg {
     margin: 10px;
-    display: flex;
+    display: flex; 
     flex-direction: column;
     align-items: center;
-    overflow: hidden;
+    flex-wrap: hidden;
   }
 </style>

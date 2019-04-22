@@ -34,47 +34,89 @@ export default {
     arbitration(row) {
       this.$prompt("请输入申诉原因", "提示", {
         confirmButtonText: "确定",
-        cancelButtonText: "取消",
+        cancelButtonText: "取消"
       }).then(async ({ value }) => {
         //本函数内的代码，为了实现选出所有评估师的前5名
         var map = {};
-        var max = ["0","0","0","0","0"];
+        var max = ["0", "0", "0", "0", "0"];
         var assessor = await Create.backofwork();
-        
-        for(var i = 0;i < assessor.length;i++) {
+
+        for (var i = 0; i < assessor.length; i++) {
           var tmp = await Create.displayaccountforarbitrage(assessor[i]);
-        
-          if(tmp > await Create.displayaccountforarbitrage(max[0])) {
+
+          if (tmp > (await Create.displayaccountforarbitrage(max[0]))) {
             max[4] = max[3];
             max[3] = max[2];
             max[2] = max[1];
             max[1] = max[0];
             max[0] = assessor[i];
-          }
-          else if(tmp > await Create.displayaccountforarbitrage(max[1])) {
+          } else if (tmp > (await Create.displayaccountforarbitrage(max[1]))) {
             max[4] = max[3];
             max[3] = max[2];
             max[2] = max[1];
             max[1] = assessor[i];
-          }
-          else if(tmp > await Create.displayaccountforarbitrage(max[2])) {
+          } else if (tmp > (await Create.displayaccountforarbitrage(max[2]))) {
             max[4] = max[3];
             max[3] = max[2];
             max[2] = assessor[i];
-          }
-          else if(tmp > await Create.displayaccountforarbitrage(max[3])) {
+          } else if (tmp > (await Create.displayaccountforarbitrage(max[3]))) {
             max[4] = max[3];
             max[3] = assessor[i];
-          }
-          else if(tmp > await Create.displayaccountforarbitrage(max[4])) {
+          } else if (tmp > (await Create.displayaccountforarbitrage(max[4]))) {
             max[4] = assessor[i];
           }
-        }      
-        await Create.appealdistribution(row.address,max[0],max[1],max[2],max[3],max[4]);
+        }
+
+        var address = row.address;
+        var Evaluation_status = "已申诉";
+        var update_status_url =
+          "http://localhost:6001/update/carinfo/Evaluation_status";
+        var httpRequeststatusinfo = new XMLHttpRequest();
+        var update_status_text = {
+          address: address,
+          Evaluation_status: Evaluation_status
+        };
+        httpRequeststatusinfo.open("POST", update_status_url, true);
+        httpRequeststatusinfo.setRequestHeader(
+          "Content-type",
+          "application/json"
+        );
+        httpRequeststatusinfo.send(JSON.stringify(update_status_text));
+
+        var blockmsg = await Create.appealdistribution(
+          address,
+          max[0],
+          max[1],
+          max[2],
+          max[3],
+          max[4]
+        );
+
+        var blockurl = "http://localhost:6001/insert/blocklist";
+        var mytime = new Date().toLocaleString();
+        var httpRequestblocklist = new XMLHttpRequest();
+        var context = "更新评估单状态为：" + Evaluation_status;
+        var blocktext = {
+          address: address,
+          gasused: blockmsg.receipt.gasUsed,
+          timestamp: mytime,
+          blockhash: blockmsg.receipt.blockHash,
+          blocknumber: blockmsg.receipt.blockNumber,
+          transactionid: blockmsg.receipt.transactionHash,
+          token: 0,
+          location: "localhost:8080",
+          detail: context
+        };
+        httpRequestblocklist.open("POST", blockurl, true);
+        httpRequestblocklist.setRequestHeader(
+          "Content-type",
+          "application/json"
+        );
+        httpRequestblocklist.send(JSON.stringify(blocktext));
       });
     },
     detail(row) {
-      this.$router.push({name: 'detail',params:{ userid:row.address}});
+      this.$router.push({ name: "detail", params: { userid: row.address } });
     },
     handleCurrentChange(val) {
       this.currentRow = val;
@@ -82,7 +124,7 @@ export default {
   },
   created: async function() {
     await Create.init_user();
-    
+
     var temp = await Create.backvaluation();
     var num = temp.length;
     var result = "[";
@@ -93,30 +135,32 @@ export default {
 
     for (var i = 0; i < num; i++) {
       var tmp = await Create.displayinfo(temp[i], 11);
-      var money = await Create.displayvalue(temp[i]) + "万元";
-      
-      if(tmp == "0") {
+      var money = (await Create.displayvalue(temp[i])) + "万元";
+
+      if (tmp == "0") {
         status = "待评估";
         money = "暂无";
         continue;
-      }
-      else if(tmp == "1") status = "已评估";
-      else if(tmp == "2") status = "已申诉";
-      else if(tmp == "3") status = "申诉完成";
-      else if(tmp == "4") {
+      } else if (tmp == "1") status = "已评估";
+      else if (tmp == "2") status = "已申诉";
+      else if (tmp == "3") status = "申诉完成";
+      else if (tmp == "4") {
         status = "已关闭";
         money = "暂无";
       }
 
       str =
-        '{"address":"' + temp[i]         +
-        '","name":"'   +
+        '{"address":"' +
+        temp[i] +
+        '","name":"' +
         (await Create.displayinfo(temp[i], 4)) +
-        '","vin":"'    +
+        '","vin":"' +
         (await Create.displayinfo(temp[i], 1)) +
-        '","money":"'  + money           +
-        '","state":"'  + status          +
-        '","date":"'   +
+        '","money":"' +
+        money +
+        '","state":"' +
+        status +
+        '","date":"' +
         (await Create.displayinfo(temp[i], 10)) +
         '"}';
 
@@ -124,11 +168,13 @@ export default {
     }
 
     num = stick.length;
-    for(var i = 0;i < num;i++) {
+    for (var i = 0; i < num; i++) {
       result = result + stick[i];
-      if(i < num-1) result = result + ",";
+      if (i < num - 1) result = result + ",";
     }
     result = result + "]";
+
+    console.log(result);
     this.tableData = JSON.parse(result);
   },
   data() {

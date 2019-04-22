@@ -54,7 +54,6 @@ export default {
       }
       else if(evaluate_state == "1") {
         status = "已评估";
-        continue;
       }
       else if(evaluate_state == "2") {
         status = "已申诉";
@@ -109,11 +108,11 @@ export default {
         var Manufacture_date = await Create.displayinfo(address, 8);
         var Evaluation = value;
         var Timestammp = await Create.displayinfo(address, 10);
-        var Evaluation_status = await Create.displayinfo(address, 11);
+        var Evaluation_status = '已评估';
 
-        var url = "http://localhost:6001/insert/carinfo";
-        var httpRequest = new XMLHttpRequest();
-        var objtext = {
+        var carurl = "http://localhost:6001/insert/carinfo";
+        var httpRequestcarinfo = new XMLHttpRequest();
+        var cartext = {
           'address':address,
           'Frame_number':Frame_number,
           'Number_plate':Number_plate,
@@ -127,15 +126,31 @@ export default {
           'Timestammp':Timestammp,
           'Evaluation_status':Evaluation_status
           };
-        httpRequest.open("POST", url, true);
-        httpRequest.setRequestHeader("Content-type", "application/json");
-        httpRequest.send(JSON.stringify(objtext));
+        httpRequestcarinfo.open("POST", carurl, true);
+        httpRequestcarinfo.setRequestHeader("Content-type", "application/json");
+        httpRequestcarinfo.send(JSON.stringify(cartext));
 
-        //Eva.evaluate(row.address,value);
-        // this.$message({
-        //   type: "success",
-        //   message: "评估价格:" + value
-        // });
+        var blockmsg = await Eva.evaluate(row.address,value);
+        
+        var blockurl = "http://localhost:6001/insert/blocklist";
+        var mytime=new Date().toLocaleString();
+        var httpRequestblocklist = new XMLHttpRequest();
+        var context = '将评估价值由0改为：'+Evaluation+'万元';
+        var blocktext = {
+          'address':address,
+          'gasused':blockmsg.receipt.gasUsed,
+          'timestamp':mytime,
+          'blockhash':blockmsg.receipt.blockHash,
+          'blocknumber':blockmsg.receipt.blockNumber,
+          'transactionid':blockmsg.receipt.transactionHash,
+          'token':0,
+          'location':'localhost:8080',
+          'detail':context
+          };
+        httpRequestblocklist.open("POST", blockurl, true);
+        httpRequestblocklist.setRequestHeader("Content-type", "application/json");
+        httpRequestblocklist.send(JSON.stringify(blocktext));
+
       });
     },
     back(row) {

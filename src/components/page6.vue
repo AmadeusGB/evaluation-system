@@ -54,48 +54,31 @@ export default {
       // console.log(tmp.receipt.gasUsed);
       // console.log(tmp.tx);
 
-      // var url = "http://localhost:6001/insert/blockinfo";
-      // var httpRequest = new XMLHttpRequest();
-      // var text = 'aabbcc';
-      // var objtext = { 'address':text,'timestamp':'224','blocknumber':'333','transactionid':'444','detail':'555' };
+      // var httpRequest1 = new XMLHttpRequest();
+      // var urldemo1 = "http://localhost:6001/insert/photoinfo";
+      // var objtext1 = {
+      //   'address':'aaa',
+      //   'photo1':'1',
+      //   'photo2':'2',
+      //   'photo3':'3',
+      //   'photo4':'4',
+      //   'photo5':'5',
+      //   'photo6':'6',
+      //   'photo7':'7',
+      //   'photo8':'8'
+      // };      
 
-      // httpRequest.open("POST", url, true);
-      // httpRequest.setRequestHeader("Content-type", "application/json");
-      // httpRequest.send(JSON.stringify(objtext));
+      // httpRequest1.open("POST", urldemo1, true);
+      // httpRequest1.setRequestHeader("Content-type", "application/json");
+      // httpRequest1.send(JSON.stringify(objtext1));
 
       this.$router.push({ name: "register", params: { id: "1" } });
     },
     async logout() {
-      var url = "http://localhost:6001/search/carinfo";
-      $.get(url,function(data){  
-        console.log(data);
-       });
-      // var httpRequest = new XMLHttpRequest();
-
-      // httpRequest.open("GET", url, true);
-      // httpRequest.setRequestHeader("Content-type", "application/json");
-      // httpRequest.send();
-
-      // httpRequest.onreadystatechange = function() {
-      //   if (httpRequest.readyState == 4 && httpRequest.status == 200) {
-      //     var content = JSON.parse(httpRequest.responseText);
-      //     console.log(content);
-      //     for(var i = 0;i < content.length;i++) {
-      //       console.log(content[i].address);
-      //       console.log(content[i].Frame_number);
-      //       console.log(content[i].Number_plate);
-      //       console.log(content[i].Vehicle_type);
-      //       console.log(content[i].Brand_number);
-      //       console.log(content[i].Car_displacement);
-      //       console.log(content[i].approval_passengers);
-      //       console.log(content[i].Engine_number);
-      //       console.log(content[i].Manufacture_date);
-      //       console.log(content[i].Evaluation);
-      //       console.log(content[i].Timestammp);
-      //       console.log(content[i].Evaluation_status);
-      //     }
-      //   }
-      // };
+      var urldemo = "http://localhost:6001/search/blocklist";
+      const response = await fetch(urldemo);
+      const content = await response.json();
+      console.log(content);
 
       // login.unregister(function(error,result){
       //   if(!error)
@@ -112,12 +95,6 @@ export default {
       // })
     },
     async setparameter() {
-      // this.$prompt("请输入报价", "提示", {
-      //   confirmButtonText: "确定",
-      //   cancelButtonText: "取消"
-      // }).then(async ({ value }) => {
-      //   await login.Enter_quote(value);
-      // });
       var commission = 200 - this.value;
       console.log(commission);
       await login.Enter_quote(commission);
