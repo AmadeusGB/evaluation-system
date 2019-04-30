@@ -45,7 +45,7 @@ export default {
         "车内顶"
       ],
       dialogImageUrl: "",
-      imgurl: "",
+      imgurl: [],
       testdemo: [],
       dialogVisible: false,
       message: "第二步:"
@@ -56,7 +56,28 @@ export default {
   },
   methods: {
     async createvaluation() {
-      await Demo.addphoto(
+      var valuation_number = this.$route.params.userid;;
+
+      var photourl = "http://localhost:6001/insert/photoinfo";
+      var mytime=new Date().toLocaleString();
+      var httpRequestphoto = new XMLHttpRequest();
+      var phototext = {
+        'address':valuation_number,
+        'photo1':this.imgurl[0],
+        'photo2':this.imgurl[1],
+        'photo3':this.imgurl[2],
+        'photo4':this.imgurl[3],
+        'photo5':this.imgurl[4],
+        'photo6':this.imgurl[5],
+        'photo7':this.imgurl[6],
+        'photo8':this.imgurl[7]
+        };
+      httpRequestphoto.open("POST", photourl, true);
+      httpRequestphoto.setRequestHeader("Content-type", "application/json");
+      httpRequestphoto.send(JSON.stringify(phototext));
+
+
+      var ipfsmsg = await Demo.addphoto(
         this.testdemo[0],
         this.testdemo[1],
         this.testdemo[2],
@@ -64,8 +85,44 @@ export default {
         this.testdemo[4],
         this.testdemo[5],
         this.testdemo[6],
-        this.testdemo[7]
+        this.testdemo[7],
+        valuation_number
       );
+
+      var blocklisturl = "http://localhost:6001/insert/blocklist";
+      var mytime= new Date().toLocaleString('chinese', { hour12: false });
+      var httpRequestblocklist = new XMLHttpRequest();
+      var context = '添加评估单图片';
+      var blocklisttext = {
+        'address':valuation_number,
+        'gasused':ipfsmsg.receipt.gasUsed,
+        'timestamp':mytime,
+        'blockhash':ipfsmsg.receipt.blockHash,
+        'blocknumber':ipfsmsg.receipt.blockNumber,
+        'transactionid':ipfsmsg.receipt.transactionHash,
+        'token':0,
+        'location':'localhost:8080',
+        'detail':context
+        };
+      httpRequestblocklist.open("POST", blocklisturl, true);
+      httpRequestblocklist.setRequestHeader("Content-type", "application/json");
+      httpRequestblocklist.send(JSON.stringify(blocklisttext));
+
+
+      for(var i = 0;i < 8;i++) {
+        var ipfslisturl = "http://localhost:6001/insert/Ipfshashlist";
+        var httpRequestipfslist = new XMLHttpRequest();
+        var ipfslisttext = {
+          'blocknumber':ipfsmsg.receipt.blockNumber,
+          'ipfshash':this.imgurl[i],
+          'blockhash':ipfsmsg.receipt.blockHash,          
+          'location':'localhost:5000'
+          };
+        httpRequestipfslist.open("POST", ipfslisturl, true);
+        httpRequestipfslist.setRequestHeader("Content-type", "application/json");
+        httpRequestipfslist.send(JSON.stringify(ipfslisttext));
+      }
+
       this.$router.push({ name: "page1", params: { id: "3" } });
     },
 
@@ -75,6 +132,7 @@ export default {
       var ipfs = ipfsAPI({ protocol: "http", host: "localhost", port: 5001 });
       let buffer = Buffer.from(render.result);
       var response = await ipfs.add(buffer);
+      this.imgurl.push(response[0].hash);
       this.testdemo.push("http://localhost:5000/ipfs/" + response[0].hash);
     },
     handleUpload(file) {

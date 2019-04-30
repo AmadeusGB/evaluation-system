@@ -74,27 +74,56 @@ export default {
       this.$router.push({ name: "page1", params: { id: "2" } });
     },
     async onSubmit() {
-      try {
-          await Demo.addvaluation(
-          this.form.Frame.toString(),
-          this.form.Number.toString(),
-          this.form.Vehicle.toString(),
-          this.form.Brand.toString(),          
-          this.form.displacement.toString(),
-          this.form.passengers.toString(),
-          this.form.Engine.toString(),
-          this.form.date1.toLocaleDateString(),
-          new Date().toLocaleString(),
-          await Demo.backordernumber()
-        );
+      var valuation_number = await Demo.backordernumber();
+      var date = new Date();
+      var month = date.getMonth() + 1;
+      var strDate = date.getDate();
+      if (month >= 1 && month <= 9) {
+        month = "0" + month;
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+      }
+      valuation_number =
+        date.getFullYear() +
+        month +
+        strDate +
+        (Array(5).join(0) + valuation_number).slice(-5);
 
-        this.$router.push({ name: "create2", params: { id: "3" } });
-      }
-      catch(err) {
-        alert("请填写完成本页面信息后,点击下一步");
-        console.log(err);
-      }
-      
+      var blockmsg = await Demo.addvaluation(
+        this.form.Frame.toString(),
+        this.form.Number.toString(),
+        this.form.Vehicle.toString(),
+        this.form.Brand.toString(),          
+        this.form.displacement.toString(),
+        this.form.passengers.toString(),
+        this.form.Engine.toString(),
+        this.form.date1.toLocaleDateString(),
+        new Date().toLocaleString(),
+        valuation_number
+      );
+
+      var blockurl = "http://localhost:6001/insert/blocklist";
+      var mytime= new Date().toLocaleString('chinese', { hour12: false });
+      var httpRequest = new XMLHttpRequest();
+      var context = '创建评估单编号：'+valuation_number;
+      var blocktext = {
+        'address':valuation_number,
+        'gasused':blockmsg.receipt.gasUsed,
+        'timestamp':mytime,
+        'blockhash':blockmsg.receipt.blockHash,
+        'blocknumber':blockmsg.receipt.blockNumber,
+        'transactionid':blockmsg.receipt.transactionHash,
+        'token':0,
+        'location':'localhost:8080',
+        'detail':context
+        };
+
+      httpRequest.open("POST", blockurl, true);
+      httpRequest.setRequestHeader("Content-type", "application/json");
+      httpRequest.send(JSON.stringify(blocktext));
+
+      this.$router.push({ name: "create2", params: { userid: valuation_number } });  
     }
   }
 };

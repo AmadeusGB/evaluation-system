@@ -137,23 +137,50 @@ export default {
             max[4] = assessor[i];
           }
         }      
-        await Create.appealdistribution(row.address,max[0],max[1],max[2],max[3],max[4]);
+
+        var address = row.address;
+        var Evaluation_status = "已公诉";
+        var update_status_url =
+          "http://localhost:6001/update/carinfo/Evaluation_status";
+        var httpRequeststatusinfo = new XMLHttpRequest();
+        var update_status_text = {
+          address: address,
+          Evaluation_status: Evaluation_status
+        };
+        httpRequeststatusinfo.open("POST", update_status_url, true);
+        httpRequeststatusinfo.setRequestHeader(
+          "Content-type",
+          "application/json"
+        );
+        httpRequeststatusinfo.send(JSON.stringify(update_status_text));
+
+        var blockmsg = await Create.appealdistribution(row.address,max[0],max[1],max[2],max[3],max[4]);
+
+        var blockurl = "http://localhost:6001/insert/blocklist";
+        var mytime = new Date().toLocaleString('chinese', { hour12: false });
+        var httpRequestblocklist = new XMLHttpRequest();
+        var context = "更新评估单状态：" + Evaluation_status;
+        var blocktext = {
+          address: address,
+          gasused: blockmsg.receipt.gasUsed,
+          timestamp: mytime,
+          blockhash: blockmsg.receipt.blockHash,
+          blocknumber: blockmsg.receipt.blockNumber,
+          transactionid: blockmsg.receipt.transactionHash,
+          token: 0,
+          location: "localhost:8080",
+          detail: context
+        };
+        httpRequestblocklist.open("POST", blockurl, true);
+        httpRequestblocklist.setRequestHeader(
+          "Content-type",
+          "application/json"
+        );
+        httpRequestblocklist.send(JSON.stringify(blocktext));
       });
     },
     detail(row) {
       this.$router.push({name: 'detail',params:{ userid:row.address}});
-    },
-    toggleSelection(rows) {
-        if (rows) {
-            rows.forEach(function(row)  {
-                this.$refs.multipleTable.toggleRowSelection(row);
-            });
-        } else {
-            this.$refs.multipleTable.clearSelection();
-        }
-    },
-    handleSelectionChange(val) {
-        this.multipleSelection = val;
     },
     callbackFunction(result) {
         alert(result + "aaa");

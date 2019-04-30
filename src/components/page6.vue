@@ -45,20 +45,41 @@ export default {
   },
   methods: {
     async onSubmit() {
+      // var tmp = await login.registertest(1, 1, 1);
+      // var mytime=new Date().toLocaleString();
+      
+      // console.log(tmp);
+      // console.log(mytime);
+      // console.log(tmp.receipt.blockNumber);
+      // console.log(tmp.receipt.gasUsed);
+      // console.log(tmp.tx);
+
+      // var httpRequest1 = new XMLHttpRequest();
+      // var urldemo1 = "http://localhost:6001/insert/photoinfo";
+      // var objtext1 = {
+      //   'address':'aaa',
+      //   'photo1':'1',
+      //   'photo2':'2',
+      //   'photo3':'3',
+      //   'photo4':'4',
+      //   'photo5':'5',
+      //   'photo6':'6',
+      //   'photo7':'7',
+      //   'photo8':'8'
+      // };      
+
+      // httpRequest1.open("POST", urldemo1, true);
+      // httpRequest1.setRequestHeader("Content-type", "application/json");
+      // httpRequest1.send(JSON.stringify(objtext1));
+
       this.$router.push({ name: "register", params: { id: "1" } });
     },
     async logout() {
-      // var mysql = require("mysql");
-
-      // var connection = mysql.createConnection({
-      //         host:'localhost',
-      //         user:'guobin',
-      //         password:'wdsr9198988',
-      //         database:'test1',
-      // });
-
-      // var tmp = await connection.query('SELECT * FROM user');
-      // console.log(tmp);
+      // var urldemo = "http://localhost:6001/search/blocklist";
+      // const response = await fetch(urldemo);
+      // const content = await response.json();
+      var mydate = new Date().toLocaleString('chinese', { hour12: false });
+      console.log(mydate);
 
       // login.unregister(function(error,result){
       //   if(!error)
@@ -75,12 +96,6 @@ export default {
       // })
     },
     async setparameter() {
-      // this.$prompt("请输入报价", "提示", {
-      //   confirmButtonText: "确定",
-      //   cancelButtonText: "取消"
-      // }).then(async ({ value }) => {
-      //   await login.Enter_quote(value);
-      // });
       var commission = 200 - this.value;
       console.log(commission);
       await login.Enter_quote(commission);
