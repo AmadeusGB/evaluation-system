@@ -87,7 +87,8 @@ export default {
         var httpRequestblocklist = new XMLHttpRequest();
         var context = "购买通证：" + value;
         var blocktext = {
-          address: window.web3.eth.accounts[0],
+          owner:window.web3.eth.accounts[0],
+          address: "无",
           gasused: blockmsg.receipt.gasUsed,
           timestamp: mytime,
           blockhash: blockmsg.receipt.blockHash,
@@ -140,7 +141,8 @@ export default {
         var httpRequestblocklist = new XMLHttpRequest();
         var context = "卖出通证：" + value;
         var blocktext = {
-          address: window.web3.eth.accounts[0],
+          owner:window.web3.eth.accounts[0],
+          address: "无",
           gasused: blockmsg.receipt.gasUsed,
           timestamp: mytime,
           blockhash: blockmsg.receipt.blockHash,

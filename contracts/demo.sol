@@ -301,4 +301,12 @@ contract demo is assign{
     function backLeaderboard() public view returns (uint[]) {
         return _backLeaderboard();
     }
+
+    /**
+     * guobin
+     * 返回排行榜中评估单长度
+    */
+    function backLength() public view returns (uint) {
+        return _backLength();
+    }
 }

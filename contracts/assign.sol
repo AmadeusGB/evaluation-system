@@ -137,6 +137,14 @@ contract assign is login,queue{
 
     /**
      * guobin
+     * 返回排行榜中所有评估单编号
+    */
+    function _backLength() internal view returns (uint) {
+        return length(Leaderboard);
+    }
+
+    /**
+     * guobin
      * 返回当前仲裁者的所有评估单编号
     */
     function _backappnumber() internal view returns (uint[]) {

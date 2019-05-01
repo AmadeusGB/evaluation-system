@@ -1,22 +1,39 @@
 <template>
-  <div>
-    <div class="car_other">
-      <div style="width:280px" v-for="(item,i,index) in carInfo" :key="i">
-        <span>
-          {{msg[index]}}{{item}}
-          <br>
-        </span>
-      </div>
-      <span v-if="tickresult > 0">当前仲裁进度：{{tickresult}}/5</span>
+  <div class="box1">
+      <div class="topCar">
+        <div>
+          <span class="span-header">&nbsp;&nbsp;车辆信息</span>
+          <hr size=2 style="color: #A9A9A9;border-style:dashed;margin:0 auto;width:98%">
+          <span class="span-content" style="top:160px;left:20px;">车架号：{{carInfo.Frame_number}}</span>
+          <span class="span-content" style="top:160px;left:260px;">号码车牌：{{carInfo.Number_plate}}</span>
+          <span class="span-content" style="top:160px;left:500px;">车辆类型：{{carInfo.Vehicle_type}}</span>
+          <span class="span-content" style="top:160px;left:780px;">品牌型号：{{carInfo.Brand_number}}</span>
 
-      <div class="imgList">
-        <viewer class="itemImg" v-for="(item,i,index) in photo" :key="i">
-          <div style="text-align:center">{{pmsg[index]}}</div>
-          <img :src="item" width="240" height="240">
-        </viewer>
+          <span class="span-content" style="top:195px;left:20px;">汽车排量：{{carInfo.car_displacement}}</span>
+          <span class="span-content" style="top:195px;left:260px;">核定载客量：{{carInfo.approval_passengers}}</span>
+          <span class="span-content" style="top:195px;left:500px;">发动机编号：{{carInfo.Engine_number}}</span>
+          <span class="span-content" style="top:195px;left:780px;">出厂日期：{{carInfo.Manufacture_date}}</span>
+
+          <span class="span-content" style="top:230px;left:20px;">评估价值：{{carInfo.Evaluation}}</span>
+          <span class="span-content" style="top:230px;left:260px;">时间戳：{{carInfo.Timestammp}}</span>
+          <span class="span-content" style="top:230px;left:500px;">评估状态：{{carInfo.Evaluation_status}}</span>
+          <span class="span-content" style="top:230px;left:780px;" v-if="tickresult > 0">当前仲裁进度：{{tickresult}}/5</span>
+        </div>
       </div>
 
-    </div>
+      <div class="topPhoto">
+        <div>
+          <span class="span-header">&nbsp;&nbsp;图片信息</span>
+          <hr size=2 style="color: #A9A9A9;border-style:dashed;margin:0 auto;width:98%">
+
+          <viewer class = "duqiang" style="width: 100%;border: 0px">
+            <span class="itemImg" v-for="(item,i,index) in photo" :key="i">
+              <p style="text-align:center">{{pmsg[index]}} </p> 
+              <img :src="item" width="232" height="232">
+            </span>
+          </viewer>
+        </div>
+      </div>
   </div>
 </template>
 
@@ -27,28 +44,15 @@ import Detail from "@/js/detail";
 export default {
   data() {
     return {
-      msg: [
-        "车架号：",
-        "号码车牌：",
-        "车辆类型：",
-        "品牌型号：",
-        "汽车排量(L):",
-        "核定载客量:",
-        "发动机编号：",
-        "出厂日期：",
-        "评估价值：",
-        "时间戳：",
-        "评估状态："
-      ],
       pmsg: [
-        "合格证",
-        "左前45度",
-        "左前门",
-        "左后门",
-        "右前门",
-        "右后45度",
+        "左前45°",
+        "主驾驶仓",
+        "仪表台",
+        "天窗",
+        "后排座椅",
         "中控台",
-        "车内顶"
+        "右后45°",
+        "副驾驶仓"
       ],
       carInfo: {
         Frame_number: "",
@@ -159,17 +163,83 @@ export default {
   }
 }
 
-.imgList {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.itemImg {
-    margin: 10px;
+  .imgList {
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .itemImg {
+      margin: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+  }
+
+  .span-header{
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 30px;
+  }
+  .span-content{
+    font-size: 14px;
+    position:absolute;
+  }
+  .box1{
+    padding: 10px;
+    box-sizing: border-box;
+    width: 100%
+  }
+  .topCar{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+  }
+  .topCar div{
+    width: 80%;
+    height: 150px;
+    margin: 5px 0;
+    border: 1px solid #C0C0C0;
+  }
+  .topBlock{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+  }
+  .topBlock div{
+    width: 100%;
+    overflow: hidden;
+    margin: 5px 0;
+    border: 1px solid #C0C0C0;
+  }
+  .topPhoto{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .duqiang{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .topPhoto div{
+    width: 80%;
+    overflow: hidden;
+    margin: 0px 0;
+    border: 1px solid #C0C0C0;
+  }
+  .tr,th,td{
+    text-align:left;
+  }
+  .itemImg {
+    margin: 10px;
+    display: flex; 
     flex-direction: column;
     align-items: center;
-    overflow: hidden;
-}
+    flex-wrap: hidden;
+  }
+
 </style>

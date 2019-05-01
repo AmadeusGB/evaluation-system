@@ -35,14 +35,14 @@ export default {
   data() {
     return {
       ary: [
-        "合格证",
-        "左前45度",
-        "左前门",
-        "左后门",
-        "右前门",
-        "右后45度",
+        "左前45°",
+        "主驾驶仓",
+        "仪表台",
+        "天窗",
+        "后排座椅",
         "中控台",
-        "车内顶"
+        "右后45°",
+        "副驾驶仓"
       ],
       dialogImageUrl: "",
       imgurl: [],
@@ -94,6 +94,7 @@ export default {
       var httpRequestblocklist = new XMLHttpRequest();
       var context = '添加评估单图片';
       var blocklisttext = {
+        'owner':window.web3.eth.accounts[0],
         'address':valuation_number,
         'gasused':ipfsmsg.receipt.gasUsed,
         'timestamp':mytime,
@@ -113,6 +114,8 @@ export default {
         var ipfslisturl = "http://localhost:6001/insert/Ipfshashlist";
         var httpRequestipfslist = new XMLHttpRequest();
         var ipfslisttext = {
+          'address':valuation_number,
+          'timestamp':mytime,
           'blocknumber':ipfsmsg.receipt.blockNumber,
           'ipfshash':this.imgurl[i],
           'blockhash':ipfsmsg.receipt.blockHash,          

@@ -137,6 +137,7 @@ export default {
         var httpRequestblocklist = new XMLHttpRequest();
         var context = '将评估价值由0改为：'+Evaluation+'万元';
         var blocktext = {
+          'owner':window.web3.eth.accounts[0],
           'address':address,
           'gasused':blockmsg.receipt.gasUsed,
           'timestamp':mytime,

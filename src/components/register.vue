@@ -1,18 +1,34 @@
 <template>
-  <div>
-    <div class="car_other">
-      <div style="width:400px" v-for="(item,i,index) in carInfo" :key="i">
-        <span>{{msg[index]}}{{item}} <br> </span> 
+  <div class="box1">
+      <div class="topCar">
+        <div>
+          <span class="span-header">&nbsp;&nbsp;基本信息</span>
+          <hr size=2 style="color: #A9A9A9;border-style:dashed;margin:0 auto;width:98%">
+          <span class="span-content" style="top:160px;left:20px;">车架号：{{carInfo.Frame_number}}</span>
+          <span class="span-content" style="top:160px;left:260px;">号码车牌：{{carInfo.Number_plate}}</span>
+          <span class="span-content" style="top:160px;left:500px;">车辆类型：{{carInfo.Vehicle_type}}</span>
+          <span class="span-content" style="top:160px;left:780px;">发动机编号：{{carInfo.Engine_number}}</span>
+
+          <span class="span-content" style="top:195px;left:20px;">品牌型号：{{carInfo.Brand_number}}</span>
+          <span class="span-content" style="top:195px;left:500px;">时间戳：{{carInfo.Timestammp}}</span>
+          <span class="span-content" style="top:195px;left:780px;">出厂日期：{{carInfo.Manufacture_date}}</span>
+        </div>
       </div>
 
-      <div class="imgList">
-        <viewer class="itemImg" v-for="(item,i,index) in photo" :key="i">
-          <div style="text-align:center">{{pmsg[index]}} </div> 
-          <img :src="item" width="240" height="240">
-        </viewer>
+      <div class="topPhoto">
+        <div>
+          <span class="span-header">&nbsp;&nbsp;图片信息</span>
+          <hr size=2 style="color: #A9A9A9;border-style:dashed;margin:0 auto;width:98%">
+
+          <viewer class = "duqiang" style="width: 100%;border: 0px">
+            <span class="itemImg" v-for="(item,i,index) in photo" :key="i">
+              <p style="text-align:center">{{pmsg[index]}} </p> 
+              <img :src="item" width="232" height="232">
+            </span>
+          </viewer>
+        </div>
       </div>
 
-    </div>
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item>
         <span>设置订单提成 : {{scale}}% （提成过高可能会影响竞争力）</span>
@@ -60,14 +76,14 @@ export default {
         Timestammp:"2019-1-1 12:00:00"
       },
       photo : {
-        photo1 : "http://localhost:5000/ipfs/Qmbhw8aGxK3wERWWUccTc5CYRkV4KbVq2fiqexYUTnTS9J",
-        photo2 : "http://localhost:5000/ipfs/QmdPLwgsAtmm8sqcYKHdpKMMRN3pToMs2Ga28GdKTTYx8t",
-        photo3 : "http://localhost:5000/ipfs/QmUp8xjFR1aX2h3Ne7ABos3if7CLxDRuUQ7oFWaECrVQ6b",
-        photo4 : "http://localhost:5000/ipfs/Qmbhw8aGxK3wERWWUccTc5CYRkV4KbVq2fiqexYUTnTS9J",        
-        photo5 : "http://localhost:5000/ipfs/QmdPLwgsAtmm8sqcYKHdpKMMRN3pToMs2Ga28GdKTTYx8t",
-        photo6 : "http://localhost:5000/ipfs/QmUp8xjFR1aX2h3Ne7ABos3if7CLxDRuUQ7oFWaECrVQ6b",
-        photo7 : "http://localhost:5000/ipfs/Qmbhw8aGxK3wERWWUccTc5CYRkV4KbVq2fiqexYUTnTS9J",
-        photo8 : "http://localhost:5000/ipfs/QmdPLwgsAtmm8sqcYKHdpKMMRN3pToMs2Ga28GdKTTYx8t"
+        photo1 : "http://localhost:5000/ipfs/QmbrZJ6xLozpZck7ASRHJhWA46RGprR2gNjKXF2x2aSy94",
+        photo2 : "http://localhost:5000/ipfs/QmR65AtAHL5LfTpAjJViWRQJuaEK7w5yqZJopfY667LtYC",
+        photo3 : "http://localhost:5000/ipfs/QmYgZhxc2PZGAZPocafF9j6jbcrRemrWBD37vgVeScJtGY",
+        photo4 : "http://localhost:5000/ipfs/QmWVMBfgfTCCsVXuaLmDj5kWnq2oogCJXpeQ3ZPgf7yXtQ",        
+        photo5 : "http://localhost:5000/ipfs/QmRPwJVvskWce4FTdtYbjp2DMHeRsGXzAd8xUMiS8Sau2k",
+        photo6 : "http://localhost:5000/ipfs/Qmb7MmpzvKaVDZdTqeARVAT9eo9eTB66kX63pRq3Q4AK1Z",
+        photo7 : "http://localhost:5000/ipfs/QmY3zSrCWVuYMQ1yTR3qZfGiNMBBE42d1s8gaRVdYDqUHP",
+        photo8 : "http://localhost:5000/ipfs/Qmcin3oqk6WGGdFWGR9AHQTkfooZ9LGpCoU9f3ck7hDdtX"
       },
       scale: 50
     };
@@ -85,18 +101,35 @@ export default {
         var balance = await token.displaybalance();
         var supply = await token.displaytoken();
         if (balance == 0) balance = 1;
-        var Eth_amount = (Math.pow(200 / supply + 1, 2) - 1) * balance;
-        Eth_amount = Math.round(Eth_amount);
-        //await alert("答题正确，评估师注册需购买200通证押金,共需支付: " + Eth_amount + " wei");
-
+        var Eth_amount = Math.round((Math.pow(200 / supply + 1, 2) - 1) * balance);
         var commission = 200 - this.scale;
-        console.log(commission);
-        await login.registertest(200, commission, Eth_amount);
+
+        var blockmsg = await login.registertest(200, commission, Eth_amount);
+
+        var blockurl = "http://localhost:6001/insert/blocklist";
+        var mytime = new Date().toLocaleString('chinese', { hour12: false });
+        var httpRequestblocklist = new XMLHttpRequest();
+        var context = "注册评估师：" + window.web3.eth.accounts[0];
+        var blocktext = {
+          owner: window.web3.eth.accounts[0],
+          address: "无",
+          gasused: blockmsg.receipt.gasUsed,
+          timestamp: mytime,
+          blockhash: blockmsg.receipt.blockHash,
+          blocknumber: blockmsg.receipt.blockNumber,
+          transactionid: blockmsg.receipt.transactionHash,
+          token: 0,
+          location: "localhost:8080",
+          detail: context
+        };
+        httpRequestblocklist.open("POST", blockurl, true);
+        httpRequestblocklist.setRequestHeader(
+          "Content-type",
+          "application/json"
+        );
+        httpRequestblocklist.send(JSON.stringify(blocktext));
+
         this.$router.push({ name: "page6", params: { id: "3" } });
-        // this.$message({
-        //   type: "success",
-        //   message: "评估价格:" + value
-        // });
       });
     },
     formatTooltip(val) {
@@ -164,4 +197,83 @@ export default {
   align-items: center;
   overflow: hidden;
 }
+
+  .imgList {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .itemImg {
+      margin: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+  }
+
+  .span-header{
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 30px;
+  }
+  .span-content{
+    font-size: 14px;
+    position:absolute;
+  }
+  .box1{
+    padding: 10px;
+    box-sizing: border-box;
+    width: 100%
+  }
+  .topCar{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+  }
+  .topCar div{
+    width: 80%;
+    height: 100px;
+    margin: 5px 0;
+    border: 1px solid #C0C0C0;
+  }
+  .topBlock{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+  }
+  .topBlock div{
+    width: 100%;
+    overflow: hidden;
+    margin: 5px 0;
+    border: 1px solid #C0C0C0;
+  }
+  .topPhoto{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .duqiang{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .topPhoto div{
+    width: 80%;
+    overflow: hidden;
+    margin: 0px 0;
+    border: 1px solid #C0C0C0;
+  }
+  .tr,th,td{
+    text-align:left;
+  }
+  .itemImg {
+    margin: 10px;
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: hidden;
+  }
 </style>

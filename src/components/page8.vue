@@ -48,14 +48,16 @@ export default {
     await Board.init_user();
     
     var temp = await Board.backLeaderboard();
-    var num = temp.length;
+    var num = await Board.backLength();
+    num = num.c[0]-1;
+
     var result = "[";
 
     var str;
     var status;
     var stick = new Array();
 
-    for (var i = 0; i < num; i++) {
+    for (var i = num; i >= 0; i--) {
 
       if(temp[i].c[0] == 0) break;
       var tmp = await Create.displayinfo(temp[i].c[0], 11);
@@ -161,6 +163,7 @@ export default {
         var httpRequestblocklist = new XMLHttpRequest();
         var context = "更新评估单状态：" + Evaluation_status;
         var blocktext = {
+          owner: window.web3.eth.accounts[0],
           address: address,
           gasused: blockmsg.receipt.gasUsed,
           timestamp: mytime,
