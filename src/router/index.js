@@ -13,11 +13,14 @@ import page7 from "@/components/page7";
 import page8 from "@/components/page8";
 import page9 from "@/components/page9";
 import detail from "@/components/detail";
-import register from "@/components/register";
+import register1 from "@/components/register1";
+import register2 from "@/components/register2";
+import register3 from "@/components/register3";
 import blocklist from "@/components/blocklist";
 import transactionlist from "@/components/transactionlist";
 import accountlist from "@/components/accountlist";
 import ipfslist from "@/components/ipfslist";
+import personinfo from "@/components/personinfo";
 
 Vue.use(Router);
 
@@ -84,9 +87,19 @@ export default new Router({
       component: detail
     },
     {
-      path: "/register",
-      name: "register",
-      component: register
+      path: "/register1",
+      name: "register1",
+      component: register1
+    },
+    {
+      path: "/register2",
+      name: "register2",
+      component: register2
+    },
+    {
+      path: "/register3",
+      name: "register3",
+      component: register3
     },
     {
       path: "/bak",
@@ -112,6 +125,11 @@ export default new Router({
       path: "/ipfslist",
       name: "ipfslist",
       component: ipfslist
+    },
+    {
+      path: "/personinfo",
+      name: "personinfo",
+      component: personinfo
     }
   ]
 });

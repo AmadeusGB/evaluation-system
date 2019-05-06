@@ -31,9 +31,19 @@ contract assign is login,queue{
     function _Enter_quote(uint value) internal {          
         values[msg.sender] = value;
     }
-
+    
+    /**
+     * guobin
+     * 返回评估师报价
+    */
     function _check_quote(address work) internal view returns (uint) {
-        return (values[work]-100);
+        if(values[work] >= 100) {
+            return (values[work]-100);
+        }
+        else {
+            return 0;
+        }
+        
     }
     
     /**

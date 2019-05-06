@@ -134,9 +134,7 @@ export default {
       transactionnumber:0,
       accountnumber:0,
       ipfshashnumber:0,
-      Leaderboard:[
-        
-      ]
+      Leaderboard:[]
     }
   },
   created: async function() {

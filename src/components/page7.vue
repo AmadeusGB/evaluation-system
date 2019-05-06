@@ -14,20 +14,20 @@
         <div>
           <span class="span-header">&nbsp;&nbsp;车辆信息</span>
           <hr size=2 style="color: #A9A9A9;border-style:dashed;margin:0 auto;width:98%">
-          <span class="span-content" style="top:195px;left:20px;">评估单编号：{{address}}</span>
-          <span class="span-content" style="top:195px;left:260px;">车架号：{{Frame_number}}</span>
-          <span class="span-content" style="top:195px;left:500px;">号码车牌：{{Number_plate}}</span>
-          <span class="span-content" style="top:195px;left:780px;">车辆类型：{{Vehicle_type}}</span>
+          <span class="span-content" style="top:205px;left:20px;">评估单编号：{{address}}</span>
+          <span class="span-content" style="top:205px;left:260px;">车架号：{{Frame_number}}</span>
+          <span class="span-content" style="top:205px;left:500px;">号码车牌：{{Number_plate}}</span>
+          <span class="span-content" style="top:205px;left:780px;">车辆类型：{{Vehicle_type}}</span>
 
-          <span class="span-content" style="top:230px;left:20px;">品牌型号：{{Brand_number}}</span>
-          <span class="span-content" style="top:230px;left:260px;">汽车排量：{{Car_displacement}}</span>
-          <span class="span-content" style="top:230px;left:500px;">核定载客量：{{approval_passengers}}</span>
-          <span class="span-content" style="top:230px;left:780px;">发动机编号：{{Engine_number}}</span>
+          <span class="span-content" style="top:240px;left:20px;">品牌型号：{{Brand_number}}</span>
+          <span class="span-content" style="top:240px;left:260px;">汽车排量：{{Car_displacement}}</span>
+          <span class="span-content" style="top:240px;left:500px;">核定载客量：{{approval_passengers}}</span>
+          <span class="span-content" style="top:240px;left:780px;">发动机编号：{{Engine_number}}</span>
 
-          <span class="span-content" style="top:265px;left:20px;">出厂日期：{{Manufacture_date}}</span>
-          <span class="span-content" style="top:265px;left:260px;">评估价值：{{Evaluation}}万元</span>
-          <span class="span-content" style="top:265px;left:500px;">时间戳：{{Timestammp}}</span>
-          <span class="span-content" style="top:265px;left:780px;">评估状态：{{Evaluation_status}}</span>
+          <span class="span-content" style="top:275px;left:20px;">出厂日期：{{Manufacture_date}}</span>
+          <span class="span-content" style="top:275px;left:260px;">评估价值：{{Evaluation}}万元</span>
+          <span class="span-content" style="top:275px;left:500px;">时间戳：{{Timestammp}}</span>
+          <span class="span-content" style="top:275px;left:780px;">评估状态：{{Evaluation_status}}</span>
         </div>
       </div>
 
@@ -48,11 +48,11 @@
       <div class="topBlock">
         <div>
           <span class="span-header">&nbsp;&nbsp;区块信息</span>
-          <span class="span-content" style="top:910px;left:120px;font-weight: 550;">区块数：{{blocktransaction}}</span>
-          <span class="span-content" style="top:910px;left:200px;font-weight: 550;">交易数：{{blocktransaction}}</span>
-          <span class="span-content" style="top:910px;left:280px;font-weight: 550;">IPFS哈希数：8</span>
-          <span class="span-content" style="top:910px;left:400px;font-weight: 550;">用户地址：{{useraddress}}</span>
-          <span class="span-content" style="top:910px;left:830px;font-weight: 550;">评估师地址：{{workaddress}}</span>
+          <span class="span-content" style="top:920px;left:120px;font-weight: 550;">区块数：{{blocktransaction}}</span>
+          <span class="span-content" style="top:920px;left:200px;font-weight: 550;">交易数：{{blocktransaction}}</span>
+          <span class="span-content" style="top:920px;left:280px;font-weight: 550;">IPFS哈希数：8</span>
+          <span class="span-content" style="top:920px;left:400px;font-weight: 550;">用户地址：{{useraddress}}</span>
+          <span class="span-content" style="top:920px;left:830px;font-weight: 550;">评估师地址：{{workaddress}}</span>
           <hr size=2 style="color: #A9A9A9;border-style:dashed;margin:0 auto;width:98%">
          
           <table class="table table-bordered table-striped text-center">

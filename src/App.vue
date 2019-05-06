@@ -2,10 +2,8 @@
   <div id="app">
     <!-- <img src="./assets/logo.png"> -->
     <div class="header1">
-      <div>&nbsp;&nbsp;基于区块链的汽车评估服务平台</div>
+      <el-button type="text" style="font-size: 24px;color:aliceblue;" @click="back">&nbsp;&nbsp;基于区块链的汽车评估服务平台</el-button>
       <div classs="header2">
-        <el-button type="text">你好，管理员</el-button>
-        <el-button type="primary" @click="debug">调试<br></el-button>
         <el-button type="primary" @click="personalmsg">个人信息<br></el-button>
       </div>
       
@@ -20,7 +18,6 @@
     >
       <el-menu-item index="/">信息提交</el-menu-item>
       <el-menu-item index="/page2">评估申诉</el-menu-item>
-      <el-menu-item index="/page3">支付清算</el-menu-item>
       <el-menu-item index="/page4">信息评估</el-menu-item>
       <el-menu-item index="/page5">评估仲裁</el-menu-item>
       <el-menu-item index="/page7">订单检索</el-menu-item>
@@ -34,11 +31,11 @@
 <script>
 export default {
   methods: {
-    async debug() {
-      this.$router.push({name: 'page6',params:{ id:'1'}});
+    async back() {
+      this.$router.push({name: 'page1',params:{ id:'1'}});
     },
     async personalmsg() {
-      this.$router.push({name: 'register',params:{ id:'1'}});
+      this.$router.push({name: 'personinfo',params:{ id:'1'}});
     }
   }
 }

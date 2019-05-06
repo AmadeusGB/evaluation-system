@@ -25,12 +25,12 @@ const Users = {
     });
   },
 
-  registertest: function (msg, scale, amount) {
+  registertest: function (msg, scale,logintime,amount) {
     let self = this;
 
     return new Promise((resolve, reject) => {
       self.instance
-        .registertest(msg, scale, {
+        .registertest(msg, scale, logintime, {
           from: window.web3.eth.accounts[0],
           to: window.web3.eth.defaultAccount,
           value: amount
@@ -59,12 +59,72 @@ const Users = {
     });
   },
 
+  check_quote: function () {
+    let self = this;
+
+    return new Promise((resolve, reject) => {
+      self.instance
+        .check_quote({ from: window.web3.eth.accounts[0] })
+        .then(tx => {
+          resolve(tx);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+
+  checktime: function () {
+    let self = this;
+
+    return new Promise((resolve, reject) => {
+      self.instance
+        .checktime({ from: window.web3.eth.accounts[0] })
+        .then(tx => {
+          resolve(tx);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+
   checkuser: function() {
     let self = this;
 
     return new Promise((resolve, reject) => {
       self.instance
         .checkuser({ from: window.web3.eth.accounts[0] })
+        .then(tx => {
+          resolve(tx);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+
+  displaycreate: function () {
+    let self = this;
+
+    return new Promise((resolve, reject) => {
+      self.instance
+        .displaycreate({ from: window.web3.eth.accounts[0] })
+        .then(tx => {
+          resolve(tx);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+
+  displaywork: function () {
+    let self = this;
+
+    return new Promise((resolve, reject) => {
+      self.instance
+        .displaywork({ from: window.web3.eth.accounts[0] })
         .then(tx => {
           resolve(tx);
         })
