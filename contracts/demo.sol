@@ -199,6 +199,22 @@ contract demo is assign{
         return _distranumber();
     } 
 
+    /**
+     * guobin
+     * 显示指定用户申诉数量
+    */
+    function displaycreate() view public returns (uint) {
+        return _displaycreate();
+    }
+
+    /**
+     * guobin
+     * 显示指定评估师申诉数量
+    */
+    function displaywork() view public returns (uint) {
+        return _displaywork();
+    }
+
 
 
     /**************评估师定义空间***************/
@@ -206,18 +222,34 @@ contract demo is assign{
      * guobin
      * 注册评估师
     */
-    function registertest(uint amount,uint scale) public payable {          
-        _registertest();
+    function registertest(uint amount,uint scale,string logintime) public payable {          
+        _registertest(logintime);
         _buy(amount);
         _Enter_quote(scale);
     }
 
     /**
      * guobin
-     * 设置评估单报价
+     * 设置评估师报价
     */
     function Enter_quote(uint value) public {                               
         _Enter_quote(value);
+    }
+
+    /**
+     * guobin
+     * 返回评估师报价
+    */
+    function check_quote() public view returns (uint) {
+        return _check_quote(msg.sender);
+    }
+
+    /**
+     * guobin
+     * 返回当前评估师注册时间
+    */
+    function checktime() view public returns (string) {                       
+        return _checktime();
     }
     
     /**
@@ -268,6 +300,7 @@ contract demo is assign{
     */
     function appealdistribution(uint number,address appeal1,address appeal2,address appeal3,address appeal4,address appeal5) public {
         _appealdistribution(number,appeal1,appeal2,appeal3,appeal4,appeal5);
+        _setappeal(_getcreator(number),_getassessor(number));
     }
 
     /**
@@ -300,5 +333,13 @@ contract demo is assign{
     */
     function backLeaderboard() public view returns (uint[]) {
         return _backLeaderboard();
+    }
+
+    /**
+     * guobin
+     * 返回排行榜中评估单长度
+    */
+    function backLength() public view returns (uint) {
+        return _backLength();
     }
 }

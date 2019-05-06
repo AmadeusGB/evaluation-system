@@ -75,11 +75,30 @@ export default {
       this.$router.push({ name: "register", params: { id: "1" } });
     },
     async logout() {
-      // var urldemo = "http://localhost:6001/search/blocklist";
-      // const response = await fetch(urldemo);
-      // const content = await response.json();
-      var mydate = new Date().toLocaleString('chinese', { hour12: false });
-      console.log(mydate);
+      //var blockurl = 'http://localhost:6001/search/blocklist?key=address&param=2019042400001';
+      var blockurl = 'http://localhost:6001/search/blocklist/owner';
+      var responseblockinfo = await fetch(blockurl);      
+      var blockinfo = await responseblockinfo.json();
+      console.log(blockinfo);
+      console.log(blockinfo.length);
+
+      // var str;
+      // var num = blockinfo.length;
+      // var result = "[";
+
+      // for(var i = 0;i<num;i++) {
+      //   str =
+      //     '{"blocknumber":"' + blockinfo[i].blocknumber         +
+      //     '","blockhash":"'  + blockinfo[i].blockhash           +
+      //     '","timestamp":"'  + blockinfo[i].timestamp           +
+      //     '","location":"'   + blockinfo[i].location            +  
+      //     '","detail":"'     + blockinfo[i].detail              +  
+      //     '"}';
+
+      //   result = result + str;
+      //   if (i < num - 1) result = result + ",";
+      // }
+      // result = result + "]";
 
       // login.unregister(function(error,result){
       //   if(!error)

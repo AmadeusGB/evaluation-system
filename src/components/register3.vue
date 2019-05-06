@@ -22,20 +22,23 @@
 
           <viewer class = "duqiang" style="width: 100%;border: 0px">
             <span class="itemImg" v-for="(item,i,index) in photo" :key="i">
-              <p style="text-align:center">{{pmsg[index]}} </p> 
               <img :src="item" width="232" height="232">
+              <p style="text-align:center">{{pmsg[index]}} </p>               
             </span>
           </viewer>
         </div>
       </div>
 
-    <el-form :inline="true" class="demo-form-inline">
-      <el-form-item>
-        <span>设置订单提成 : {{scale}}% （提成过高可能会影响竞争力）</span>
-        <el-slider v-model="scale" :format-tooltip="formatTooltip" :step="5"  show-stops></el-slider>
-        <el-button type="primary" @click="setparameter">答题</el-button>
-      </el-form-item>
-    </el-form>
+    <div class="stepinfo">
+      <el-form :inline="true" class="demo-form-inline" style="width: 80%;border: 0px">
+        <el-form-item >
+          <span>创建初始订单提成 : {{scale}}% （提成越低，得到工单eth越少，通证越多；提成越高，得到工单eth越多，通证越少）</span>
+          <el-slider v-model="scale" :format-tooltip="formatTooltip" :step="5"  show-stops style="width: 80%;border: 0px"></el-slider>
+        </el-form-item>
+      </el-form>
+    </div>
+
+    <el-button type="primary" @click="setparameter">第三题答题</el-button>
   </div>
 </template>
 
@@ -57,33 +60,33 @@ export default {
         "时间戳："
       ],
       pmsg: [
-        "合格证",
-        "左前45度",
-        "左前门",
-        "左后门",
-        "右前门",
-        "右后45度",
+        "左前45°",
+        "主驾驶舱",
+        "仪表台",
+        "天窗",
+        "后排座椅",
         "中控台",
-        "车内顶"
+        "右后45°",
+        "副驾驶舱"
       ],
       carInfo : {
-        Frame_number:"WP1AG2928CLA69271",
-        Number_plate:"京A 00001",
+        Frame_number:"LE4HG4HB9EL120771",
+        Number_plate:"京A 00003",
         Vehicle_type:"非营运",
-        Brand_number:"保时捷Cayenne2011款 Cayenne 3.0T",
-        Engine_number:"CWW006067",
-        Manufacture_date:"2019-1-1",
-        Timestammp:"2019-1-1 12:00:00"
+        Brand_number:"奔驰E级2014款 E 260 L 运动型",
+        Engine_number:"CWW006011",
+        Manufacture_date:"2019-05-06",
+        Timestammp:"2019-05-06 12:00:00"
       },
       photo : {
-        photo1 : "http://localhost:5000/ipfs/QmbrZJ6xLozpZck7ASRHJhWA46RGprR2gNjKXF2x2aSy94",
-        photo2 : "http://localhost:5000/ipfs/QmR65AtAHL5LfTpAjJViWRQJuaEK7w5yqZJopfY667LtYC",
-        photo3 : "http://localhost:5000/ipfs/QmYgZhxc2PZGAZPocafF9j6jbcrRemrWBD37vgVeScJtGY",
-        photo4 : "http://localhost:5000/ipfs/QmWVMBfgfTCCsVXuaLmDj5kWnq2oogCJXpeQ3ZPgf7yXtQ",        
-        photo5 : "http://localhost:5000/ipfs/QmRPwJVvskWce4FTdtYbjp2DMHeRsGXzAd8xUMiS8Sau2k",
-        photo6 : "http://localhost:5000/ipfs/Qmb7MmpzvKaVDZdTqeARVAT9eo9eTB66kX63pRq3Q4AK1Z",
-        photo7 : "http://localhost:5000/ipfs/QmY3zSrCWVuYMQ1yTR3qZfGiNMBBE42d1s8gaRVdYDqUHP",
-        photo8 : "http://localhost:5000/ipfs/Qmcin3oqk6WGGdFWGR9AHQTkfooZ9LGpCoU9f3ck7hDdtX"
+        photo1 : "http://localhost:5000/ipfs/QmYC95rgZRT7vreHaaRtgJ6p5Yvic4GtfCBUzXok2xidEm",
+        photo2 : "http://localhost:5000/ipfs/Qmb88gKebVxJiQcJYw1TZ5JGte9gVRm27rsyvx1jRQFt7Q",
+        photo3 : "http://localhost:5000/ipfs/QmVV9JeLDmSxuJojHdFeJVUi1rcVnZNfJtLMUJh7mi2PJC",
+        photo4 : "http://localhost:5000/ipfs/QmSUgi9P5h5Aycup1kXjaeVXzgNoL2ZsJd2qgiizwzd4Ee",        
+        photo5 : "http://localhost:5000/ipfs/QmcuU9VSZpVEfAgyxKPJ52iBcSmkonZKER6hbCDay5M5sz",
+        photo6 : "http://localhost:5000/ipfs/QmP8zXvNy5DFGhHnTG5xsK5PMvFYG7j8XZH4y3CWegc28c",
+        photo7 : "http://localhost:5000/ipfs/QmWPPKT2yCKAAXiJ5zLDnnpjs9b9Hkn9DKGGjUQuDiHXeE",
+        photo8 : "http://localhost:5000/ipfs/QmeroN4Sa61tRd77GqJ4pyvLaSjpe4eFmKZiViQzFPp8pa"
       },
       scale: 50
     };
@@ -103,8 +106,9 @@ export default {
         if (balance == 0) balance = 1;
         var Eth_amount = Math.round((Math.pow(200 / supply + 1, 2) - 1) * balance);
         var commission = 200 - this.scale;
+        var mytime= new Date().toLocaleString('chinese', { hour12: false });
 
-        var blockmsg = await login.registertest(200, commission, Eth_amount);
+        var blockmsg = await login.registertest(200, commission,mytime, Eth_amount);
 
         var blockurl = "http://localhost:6001/insert/blocklist";
         var mytime = new Date().toLocaleString('chinese', { hour12: false });
@@ -264,6 +268,18 @@ export default {
     width: 80%;
     overflow: hidden;
     margin: 0px 0;
+    border: 1px solid #C0C0C0;
+  }
+  .stepinfo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .stepinfo div{
+    width: 100%;
+    overflow: hidden;
+    margin: 5px 0;
     border: 1px solid #C0C0C0;
   }
   .tr,th,td{

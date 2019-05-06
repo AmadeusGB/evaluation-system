@@ -108,6 +108,7 @@ export default {
       var httpRequest = new XMLHttpRequest();
       var context = '创建评估单编号：'+valuation_number;
       var blocktext = {
+        'owner':window.web3.eth.accounts[0],
         'address':valuation_number,
         'gasused':blockmsg.receipt.gasUsed,
         'timestamp':mytime,

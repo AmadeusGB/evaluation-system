@@ -5,6 +5,7 @@ import "./create.sol";
 
 contract login is token,create{
     mapping(address => uint)  ID;                           //地址对应用户属性(0:普通用户,1:评估师)
+    mapping(address => string) logintime;                   //评估师注册时间
     address[] workers;                                      //评估师列表
     
     /**
@@ -31,9 +32,10 @@ contract login is token,create{
      * guobin
      * 地址注册函数，demo暂时用这个，前端做注册校验
     */
-    function _registertest() internal {
-        ID[msg.sender] = 1;             //1代表评估师账户，默认是0，代表普通用户
-        workers.push(msg.sender);       //记录评估师列表
+    function _registertest(string time) internal {
+        ID[msg.sender] = 1;                     //1代表评估师账户，默认是0，代表普通用户
+        logintime[msg.sender] = time;      //评估师注册时间
+        workers.push(msg.sender);               //记录评估师列表
     }
 
     /**
@@ -42,6 +44,14 @@ contract login is token,create{
     */
     function _backofwork() view internal returns (address[]) {
         return workers;
+    }
+
+    /**
+     * guobin
+     * 返回当前评估师注册时间
+    */
+    function _checktime() view internal returns (string) {
+        return logintime[msg.sender];
     }
 
     /**

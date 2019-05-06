@@ -41,6 +41,8 @@ contract create {
     Msg order;                                               //评估单(包含评估单状态、评估单详情和评估单图片结构体)
     uint ordernumber = 1;                                    //评估单唯一全局编号（与js共同拼接成最终评估号）
     mapping(address => uint[])          record;              //记录每个用户下评估单编号
+    mapping(address => uint)            createappeal;        //创建者申诉数量
+    mapping(address => uint)            workappeal;          //评估者申诉数量
     
     /**
      * guobin
@@ -125,6 +127,15 @@ contract create {
     function _setstate(uint index,string condition) internal {
         order.store_sta[index].Evaluation_status = condition;
     }
+
+    /**
+     * guobin
+     * 存储指定评估单申诉记录
+    */
+    function _setappeal(address Create,address Work) internal {
+        createappeal[Create] += 1;
+        workappeal[Work] += 1;
+    }
     
     /**
      * guobin
@@ -164,6 +175,22 @@ contract create {
     */
     function _displayvalue(uint index) view internal returns (uint) {
         return order.store_msg[index].Evaluation;                   //评估价值
+    }
+
+    /**
+     * guobin
+     * 获取指定用户申诉数量
+    */
+    function _displaycreate() view internal returns (uint) {
+        return createappeal[msg.sender];                            //某用户申诉数量
+    }
+
+    /**
+     * guobin
+     * 获取指定评估师申诉数量
+    */
+    function _displaywork() view internal returns (uint) {
+        return workappeal[msg.sender];                            //某评估师被申诉数量
     }
     
     /**

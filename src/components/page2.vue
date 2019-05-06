@@ -97,6 +97,7 @@ export default {
         var httpRequestblocklist = new XMLHttpRequest();
         var context = "更新评估单状态为：" + Evaluation_status;
         var blocktext = {
+          owner:window.web3.eth.accounts[0],
           address: address,
           gasused: blockmsg.receipt.gasUsed,
           timestamp: mytime,

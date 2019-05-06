@@ -22,8 +22,8 @@
 
           <viewer class = "duqiang" style="width: 100%;border: 0px">
             <span class="itemImg" v-for="(item,i,index) in photo" :key="i">
-              <p style="text-align:center">{{pmsg[index]}} </p> 
               <img :src="item" width="232" height="232">
+              <p style="text-align:center">{{pmsg[index]}} </p> 
             </span>
           </viewer>
         </div>
@@ -31,9 +31,7 @@
 
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item>
-        <span>设置订单提成 : {{scale}}% （提成过高可能会影响竞争力）</span>
-        <el-slider v-model="scale" :format-tooltip="formatTooltip" :step="5"  show-stops></el-slider>
-        <el-button type="primary" @click="setparameter">答题</el-button>
+        <el-button type="primary" @click="setparameter">第一题答题</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -57,14 +55,14 @@ export default {
         "时间戳："
       ],
       pmsg: [
-        "合格证",
-        "左前45度",
-        "左前门",
-        "左后门",
-        "右前门",
-        "右后45度",
+        "左前45°",
+        "主驾驶舱",
+        "仪表台",
+        "天窗",
+        "后排座椅",
         "中控台",
-        "车内顶"
+        "右后45°",
+        "副驾驶舱"
       ],
       carInfo : {
         Frame_number:"WP1AG2928CLA69271",
@@ -72,8 +70,8 @@ export default {
         Vehicle_type:"非营运",
         Brand_number:"保时捷Cayenne2011款 Cayenne 3.0T",
         Engine_number:"CWW006067",
-        Manufacture_date:"2019-1-1",
-        Timestammp:"2019-1-1 12:00:00"
+        Manufacture_date:"2019-04-26",
+        Timestammp:"2019-04-26 12:00:00"
       },
       photo : {
         photo1 : "http://localhost:5000/ipfs/QmbrZJ6xLozpZck7ASRHJhWA46RGprR2gNjKXF2x2aSy94",
@@ -98,42 +96,15 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
       }).then(async ({ value }) => {
-        var balance = await token.displaybalance();
-        var supply = await token.displaytoken();
-        if (balance == 0) balance = 1;
-        var Eth_amount = Math.round((Math.pow(200 / supply + 1, 2) - 1) * balance);
-        var commission = 200 - this.scale;
-
-        var blockmsg = await login.registertest(200, commission, Eth_amount);
-
-        var blockurl = "http://localhost:6001/insert/blocklist";
-        var mytime = new Date().toLocaleString('chinese', { hour12: false });
-        var httpRequestblocklist = new XMLHttpRequest();
-        var context = "注册评估师：" + window.web3.eth.accounts[0];
-        var blocktext = {
-          owner: window.web3.eth.accounts[0],
-          address: "无",
-          gasused: blockmsg.receipt.gasUsed,
-          timestamp: mytime,
-          blockhash: blockmsg.receipt.blockHash,
-          blocknumber: blockmsg.receipt.blockNumber,
-          transactionid: blockmsg.receipt.transactionHash,
-          token: 0,
-          location: "localhost:8080",
-          detail: context
-        };
-        httpRequestblocklist.open("POST", blockurl, true);
-        httpRequestblocklist.setRequestHeader(
-          "Content-type",
-          "application/json"
-        );
-        httpRequestblocklist.send(JSON.stringify(blocktext));
-
-        this.$router.push({ name: "page6", params: { id: "3" } });
+        if(value > 100 && value < 120) {
+          this.$router.push({ name: "register2", params: { id: "3" } });
+        }
+        else {
+          alert("回答错误");
+          this.$router.push({ name: "personinfo", params: { id: "3" } });
+        }
+        
       });
-    },
-    formatTooltip(val) {
-      return (val + "%");
     }
   }
 };

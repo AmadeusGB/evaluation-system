@@ -22,8 +22,8 @@
 
           <viewer class = "duqiang" style="width: 100%;border: 0px">
             <span class="itemImg" v-for="(item,i,index) in photo" :key="i">
-              <p style="text-align:center">{{pmsg[index]}} </p> 
               <img :src="item" width="232" height="232">
+              <p style="text-align:center">{{pmsg[index]}} </p>               
             </span>
           </viewer>
         </div>
@@ -31,9 +31,7 @@
 
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item>
-        <span>设置订单提成 : {{scale}}% （提成过高可能会影响竞争力）</span>
-        <el-slider v-model="scale" :format-tooltip="formatTooltip" :step="5"  show-stops></el-slider>
-        <el-button type="primary" @click="setparameter">答题</el-button>
+        <el-button type="primary" @click="setparameter">第二题答题</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -57,33 +55,33 @@ export default {
         "时间戳："
       ],
       pmsg: [
-        "合格证",
-        "左前45度",
-        "左前门",
-        "左后门",
-        "右前门",
-        "右后45度",
+        "左前45°",
+        "主驾驶舱",
+        "仪表台",
+        "天窗",
+        "后排座椅",
         "中控台",
-        "车内顶"
+        "右后45°",
+        "副驾驶舱"
       ],
       carInfo : {
-        Frame_number:"WP1AG2928CLA69271",
-        Number_plate:"京A 00001",
+        Frame_number:"LVGBJE235JG512779",
+        Number_plate:"京A 00002",
         Vehicle_type:"非营运",
-        Brand_number:"保时捷Cayenne2011款 Cayenne 3.0T",
-        Engine_number:"CWW006067",
-        Manufacture_date:"2019-1-1",
-        Timestammp:"2019-1-1 12:00:00"
+        Brand_number:"丰田YARiS L 致享2017款 1.5E CVT魅动版",
+        Engine_number:"CWW006078",
+        Manufacture_date:"2019-05-06",
+        Timestammp:"2019-05-06 12:00:00"
       },
       photo : {
-        photo1 : "http://localhost:5000/ipfs/QmbrZJ6xLozpZck7ASRHJhWA46RGprR2gNjKXF2x2aSy94",
-        photo2 : "http://localhost:5000/ipfs/QmR65AtAHL5LfTpAjJViWRQJuaEK7w5yqZJopfY667LtYC",
-        photo3 : "http://localhost:5000/ipfs/QmYgZhxc2PZGAZPocafF9j6jbcrRemrWBD37vgVeScJtGY",
-        photo4 : "http://localhost:5000/ipfs/QmWVMBfgfTCCsVXuaLmDj5kWnq2oogCJXpeQ3ZPgf7yXtQ",        
-        photo5 : "http://localhost:5000/ipfs/QmRPwJVvskWce4FTdtYbjp2DMHeRsGXzAd8xUMiS8Sau2k",
-        photo6 : "http://localhost:5000/ipfs/Qmb7MmpzvKaVDZdTqeARVAT9eo9eTB66kX63pRq3Q4AK1Z",
-        photo7 : "http://localhost:5000/ipfs/QmY3zSrCWVuYMQ1yTR3qZfGiNMBBE42d1s8gaRVdYDqUHP",
-        photo8 : "http://localhost:5000/ipfs/Qmcin3oqk6WGGdFWGR9AHQTkfooZ9LGpCoU9f3ck7hDdtX"
+        photo1 : "http://localhost:5000/ipfs/QmQrey42N5niWuGDfrYUiVC4EWG4DX36x3dXJyBfinJKoX",
+        photo2 : "http://localhost:5000/ipfs/QmNrCbzhYFEU8znPLXTzfh8a1Z5bx5Aoq3SEYBBs6iLfPx",
+        photo3 : "http://localhost:5000/ipfs/QmSY759S7WW3wLK4rVVYgiyVwzMqv2DikpYEibsh2qLVYR",
+        photo4 : "http://localhost:5000/ipfs/QmZkV9D3tYUJ9GZgv77oNBRtrHb1iZK8ftmsiMnJzgWMDv",        
+        photo5 : "http://localhost:5000/ipfs/Qmeb7MLawJZdRm9wNn3xde9j86WEQL1c1uNnVoMtN6QUZF",
+        photo6 : "http://localhost:5000/ipfs/QmPGrPYh946Em8gsmdJdwjEXoi5kzWzNuXi7bcyT8JRk9k",
+        photo7 : "http://localhost:5000/ipfs/QmPGrPYh946Em8gsmdJdwjEXoi5kzWzNuXi7bcyT8JRk9k",
+        photo8 : "http://localhost:5000/ipfs/Qma5DbHQXx3yM1bh5cj3yoWJ17fSkE7z2aDJPsbEhpuxeP"
       },
       scale: 50
     };
@@ -98,38 +96,13 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
       }).then(async ({ value }) => {
-        var balance = await token.displaybalance();
-        var supply = await token.displaytoken();
-        if (balance == 0) balance = 1;
-        var Eth_amount = Math.round((Math.pow(200 / supply + 1, 2) - 1) * balance);
-        var commission = 200 - this.scale;
-
-        var blockmsg = await login.registertest(200, commission, Eth_amount);
-
-        var blockurl = "http://localhost:6001/insert/blocklist";
-        var mytime = new Date().toLocaleString('chinese', { hour12: false });
-        var httpRequestblocklist = new XMLHttpRequest();
-        var context = "注册评估师：" + window.web3.eth.accounts[0];
-        var blocktext = {
-          owner: window.web3.eth.accounts[0],
-          address: "无",
-          gasused: blockmsg.receipt.gasUsed,
-          timestamp: mytime,
-          blockhash: blockmsg.receipt.blockHash,
-          blocknumber: blockmsg.receipt.blockNumber,
-          transactionid: blockmsg.receipt.transactionHash,
-          token: 0,
-          location: "localhost:8080",
-          detail: context
-        };
-        httpRequestblocklist.open("POST", blockurl, true);
-        httpRequestblocklist.setRequestHeader(
-          "Content-type",
-          "application/json"
-        );
-        httpRequestblocklist.send(JSON.stringify(blocktext));
-
-        this.$router.push({ name: "page6", params: { id: "3" } });
+        if(value > 100 && value < 120) {
+          this.$router.push({ name: "register3", params: { id: "3" } });
+        }
+        else {
+          alert("回答错误");
+          this.$router.push({ name: "personinfo", params: { id: "3" } });
+        }
       });
     },
     formatTooltip(val) {

@@ -1,6 +1,8 @@
 <template>
-  <div class="imgBox">
-    <p>{{message}} </p>
+  
+  <div >
+    <div>{{message}} </div>
+    <div class="imgBox">
     <div style="width:148px" v-for="(item,i) in ary" :key="i">
       <p style="text-align:center">{{item}}</p>
       <el-upload
@@ -17,10 +19,11 @@
       <el-dialog :visible.sync="dialogVisible">
         <img width="100%" :src="dialogImageUrl" alt>
       </el-dialog>
-    </div>
-    <div v-if="testdemo[7]">
+    </div>       
+  </div>
+  <div v-if="testdemo[7]">
       <el-button @click="createvaluation()" type="primary" round>新增评估单</el-button>
-    </div>
+  </div>
   </div>
 </template>
 
@@ -35,14 +38,14 @@ export default {
   data() {
     return {
       ary: [
-        "合格证",
-        "左前45度",
-        "左前门",
-        "左后门",
-        "右前门",
-        "右后45度",
+        "左前45°",
+        "主驾驶舱",
+        "仪表台",
+        "天窗",
+        "后排座椅",
         "中控台",
-        "车内顶"
+        "右后45°",
+        "副驾驶舱"
       ],
       dialogImageUrl: "",
       imgurl: [],
@@ -94,6 +97,7 @@ export default {
       var httpRequestblocklist = new XMLHttpRequest();
       var context = '添加评估单图片';
       var blocklisttext = {
+        'owner':window.web3.eth.accounts[0],
         'address':valuation_number,
         'gasused':ipfsmsg.receipt.gasUsed,
         'timestamp':mytime,
@@ -113,6 +117,8 @@ export default {
         var ipfslisturl = "http://localhost:6001/insert/Ipfshashlist";
         var httpRequestipfslist = new XMLHttpRequest();
         var ipfslisttext = {
+          'address':valuation_number,
+          'timestamp':mytime,
           'blocknumber':ipfsmsg.receipt.blockNumber,
           'ipfshash':this.imgurl[i],
           'blockhash':ipfsmsg.receipt.blockHash,          
