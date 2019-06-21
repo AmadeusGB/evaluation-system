@@ -124,7 +124,18 @@ Truffle v4.1.3 (core 4.1.3)
 
 `~$ npm install`或`cnpm install`
 
+**启动python服务**
+***
+`~$ python dev-server.py`
+
+**启动etherum和ipfs测试链**
+***
+`~$ ganache-cli -d`
+
+`~$ ipfs daemon`
+
 **编译部署**
 ***
 
 `~$ truffle compile && truffle migrate --reset && npm run dev`
+
