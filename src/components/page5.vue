@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     valuation(row) {
-      this.$prompt("请输入仲裁价格", "操作", {
+      this.$prompt("请输入仲裁价格（万元）", "操作", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
       }).then(async ({ value }) => {

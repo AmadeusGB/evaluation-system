@@ -83,7 +83,8 @@ export default {
         photo7 : "http://localhost:5000/ipfs/QmY3zSrCWVuYMQ1yTR3qZfGiNMBBE42d1s8gaRVdYDqUHP",
         photo8 : "http://localhost:5000/ipfs/Qmcin3oqk6WGGdFWGR9AHQTkfooZ9LGpCoU9f3ck7hDdtX"
       },
-      scale: 50
+      scale: 50,
+      test:[]
     };
   },
   created: async function() {
@@ -100,11 +101,37 @@ export default {
           this.$router.push({ name: "register2", params: { id: "3" } });
         }
         else {
-          alert("回答错误");
+          this.$message({type: 'success',message: '回答错误'});
           this.$router.push({ name: "personinfo", params: { id: "3" } });
         }
-        
       });
+      //const h = this.$createElement;
+      //setTimeout(function(){this.test.push("111")},1000);
+      //this.test.push("11");
+
+      // this.$msgbox({
+      //   title: '执行步骤',
+      //   message: this.test, 
+        // showCancelButton: true,
+        // confirmButtonText: '确定',
+        // cancelButtonText: '取消',
+        // beforeClose: (action, instance, done) => {
+        //   if (action === 'confirm') {
+        //     instance.confirmButtonLoading = true;
+        //     instance.confirmButtonText = '执行中...';
+        //     setTimeout(() => {
+        //       done();
+        //       setTimeout(() => {
+        //         instance.confirmButtonLoading = false;
+        //       }, 300);
+        //     }, 3000);
+        //   } else {
+        //     done();
+        //   }
+        // }
+      // });
+
+
     }
   }
 };
