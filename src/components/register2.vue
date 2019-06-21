@@ -100,7 +100,7 @@ export default {
           this.$router.push({ name: "register3", params: { id: "3" } });
         }
         else {
-          alert("回答错误");
+          this.$message({type: 'success',message: '回答错误'});
           this.$router.push({ name: "personinfo", params: { id: "3" } });
         }
       });

@@ -38,7 +38,7 @@
       </el-form>
     </div>
 
-    <el-button type="primary" @click="setparameter">第三题答题</el-button>
+    <el-button type="primary" @click="setparameter">第三题答题并注册</el-button>
   </div>
 </template>
 
@@ -101,39 +101,44 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
       }).then(async ({ value }) => {
-        var balance = await token.displaybalance();
-        var supply = await token.displaytoken();
-        if (balance == 0) balance = 1;
-        var Eth_amount = Math.round((Math.pow(200 / supply + 1, 2) - 1) * balance);
-        var commission = 200 - this.scale;
-        var mytime= new Date().toLocaleString('chinese', { hour12: false });
+        if(value > 100 && value < 120) {
+          var balance = await token.displaybalance();
+          var supply = await token.displaytoken();
+          if (balance == 0) balance = 1;
+          var Eth_amount = Math.round((Math.pow(200 / supply + 1, 2) - 1) * balance);
+          var commission = 200 - this.scale;
+          var mytime= new Date().toLocaleString('chinese', { hour12: false });
 
-        var blockmsg = await login.registertest(200, commission,mytime, Eth_amount);
+          var blockmsg = await login.registertest(200, commission,mytime, Eth_amount);
 
-        var blockurl = "http://localhost:6001/insert/blocklist";
-        var mytime = new Date().toLocaleString('chinese', { hour12: false });
-        var httpRequestblocklist = new XMLHttpRequest();
-        var context = "注册评估师：" + window.web3.eth.accounts[0];
-        var blocktext = {
-          owner: window.web3.eth.accounts[0],
-          address: "无",
-          gasused: blockmsg.receipt.gasUsed,
-          timestamp: mytime,
-          blockhash: blockmsg.receipt.blockHash,
-          blocknumber: blockmsg.receipt.blockNumber,
-          transactionid: blockmsg.receipt.transactionHash,
-          token: 0,
-          location: "localhost:8080",
-          detail: context
-        };
-        httpRequestblocklist.open("POST", blockurl, true);
-        httpRequestblocklist.setRequestHeader(
-          "Content-type",
-          "application/json"
-        );
-        httpRequestblocklist.send(JSON.stringify(blocktext));
-
-        this.$router.push({ name: "page6", params: { id: "3" } });
+          var blockurl = "http://localhost:6001/insert/blocklist";
+          var mytime = new Date().toLocaleString('chinese', { hour12: false });
+          var httpRequestblocklist = new XMLHttpRequest();
+          var context = "注册评估师：" + window.web3.eth.accounts[0];
+          var blocktext = {
+            owner: window.web3.eth.accounts[0],
+            address: "无",
+            gasused: blockmsg.receipt.gasUsed,
+            timestamp: mytime,
+            blockhash: blockmsg.receipt.blockHash,
+            blocknumber: blockmsg.receipt.blockNumber,
+            transactionid: blockmsg.receipt.transactionHash,
+            token: 0,
+            location: "localhost:8080",
+            detail: context
+          };
+          httpRequestblocklist.open("POST", blockurl, true);
+          httpRequestblocklist.setRequestHeader(
+            "Content-type",
+            "application/json"
+          );
+          httpRequestblocklist.send(JSON.stringify(blocktext));
+          this.$router.push({ name: "personinfo", params: { id: "3" } });
+        }
+        else {
+          this.$message({type: 'success',message: '回答错误'});
+          this.$router.push({ name: "personinfo", params: { id: "3" } });
+        }
       });
     },
     formatTooltip(val) {

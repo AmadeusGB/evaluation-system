@@ -134,7 +134,9 @@ export default {
       transactionnumber:0,
       accountnumber:0,
       ipfshashnumber:0,
-      Leaderboard:[]
+      Leaderboard:{
+        blockhigh:{},
+      }
     }
   },
   created: async function() {
@@ -154,7 +156,6 @@ export default {
       var responseipfsinfo = await fetch(ipfsurl);
       var ipfsinfo = await responseipfsinfo.json();
       this.ipfshashnumber = ipfsinfo.length;
-
 
       var blocklisturl = 'http://localhost:6001/search/blocklist?key=timestamp';
       var responseblocklistinfo = await fetch(blocklisturl);

@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <!-- <img src="./assets/logo.png"> -->
     <div class="header1">
       <el-button type="text" style="font-size: 24px;color:aliceblue;" @click="back">&nbsp;&nbsp;基于区块链的汽车评估服务平台</el-button>
       <div classs="header2">
+        <span style="font-size: 16px;color:aliceblue;">当前平台信誉值：{{credit}}</span>
         <el-button type="primary" @click="personalmsg">个人信息<br></el-button>
       </div>
       
@@ -29,8 +29,22 @@
 </template>
 
 <script>
+import token from "@/js/token";
+
 export default {
+  data() {
+    return {
+      credit:{}
+    }
+  },
+  created: async function() {
+    await token.init_token();
+    this.credit = await token.displaytoken();
+  },
   methods: {
+    async tiaoshi() {
+      this.$router.push({name: 'page6',params:{ id:'1'}});
+    },
     async back() {
       this.$router.push({name: 'page1',params:{ id:'1'}});
     },

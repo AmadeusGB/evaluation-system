@@ -61,7 +61,6 @@ export default {
       }
       else if(evaluate_state == "3") {
         status = "申诉完成";
-        continue;
       }
       else if(evaluate_state == "4") {
         status = "已关闭";
@@ -74,7 +73,7 @@ export default {
         (await Create.displayinfo(temp[i], 4)) +
         '","vin":"'    +
         (await Create.displayinfo(temp[i], 1)) +
-        '","money":"'  + money           +
+        '","money":"'  + money           +  '万元'  +
         '","state":"'  + status          +
         '","date":"'   +
         (await Create.displayinfo(temp[i], 10)) +
