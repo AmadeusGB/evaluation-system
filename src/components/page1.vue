@@ -5,7 +5,7 @@
     </div>
 
     <el-table ref="singleTable" :data="tableData" highlight-current-row style="width: 100%">
-      <el-table-column fixed label="序号" type="index" width="50"></el-table-column>
+      <el-table-column fixed label="序号" type="index" width="80"></el-table-column>
 
       <el-table-column prop="address" label="评估单编号" width="250"></el-table-column>
       <el-table-column prop="name" label="品牌型号" width="250"></el-table-column>

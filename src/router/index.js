@@ -12,6 +12,8 @@ import page6 from "@/components/page6";
 import page7 from "@/components/page7";
 import page8 from "@/components/page8";
 import page9 from "@/components/page9";
+import pagesimRobin from "@/components/pagesimRobin";
+import pagesimMFTA from "@/components/pagesimMFTA";
 import detail from "@/components/detail";
 import register1 from "@/components/register1";
 import register2 from "@/components/register2";
@@ -80,6 +82,16 @@ export default new Router({
       path: "/page9",
       name: "page9",
       component: page9
+    },
+    {
+      path: "/pagesimRobin",
+      name: "pagesimRobin",
+      component: pagesimRobin
+    },
+    {
+      path: "/pagesimMFTA",
+      name: "pagesimMFTA",
+      component: pagesimMFTA
     },
     {
       path: "/detail",

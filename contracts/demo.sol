@@ -2,8 +2,9 @@ pragma solidity ^0.4.24;
 pragma experimental ABIEncoderV2;
 
 import "./assign.sol";
+import "./beyondsim.sol";
 
-contract demo is assign{
+contract demo is beyondsim{
     mapping(uint => uint) backrecord;
     /**************用户定义空间***************/
     /**************创建评估单功能类***************/
@@ -342,5 +343,57 @@ contract demo is assign{
     */
     function backLength() public view returns (uint) {
         return _backLength();
+    }
+    /******************************************/
+
+    /**************实验定义空间***************/
+    /**
+     * guobin
+     * Round_Robin算法
+    */
+    function robin() public  {
+        return _Robin();
+    }
+
+    /**
+     * guobin
+     * 检查并更新当前任务状态
+    */
+    function check() public  {
+        return _check();
+    }
+
+    /**
+     * guobin
+     * 返回评估单编号中的详细参数(除评估师)
+    */
+    function displaymodelinfo(uint index,uint num,uint flag) public view returns (uint) {
+        return _displaymodelinfo(index,num,flag);
+    }
+
+    /**
+     * guobin
+     * 返回评估单编号中评估师
+    */
+    function displayaddressinfo(uint index,uint num,uint flag) public view returns (address) {
+        return _displayaddressinfo(index,num,flag);
+    }
+
+    /**
+     * guobin
+     * 返回排行榜中所有评估单编号
+    */
+    function backrecordnumber() public view returns (uint[]) {
+        return _backrecordnumber();
+    }
+
+
+
+    /**
+     * guobin
+     * 返回所有评估师地址
+    */
+    function backofwork111() view public returns (address[]) {
+        return _backofwork111();
     }
 }
